@@ -6,10 +6,10 @@
             <h2 class="mt-5 mb-4">OTP Verification</h2>
             <p>Please enter the OTP sent to your registered email or phone number.</p>
 
-            <form method="post" action="/login">
+            <form method="post" action="/verify">
                 <div class="mb-3">
                     <label for="otp" class="form-label">Enter OTP:</label>
-                    <input type="text" class="form-control" id="otp" name="otp" required>
+                    <input type="text" class="form-control" id="otp" name="enteredOtp" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Verify OTP</button>

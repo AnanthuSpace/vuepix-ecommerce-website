@@ -3,12 +3,16 @@ const session = require("express-session")
 const userRoute = require("./routers/UserRouter")
 const nocache = require("nocache")
 require("./DB/db_connection")
+const PORT = process.env.PORT || 3000
+const dotenv = require("dotenv")
+
+dotenv.config()
 
 const app = new express()
 
 app.use(
     session({
-        secret: "mykey",
+        secret: process.env.SESSION_KEY,
         resave: false,
         saveUninitialized: true
     })
@@ -22,4 +26,4 @@ app.use(nocache())
 
 app.use("/", userRoute)
 
-app.listen(3000, () => console.log("server running"))
+app.listen(PORT, () => console.log(`Server Running on http://localhost:${PORT}`))
