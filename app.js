@@ -1,6 +1,7 @@
 const express = require("express")
 const session = require("express-session")
 const userRoute = require("./routers/UserRouter")
+const adminRoute = require("./routers/AdminRouter")
 const nocache = require("nocache")
 require("./DB/db_connection")
 const PORT = process.env.PORT || 3000
@@ -25,5 +26,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use(nocache())
 
 app.use("/", userRoute)
+app.use("/admin", adminRoute)
 
 app.listen(PORT, () => console.log(`Server Running on http://localhost:${PORT}`))

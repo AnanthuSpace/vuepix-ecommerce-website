@@ -198,6 +198,7 @@ const verifyOtp = async (req,res) => {
 
         await newUser.save();
         console.log("User Creeated Successfully");
+        delete req.session.tempUser
         res.redirect("/login")
 
     } catch (error) {
