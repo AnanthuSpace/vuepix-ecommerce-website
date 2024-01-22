@@ -207,6 +207,51 @@ const verifyOtp = async (req,res) => {
 }
 
 
+
+// Resend Otp 
+
+const resendOTP = async(req,res)=>{
+    try {
+        const { email } = req.session.tempUser;
+
+        const newotp = generateOTP()
+
+        const transporter = mailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: process.env.EMAIL_ID,
+              pass: process.env.EMAIL_PASS
+            }
+          });
+
+
+        // Set Email options
+
+        const mailOption = {
+            from: process.env.EMAIL_ID,
+            to: email,
+            subject: "OTP Verification",
+            text: `Your OTP for Verification is ${newotp}`
+        }
+
+        // Sending email
+
+        transporter.sendMail(mailOption, (error,info)=>{
+
+            if(error){
+                console.error("Mailing error",error);
+            }else{
+                console.log('Email sent: ' + info.response);
+            }
+            res.redirect("/otpVerification")
+        })
+    } catch (error) {
+        res.render("user/verify")
+    }
+}
+
+
+
 // Logout User
 
 const logout = async (req, res) => {
@@ -232,5 +277,6 @@ module.exports = {
     userVerification,
     otpVerification,
     logout,
-    verifyOtp
+    verifyOtp,
+    resendOTP
 }

@@ -11,6 +11,7 @@ router.post("/userCreate", controller.createUser);
 router.get("/Home", controller.renderHome)
 router.post("/verify", controller.verifyOtp)
 router.post("/userVerification", controller.userVerification)
-router.get("/logout", isLogged,controller.logout)
+router.get("/resendOtp", controller.resendOTP)
+router.get("/logout" ,controller.logout)
 
 module.exports = router
