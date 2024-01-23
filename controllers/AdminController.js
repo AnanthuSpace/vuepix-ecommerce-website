@@ -24,8 +24,8 @@ const adminHome = async (req, res) => {
 
     try {
         if (email === "admin@gmail.com" && password === "123") {
-            // req.session.admin = email;
-            // res.cookie("sessionId", req.sessionID, { httpOnly: true });
+            req.session.admin = email;
+            res.cookie("sessionId", req.sessionID, { httpOnly: true });
             res.redirect("/admin/home");
             return;
         } else {
@@ -38,12 +38,25 @@ const adminHome = async (req, res) => {
     }
 };
 
+
+
 const renderAdminHome = async (req,res)=>{
     res.render("admin/adminHome")
 }
 
+
+const renderAddProduct = async (req,res)=>{
+    res.render("admin/addProduct")
+} 
+
+const renderCategories = async (req,res)=>{
+    res.render("admin/categories")
+} 
+
 module.exports = {
     renderAdminLogin,
     adminHome,
-    renderAdminHome
+    renderAdminHome,
+    renderAddProduct,
+    renderCategories 
 }

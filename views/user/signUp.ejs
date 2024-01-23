@@ -1,4 +1,5 @@
 <%- include("../partials/userHeader") %>
+
     <section class="pt-50 pb-50">
         <div class="container">
             <div class="row">
@@ -10,22 +11,26 @@
                                     <div class="heading_s1">
                                         <h3 class="mb-30">Create an Account</h3>
                                     </div>
-                                    <form method="post" action="/userCreate">
+                                    <form method="post" action="/userCreate" onsubmit="return Check_all()">
                                         <div class="form-group">
-                                            <input type="text" required="" name="username" placeholder="Username">
+                                            <input type="text" id="username" name="username" onkeyup="validatename()" placeholder="Username">
+                                            <p class="text-danger" id="uname_err"></p>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" required="" name="email" placeholder="Email">
+                                            <input type="text" id="email" name="email" onkeyup="validateEmail()" placeholder="Email">
+                                            <p class="text-danger" id="email_err"></p>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" required="" name="phone" placeholder="Phone">
+                                            <input type="text" id="phone" name="phone" onkeyup="validatemobile()" placeholder="Phone">
+                                            <p class="text-danger" id="phone_err"></p>
                                         </div>
                                         <div class="form-group">
-                                            <input required="" type="password" name="password" placeholder="Password">
+                                            <input id="password" type="password" name="password" onkeyup="validate_password()" placeholder="Password">
+                                            <p class="text-danger" id="pass_err"></p>
                                         </div>
                                         <div class="form-group">
-                                            <input required="" type="password" name="confirmPassword"
-                                                placeholder="Confirm password">
+                                            <input id="confirmPassword" type="password" name="confirmPassword" onkeyup="conformPassword()" placeholder="Confirm password">
+                                            <p class="text-danger" id="repass_err"></p>
                                         </div>
                                         <div class="login_footer form-group">
                                             <div class="chek-form">
@@ -58,5 +63,99 @@
             </div>
         </div>
     </section>
+
+    <script>
+        const username = document.getElementById("username");
+        const email = document.getElementById("email");
+        const phone = document.getElementById("phone");
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirmPassword");
+
+        // Error message fields
+
+        const uname_err = document.getElementById("uname_err");
+        const email_err = document.getElementById("email_err");
+        const phone_err = document.getElementById("phone_err");
+        const pass_err = document.getElementById("pass_err");
+        const repass_err = document.getElementById("repass_err");
+
+        // User name field validation
+        function validatename() {
+          const name_value = username.value;
+          if (name_value.trim() === "") {
+            uname_err.innerHTML = "Please Enter a valid Name.";
+            uname_err.style.display = "block";
+          } else {
+            uname_err.style.display = "none";
+            uname_err.innerHTML = "";
+          }
+        }
+
+        // Phone number validation 
+        function validatemobile() {
+          const mobileNumber = phone.value;
+          if (mobileNumber.length < 10) {
+            phone_err.innerHTML = "Enter a valid mobile number (at least 10 digits)";
+            phone_err.style.display = "block";
+            } else if (mobileNumber.length >= 14) {
+            phone_err.innerHTML = "Enter a valid mobile number (less than 14 digits)";
+            phone_err.style.display = "block";
+            } else {
+            phone_err.style.display = "none";
+            phone_err.innerHTML = "";
+            }
+        }
+        
+
+        function validateEmail() {
+          const Email = email.value;
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailPattern.test(Email) || Email === "") {
+            email_err.innerHTML = "Enter a valid email";
+            email_err.style.display = "block";
+          } else {
+            email_err.style.display = "none";
+            email_err.innerHTML = "";
+          }
+        }
+
+        
+
+        function validate_password() {
+            const Password = password.value;
+
+            if (Password.length < 8) {
+            pass_err.innerHTML = "Password must be at least 8 characters long";
+            pass_err.style.display = "block";
+            } else {
+            pass_err.style.display = "none";
+            pass_err.innerHTML = "";
+            }
+        }
+
+
+        function conformPassword() {
+          const passwordValue = password.value;
+          const confirmPasswordValue = confirmPassword.value;
+  
+          if (passwordValue !== confirmPasswordValue) {
+  
+            repass_err.innerHTML = "Passwords must match";
+            repass_err.style.display = "block";
+          } else {
+            repass_err.style.display = "none";
+            repass_err.innerHTML = "";
+          }
+        }
+
+        function Check_all(e) {
+          if ( validatename() || validateEmail() || validatemobile() || validate_password() || conformPassword()) {
+            return true;    
+        }else{
+              return false
+              e.preventDefault()
+          }
+        }
+    </script>
 
     <%- include("../partials/userFooter") %>

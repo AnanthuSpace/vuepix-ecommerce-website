@@ -3,14 +3,6 @@ const { User } = require("../models/userSchema")
 const bcrypt = require("bcrypt")
 
 
-// Guest Account Rendering
-
-const renderGuest = async(req,res)=>{
-
-    res.render("user/userHome")
-
-}
-
 
 // Login page rendering
 
@@ -45,8 +37,8 @@ const generateOTP = () => {
     let otp = '';
 
     for (let i = 0; i < otpLength; i++) {
-        const digit = Math.floor(Math.random() * 10); // Generate a random digit (0-9)
-        otp += digit.toString(); // Append the digit to the OTP string
+        const digit = Math.floor(Math.random() * 10);
+        otp += digit.toString(); 
     }
 
     return otp;
@@ -59,7 +51,7 @@ const renderHome = async (req, res) => {
     try {
         res.render("user/userHome")
     } catch (error) {
-        res.redirect("/login")
+        res.redirect("/")
     }
 }
 
@@ -95,21 +87,7 @@ const userVerification = async (req, res) => {
 
 const createUser = async (req, res) => {
 
-    const { username, email, phone, password, confirmPassword } = req.body
-    // console.log(req.body);
-    const trimmedUsername = username.trim()
-
-    if (!trimmedUsername) {
-        res.render('user/signUp')
-        console.log("UserName cannot be just whitespace");
-        return
-    }
-
-    if (password !== confirmPassword) {
-        res.render("user/signUp")
-        console.log("Password missmatch");
-        return
-    }
+    const { username, email, phone, password } = req.body
 
     try {
         const existingUser = await User.findOne({ email });
@@ -199,7 +177,7 @@ const verifyOtp = async (req,res) => {
         await newUser.save();
         console.log("User Creeated Successfully");
         delete req.session.tempUser
-        res.redirect("/login")
+        res.redirect("/")
 
     } catch (error) {
         res.redirect("/otp")
@@ -261,7 +239,7 @@ const logout = async (req, res) => {
                 console.log("Logout Error");
             }
             console.log("Logout Successfully");
-            res.redirect("/login")
+            res.redirect("/")
         })
     } catch (error) {
         console.log("Logout Error : ", error);
@@ -269,7 +247,6 @@ const logout = async (req, res) => {
 }
 
 module.exports = {
-    renderGuest,
     renderLogin,
     renderSignUp,
     renderHome,
@@ -278,5 +255,5 @@ module.exports = {
     otpVerification,
     logout,
     verifyOtp,
-    resendOTP
+    resendOTP,
 }
