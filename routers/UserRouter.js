@@ -14,4 +14,5 @@ router.post("/userVerification", controller.userVerification)
 router.get("/resendOtp", controller.resendOTP)
 router.get("/logout" ,controller.logout)
 
+
 module.exports = router

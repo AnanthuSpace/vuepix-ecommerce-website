@@ -30,7 +30,7 @@ const adminHome = async (req, res) => {
             return;
         } else {
             console.log("Invalid User id and password");
-            res.render("admin/adminLogin");
+            res.render("admin/adminLogin", { login_err: "Invalid User id and password" });
         }
     } catch (error) {
         console.error("Login error:", error);

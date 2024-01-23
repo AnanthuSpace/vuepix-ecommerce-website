@@ -70,6 +70,13 @@
                 <div class="card-body">
                     <h4 class="card-title mb-4">Sign in</h4>
                     <form method="post" action="/admin/getHome">
+
+                        <% if (locals.login_err) { %>
+                            <div class="alert alert-danger text-center" id="err">
+                              <%= login_err %>
+                            </div>
+                            <% } %>
+
                         <div class="mb-3">
                             <input class="form-control" placeholder="Username or email" type="text" name="email">
                         </div> <!-- form-group// -->
@@ -111,6 +118,14 @@
             <p class="font-xs mb-30">All rights reserved</p>
         </footer>
     </main>
+    <script>
+        const login_err = document.getElementById("err");
+        if (login_err) {
+        setTimeout(() => {
+            login_err.style.display = "none";
+            }, 3000);
+        }
+    </script>
     <script src="/asset/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/asset/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/asset/js/vendors/jquery.fullscreen.min.js"></script>

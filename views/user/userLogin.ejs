@@ -14,6 +14,13 @@
                                     </div>
                                     <form method="post" action="/userVerification">
                                         <div class="form-group">
+                                            
+                                            <% if (locals.login_err) { %>
+                                                <div class="alert alert-danger text-center" id="err">
+                                                  <%= login_err %>
+                                                </div>
+                                                <% } %>
+
                                             <input type="text" required="" id="email" placeholder="Your Email">
                                         </div>
                                         <div class="form-group">
@@ -46,6 +53,14 @@
         </div>
     </section>
 
+    <script>
+        const login_err = document.getElementById("err");
+        if (login_err) {
+        setTimeout(() => {
+            login_err.style.display = "none";
+            }, 3000);
+        }
+    </script>
 
     
     <%- include("../partials/userFooter") %>

@@ -66,7 +66,8 @@ const userVerification = async (req, res) => {
         const user = await User.findOne({ email })
 
         if (!user || !(await bcrypt.compare(password, user.password))) {
-            res.render("user/userLogin")
+            // res.render("user/userLogin", {error_msg:"Invalid User id and password"})
+            res.render("user/userLogin", { login_err: "Invalid User id and password" });
             console.log("Invalid User id and password");
             return;
         }
@@ -83,7 +84,7 @@ const userVerification = async (req, res) => {
 }
 
 
-// Register the user details and validation
+// Otp Generation and User validation
 
 const createUser = async (req, res) => {
 
