@@ -17,7 +17,12 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         require: true
-    }
+    },
+    isBlocked:{
+        type:String,
+        require:true,
+        default:0,
+    },
 })
 
 

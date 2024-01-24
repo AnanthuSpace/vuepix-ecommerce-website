@@ -1,5 +1,3 @@
-const { User } = require("../models/userSchema")
-const bcrypt = require("bcrypt")
 
 
 // Render admin login page
@@ -12,9 +10,10 @@ const renderAdminLogin = async (req, res) => {
             res.render('admin/adminLogin')
         }
     } catch (error) {
-        res.render("adminHome");
+        res.render("admin/adminLogin");
     }
 }
+
 
 
 // Get admin home page
@@ -39,6 +38,23 @@ const adminHome = async (req, res) => {
 };
 
 
+// Admin Logout
+
+const adminLogout = async(req,res)=>{
+    try {
+        req.session.destroy((err) => {
+          if (err) {
+            console.log("Logout error");
+            res.redirect("/admin/getHome");
+          }
+          console.log("Logged out successfully");
+          res.redirect("/admin/adminLogin");
+        });
+      } catch (error) {
+        console.log("Logout Error");
+      }
+}
+
 
 const renderAdminHome = async (req,res)=>{
     res.render("admin/adminHome")
@@ -53,10 +69,19 @@ const renderCategories = async (req,res)=>{
     res.render("admin/categories")
 } 
 
+
+const renderProductList = async (req,res)=>{
+    res.render("admin/productList")
+}
+
+
+
 module.exports = {
     renderAdminLogin,
     adminHome,
     renderAdminHome,
     renderAddProduct,
-    renderCategories 
+    renderCategories,
+    renderProductList,
+    adminLogout
 }
