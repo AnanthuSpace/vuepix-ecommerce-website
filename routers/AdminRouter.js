@@ -1,5 +1,6 @@
 const express = require("express")
 const router = express.Router()
+const productMulter = require("../multer/productControll")
 const controller = require("../controllers/admin/AdminController")
 const userViewController = require("../controllers/admin/userController")
 const productController = require("../controllers/admin/productController")
@@ -22,7 +23,7 @@ router.get("/unblockuser/:id", userViewController.unBlockUser)
 
 
 router.get("/addproduct", productController.renderAddProduct)
-router.get("/saveproduct", productController.addProduct)
+router.post("/add-product",productMulter.array('image',4), productController.addProduct)
 
 
 

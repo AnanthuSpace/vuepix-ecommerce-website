@@ -211,224 +211,197 @@
                 </ul>
             </div>
         </header>
-        <section class="content-main">
-            <form action="/admin/saveproduct" method="post" enctype="multipart/form-data">
-                <div class="row">
-                    <div class="col-9">
-                        <div class="content-header">
-                            <h2 class="content-title">Add New Product</h2>
-                            <div>
-                                <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
-                                <button onsubmit="check_all()" class="btn btn-md rounded font-sm hover-up" type="submit">Publich</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h4>Basic</h4>
-                            </div>
-                            <div class="card-body">
-                                <form>
-                                    <div class="mb-4">
-                                        <label for="product_name" class="form-label">Product title</label>
-                                        <input name="product_name"  type="text" placeholder="Type here" class="form-control" id="pname" maxlength="20">
-                                        <p class="text-danger" id="name_err"></p>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="form-label">Full description</label>
-                                        <textarea name="description" placeholder="Type here" class="form-control" rows="4" id="description"></textarea>
-                                        <p class="text-danger" id="disc_err"></p>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-4">
-                                            <div class="mb-4">
-                                                <label class="form-label">Regular price</label>
-                                                <div class="row gx-2">
-                                                    <input name="regular_price" placeholder="₹" type="text" class="form-control" id="rprice">
-                                                    <p class="text-danger" id="rp_err"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="mb-4">
-                                                <label class="form-label">Sale price</label>
-                                                <input name="sale_price" placeholder="₹" type="text" class="form-control" id="sprice">
-                                                <p class="text-danger" id="sp_err"></p>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="mb-4">
-                                                <label class="form-label">Units</label>
-                                                <input name="units" type="number" class="form-control" id="unit">
-                                                <p class="text-danger" id="units_err"></p>
-                                            </div>
-                                        </div>
-    
-                                    </div>
-                                </form>
-                            </div>
-                        </div> <!-- card end// -->
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h4>Images</h4>
-                            </div>
-                            <div class="card-body">
-                                <small style="font-weight: bold;">Upload images</small>
-                                <div class="input-upload">
-                                    <img src="/assets/imgs/theme/upload.svg" alt="">
-                                    <input name="image" class="form-control" id="image" type="file" multiple>
-                                    <p class="text-danger" id="img_err"></p>
-                                </div>
-                            </div>
-                        </div> <!-- card end// -->
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h4>Organization</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="row gx-2">
-                                    <div class="col-sm-6 mb-3">
-                                        <label class="form-label">Category</label>
-                                        <select name="category" id="cat" class="form-select">
-                                        <option value="Ray-Ban">Ray-Ban</option>
-                                        <option value="Vincent Chase">Vincent Chase</option>
-                                        <option value="Hooper">Hooper</option>
-                                        <option value="GUCCI">GUCCI</option>
-                                        <option value="Lenskart Blu">Lenskart Blu</option>
-                                        </select>
-                                        <!-- <p class="text-danger" id="cat_err"></p> -->
-                                    </div>
-                                </div> <!-- row.// -->
-                            </div>
-                        </div> <!-- card end// -->
-                    </div>
-                </div>
-                <p id="err-msg"></p>
-            </form>
-            </section> <!-- content-main end// -->
-        <footer class="main-footer font-xs">
-            <div class="row pb-30 pt-15">
-                <div class="col-sm-6">
-                    <script>
-                    document.write(new Date().getFullYear())
-                    </script> ©, Evara - HTML Ecommerce Template .
-                </div>
-                <div class="col-sm-6">
-                    <div class="text-sm-end">
-                        All rights reserved
+        <main class="main-wrap">
+            <section class="content-main">
+    <form action="/admin/add-product" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Add New Product</h2>
+                    <div>
+                        <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
+                        <button onclick="validate()" class="btn btn-md rounded font-sm hover-up" type="submit">Publich</button>
                     </div>
                 </div>
             </div>
-        </footer>
-    </main>
-    <script src="/asset/js/vendors/jquery-3.6.0.min.js"></script>
-    <script src="/asset/js/vendors/bootstrap.bundle.min.js"></script>
-    <script src="/asset/js/vendors/select2.min.js"></script>
-    <script src="/asset/js/vendors/perfect-scrollbar.js"></script>
-    <script src="/asset/js/vendors/jquery.fullscreen.min.js"></script>
-    <!-- Main Script -->
-    <script src="/asset/js/main.js" type="text/javascript"></script>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Basic</h4>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Product title</label>
+                                <input name="product_name" required="true"  type="text" placeholder="Type here" class="form-control" id="name" maxlength="20">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Full description</label>
+                                <textarea name="description" placeholder="Type here" class="form-control" rows="4" id="description"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Regular price</label>
+                                        <div class="row gx-2">
+                                            <input name="regular_price" required="true" required="true" placeholder="$" type="text" class="form-control" id="Rprice">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Sale price</label>
+                                        <input name="sale_price" required="true" placeholder="$" type="text" class="form-control" id="Pprice">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Units</label>
+                                        <input name="units" required="true" type="number" class="form-control" id="unit">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div> <!-- card end// -->
+            </div>
+            <div class="col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Media</h4>
+                    </div>
+                    <div class="card-body">
+                        <small style="font-weight: bold;">Upload images</small>
+                        <div class="input-upload">
+                            <img src="/assets/imgs/theme/upload.svg" alt="">
+                            <input name="image" required="true" class="form-control" type="file" multiple>
+                            
+                        </div>
+                    </div>
+                </div> <!-- card end// -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Organization</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row gx-2">
+                            <div class="col-sm-6 mb-3">
+                                <label class="form-label">Category</label>
+                                <select name="category" class="form-select">
+                                    
+                                </select>
+                            </div>
+                        </div> <!-- row.// -->
+                    </div>
+                </div> <!-- card end// -->
+            </div>
+        </div>
+        <p id="err-msg"></p>
+    </form>
+    </section> <!-- content-main end// -->
+    <footer class="main-footer font-xs">
+        <div class="row pb-30 pt-15">
+            <div class="col-sm-6">
+                <script>
+                document.write(new Date().getFullYear())
+                </script> ©, Evara - HTML Ecommerce Template .
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end">
+                    All rights reserved
+                </div>
+            </div>
+        </div>
+    </footer>
+</main>
+<script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/vendors/select2.min.js"></script>
+<script src="/assets/js/vendors/perfect-scrollbar.js"></script>
+<script src="/assets/js/vendors/jquery.fullscreen.min.js"></script>
+<!-- Main Script -->
+<script src="/assets/js/main.js" type="text/javascript"></script>
 </body>
 <script>
+function validate() {
+    document.getElementById('err-msg').innerHTML = ''
+    let name = document.getElementById('name').value;
+    let Pprice = parseInt(document.getElementById('Pprice').value);
+    let Rprice = parseInt(document.getElementById('Rprice').value);
+    let unit = document.getElementById('unit').value;
+    let description = document.getElementById('description').value;
 
-    const pname = document.getElementById("name");
-    const pdisc = document.getElementById("description")
-    const rprice = document.getElementById("rprice")
-    const sprice = document.getElementById("sprice")
-    const unit = document.getElementById("unit")
-    const image = document.getElementById("image")
-    const cat = document.getElementById("cat")
+    if (Rprice < Pprice) {
+        document.getElementById('Rprice').style.borderColor = 'red'
+        document.getElementById('Rprice').style.borderWidth = '1px'
+        document.getElementById('Pprice').style.borderColor = 'red'
+        document.getElementById('Pprice').style.borderWidth = '1px'
+        event.preventDefault();
+    }else{
+        document.getElementById('Rprice').style.borderColor = 'gray'
+        document.getElementById('Rprice').style.borderWidth = '1px'
+        document.getElementById('Pprice').style.borderColor = 'gray'
+        document.getElementById('Pprice').style.borderWidth = '1px'
+    }
 
+    const nameRegex = /^[A-Za-z0-9]{1,50}$/;
 
+    if (nameRegex.test(name)) {
+    } else {
+        document.getElementById('name').style.borderColor = '#cc0000'
+        document.getElementById('name').style.borderWidth = '1px'
+        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Name error'
+        event.preventDefault()
+    }
 
-    const pname_err 
-    const pdisc_err
-    const rprice_err
-    const sprice_err
-    const unit_err
-    const 
-
-
-    // function validate() {
-    //     document.getElementById('err-msg').innerHTML = ''
-    //     let name = document.getElementById('name').value;
-    //     let Pprice = parseInt(document.getElementById('Pprice').value);
-    //     let Rprice = parseInt(document.getElementById('Rprice').value);
-    //     let unit = document.getElementById('unit').value;
-    //     let description = document.getElementById('description').value;
-
-    //     if (Rprice < Pprice) {
-    //         document.getElementById('Rprice').style.borderColor = 'red'
-    //         document.getElementById('Rprice').style.borderWidth = '1px'
-    //         document.getElementById('Pprice').style.borderColor = 'red'
-    //         document.getElementById('Pprice').style.borderWidth = '1px'
-    //         event.preventDefault();
-    //     }else{
-    //         document.getElementById('Rprice').style.borderColor = 'gray'
-    //         document.getElementById('Rprice').style.borderWidth = '1px'
-    //         document.getElementById('Pprice').style.borderColor = 'gray'
-    //         document.getElementById('Pprice').style.borderWidth = '1px'
-    //     }
-
-    //     const nameRegex = /^[A-Za-z0-9]{1,50}$/;
-
-    //     if (nameRegex.test(name)) {
-    //     } else {
-    //         document.getElementById('name').style.borderColor = '#cc0000'
-    //         document.getElementById('name').style.borderWidth = '1px'
-    //         document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Name error'
-    //         event.preventDefault()
-    //     }
-
-    //     const RpriceRegex = /^[1-9][0-9]*$/
+    const RpriceRegex = /^[1-9][0-9]*$/
 
 
-    //     if (RpriceRegex.test(Rprice)) {
-           
-    //      } else {
-    //         document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Regular Price error'
-    //         document.getElementById('Rprice').style.borderColor = 'red'
-    //         document.getElementById('Rprice').style.borderWidth = '1px'
-    //         event.preventDefault()
-    //     }
+    if (RpriceRegex.test(Rprice)) {
+       
+     } else {
+        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Regular Price error'
+        document.getElementById('Rprice').style.borderColor = 'red'
+        document.getElementById('Rprice').style.borderWidth = '1px'
+        event.preventDefault()
+    }
 
-    //     const PpriceRegex = /^[1-9][0-9]*$/
+    const PpriceRegex = /^[1-9][0-9]*$/
 
 
 
-    //     if (RpriceRegex.test(Pprice)) { } else {
-    //         document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Promotional Price error'
-    //         document.getElementById('Pprice').style.borderColor = 'red'
-    //         document.getElementById('Pprice').style.borderWidth = '1px'
-    //         event.preventDefault()
-    //     }
+    if (RpriceRegex.test(Pprice)) { } else {
+        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Promotional Price error'
+        document.getElementById('Pprice').style.borderColor = 'red'
+        document.getElementById('Pprice').style.borderWidth = '1px'
+        event.preventDefault()
+    }
 
-    //     const unitRegex = /^\d+$/;
+    const unitRegex = /^\d+$/;
 
-    //     if (unitRegex.test(unit)) { } else {
-    //         document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> unit  error'
-    //         document.getElementById('unit').style.borderColor = 'red'
-    //         document.getElementById('unit').style.borderWidth = '1px'
-    //         event.preventDefault()
-    //     }
+    if (unitRegex.test(unit)) { } else {
+        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> unit  error'
+        document.getElementById('unit').style.borderColor = 'red'
+        document.getElementById('unit').style.borderWidth = '1px'
+        event.preventDefault()
+    }
 
-    //     const descRegex = /^(?!\s*$).+/;
-
-
-    //     if (descRegex.test(description)) { } else {
-    //         document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Description  error'
-    //         document.getElementById('description').style.borderColor = 'red'
-    //         document.getElementById('description').style.borderWidth = '1px'
-    //         event.preventDefault()
-    //     }
+    const descRegex = /^(?!\s*$).+/;
 
 
+    if (descRegex.test(description)) { } else {
+        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Description  error'
+        document.getElementById('description').style.borderColor = 'red'
+        document.getElementById('description').style.borderWidth = '1px'
+        event.preventDefault()
+    }
 
-    // }
+
+
+}
 </script>
+
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
