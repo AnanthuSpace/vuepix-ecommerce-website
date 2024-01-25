@@ -61,10 +61,6 @@ const renderAdminHome = async (req,res)=>{
 }
 
 
-const renderAddProduct = async (req,res)=>{
-    res.render("admin/addProduct")
-} 
-
 const renderCategories = async (req,res)=>{
     res.render("admin/categories")
 } 
@@ -80,7 +76,6 @@ module.exports = {
     renderAdminLogin,
     adminHome,
     renderAdminHome,
-    renderAddProduct,
     renderCategories,
     renderProductList,
     adminLogout

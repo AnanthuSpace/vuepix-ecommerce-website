@@ -49,7 +49,13 @@ const generateOTP = () => {
 
 const renderHome = async (req, res) => {
     try {
-        res.render("user/userHome")
+        const user = req.session.user
+        if(user){
+            res.render("user/userHome",{user:user})
+        }
+        else{
+            res.render("user/userHome")
+        }
     } catch (error) {
         res.redirect("/")
     }
@@ -61,22 +67,23 @@ const renderHome = async (req, res) => {
 const userVerification = async (req, res) => {
 
     const { email, password } = req.body
-
+    
+    
     try {
         const user = await User.findOne({ email })
+        console.log(user);
 
         if (!user || !(await bcrypt.compare(password, user.password))) {
-            // res.render("user/userLogin", {error_msg:"Invalid User id and password"})
             res.render("user/userLogin", { login_err: "Invalid User id and password" });
             console.log("Invalid User id and password");
             return;
         }
 
-        console.log(user.username);
+        // console.log(user.username);
 
         req.session.user = user.username
         res.cookie("sessionId", req.sessionId, { httpOnly: true })
-        res.render("user/userHome")
+        res.redirect("/home")
 
     } catch (error) {
         console.log("Login Error : ", error);
@@ -89,12 +96,14 @@ const userVerification = async (req, res) => {
 const createUser = async (req, res) => {
 
     const { username, email, phone, password } = req.body
+    console.log(username, email, phone, password );
 
     try {
+        console.log("create user try");
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             console.log("Existed username");
-            return res.render("user/singUp")
+            return res.render("user/signup",{err:"Existed user"})
         }
 
         const hashPassword = await bcrypt.hash(password, 10)
@@ -143,7 +152,8 @@ const createUser = async (req, res) => {
             }
 
         })
-        res.redirect("/otp")
+        console.log(otp);
+        res.redirect("/verifyOtp")
     } catch (error) {
         console.error("Error Creating User : ", error);
     }
@@ -151,37 +161,32 @@ const createUser = async (req, res) => {
 
 
 // Otp Verification
-const otpVerification = async (req,res)=>{
-    res.render("user/verify")
-}
 
 
 // Handle OTP Submission
 
 const verifyOtp = async (req,res) => {
-
-    const { enteredOtp } = req.body
-    const {username, email, phone, password,otp} = req.session.tempUser
-
-    if( enteredOtp != otp){
-        console.log("Invalid OTP");
-        return res.redirect("/otp")
-    }
-    try {
-        const newUser = new User({
-            username,
-            email,
-            phone,
-            password
-        })
-
-        await newUser.save();
-        console.log("User Creeated Successfully");
-        delete req.session.tempUser
-        res.redirect("/")
-
+    try{
+        let otpfromAjax = req.body.otp
+        const {username, email, phone, password,otp} = req.session.tempUser
+        console.log(otp,otpfromAjax);
+        if(otpfromAjax == otp){
+            console.log("otp matched");
+            const newUser = new User({
+                username,
+                email,
+                phone,
+                password
+            })
+    
+            await newUser.save();
+            res.json({status : true})
+        }else{
+            console.log("otp invalid");
+            res.json({status : false})
+        }
     } catch (error) {
-        res.redirect("/otp")
+       console.log(error.message);
     }
 }
 
@@ -210,10 +215,12 @@ const resendOTP = async(req,res)=>{
             from: process.env.EMAIL_ID,
             to: email,
             subject: "OTP Verification",
-            text: `Your OTP for Verification is ${newotp}`
+            text: `Your Resend OTP for Verification is ${newotp}`
         }
 
         // Sending email
+
+        req.session.tempUser.otp = newotp
 
         transporter.sendMail(mailOption, (error,info)=>{
 
@@ -222,7 +229,7 @@ const resendOTP = async(req,res)=>{
             }else{
                 console.log('Email sent: ' + info.response);
             }
-            res.redirect("/otpVerification")
+            res.redirect("/verifyOtp")
         })
     } catch (error) {
         res.render("user/verify")
@@ -247,14 +254,24 @@ const logout = async (req, res) => {
     }
 }
 
+
+const getVerifyOtp = async (req, res)=>{
+    try {
+        res.render("user/verify")
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 module.exports = {
     renderLogin,
     renderSignUp,
     renderHome,
     createUser,
     userVerification,
-    otpVerification,
+    // otpVerification,
     logout,
     verifyOtp,
     resendOTP,
+    getVerifyOtp
 }

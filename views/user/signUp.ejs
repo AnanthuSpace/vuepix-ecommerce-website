@@ -11,6 +11,13 @@
                                     <div class="heading_s1">
                                         <h3 class="mb-30">Create an Account</h3>
                                     </div>
+
+                                    <% if (locals.err) { %>
+                                        <div class="alert alert-danger text-center" id="invalid">
+                                          <%= err %>
+                                        </div>
+                                        <% } %>
+
                                     <form method="post" action="/userCreate" onsubmit="return Check_all()">
                                         <div class="form-group">
                                             <input type="text" id="username" name="username" onkeyup="validatename()" placeholder="Username">
@@ -32,6 +39,7 @@
                                             <input id="confirmPassword" type="password" name="confirmPassword" onkeyup="conformPassword()" placeholder="Confirm password">
                                             <p class="text-danger" id="repass_err"></p>
                                         </div>
+                                        
                                         <div class="login_footer form-group">
                                             <div class="chek-form">
                                                 <div class="custome-checkbox">
@@ -89,6 +97,13 @@
             uname_err.style.display = "none";
             uname_err.innerHTML = "";
           }
+        }
+
+        const err = document.getElementById("invalid");
+        if (err) {
+        setTimeout(() => {
+            err.style.display = "none";
+            }, 3000);
         }
 
         // Phone number validation 
@@ -150,9 +165,9 @@
 
         function Check_all(e) {
           if ( validatename() || validateEmail() || validatemobile() || validate_password() || conformPassword()) {
-            return true;    
+            return false;    
         }else{
-              return false
+              return true
               e.preventDefault()
           }
         }

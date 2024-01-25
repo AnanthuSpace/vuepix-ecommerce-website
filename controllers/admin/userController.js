@@ -2,8 +2,7 @@ const { User } = require('../../models/userSchema')
 
 
 
-
-
+// View User
 const viewUser = (req, res) => {
     User.find({})
         .then((data) => {
@@ -12,11 +11,10 @@ const viewUser = (req, res) => {
         })
         .catch((error) => {
             console.error("Finding error:", error);
-            res.render("error", { errorMessage: "Error finding users" });
         });
 };
 
-
+// 
 const blockUser = (req,res)=>{
     User.findByIdAndUpdate(req.params.id, {isBlocked: 1},{new:true})
     .then((data)=>{
