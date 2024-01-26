@@ -150,17 +150,15 @@ const createUser = async (req, res) => {
             }else{
                 console.log('Email sent: ' + info.response);
             }
-
+            console.log(otp);
+            res.redirect("/verifyOtp")
         })
-        console.log(otp);
-        res.redirect("/verifyOtp")
+        
     } catch (error) {
         console.error("Error Creating User : ", error);
     }
 }
 
-
-// Otp Verification
 
 
 // Handle OTP Submission
@@ -181,6 +179,7 @@ const verifyOtp = async (req,res) => {
     
             await newUser.save();
             res.json({status : true})
+            delete req.session.tempUser
         }else{
             console.log("otp invalid");
             res.json({status : false})
@@ -255,11 +254,105 @@ const logout = async (req, res) => {
 }
 
 
+// Get otp verification page
+
 const getVerifyOtp = async (req, res)=>{
     try {
         res.render("user/verify")
     } catch (error) {
         console.log(error.message);
+    }
+}
+
+const renderForgotPass = async(req,res)=>{
+    try {
+        res.render("user/forgotPass")
+    } catch (error) {
+        console.log(error.message);
+    }
+} 
+
+
+
+
+const verifyForgotEmail = async (req,res)=>{
+    try {
+        const { email } = req.body
+        
+        const existed = await User.findOne({ email })
+        if(existed){
+            const otp = generateOTP()
+
+            req.session.tempUser = {
+                otp
+            }
+
+            const transporter = mailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: process.env.EMAIL_ID,
+                  pass: process.env.EMAIL_PASS
+                }
+              });
+    
+    
+            // Set Email options
+    
+            const mailOption = {
+                from: process.env.EMAIL_ID,
+                to: email,
+                subject: "OTP Verification",
+                text: `Your OTP for Verification is ${otp}`
+            }
+    
+            // Sending email
+    
+            transporter.sendMail(mailOption, (error,info)=>{
+    
+                if(error){
+                    console.error("Mailing error",error);
+                }else{
+                    console.log('Email sent: ' + info.response);
+                }
+                console.log(otp);
+                res.redirect("/forgotOtp")
+            })
+            
+        }else{
+            res.render("user/forgotPass", { message: "User with this email not exists" })
+        }
+    }catch{
+        console.log(error.message);
+    }
+}
+
+
+const getVerifyForgot = async (req,res)=>{
+    try {
+        res.render("user/forgotVerify")
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const verifyForgotOtp = async (req,res)=>{
+    try{
+
+    let otpfromAjax = req.body.otp
+        const {otp} = req.session.tempUser
+        // console.log(otp,otpfromAjax);
+        if(otpfromAjax == otp){
+            console.log("otp matched");
+    
+            res.json({status : true})
+            delete req.session.tempUser
+        }else{
+            console.log("otp invalid");
+            res.json({status : false})
+        }
+    } catch (error) {
+       console.log(error.message);
     }
 }
 
@@ -269,9 +362,12 @@ module.exports = {
     renderHome,
     createUser,
     userVerification,
-    // otpVerification,
+    renderForgotPass,
     logout,
     verifyOtp,
     resendOTP,
-    getVerifyOtp
+    getVerifyOtp,
+    getVerifyForgot,
+    verifyForgotEmail,
+    verifyForgotOtp
 }

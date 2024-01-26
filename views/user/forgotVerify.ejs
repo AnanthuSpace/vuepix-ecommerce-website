@@ -56,7 +56,7 @@
 
             // alert(otp)
             $.ajax({
-                url: "/verifyOtp",
+                url: "/forgotOtp",
                 method: "post",
                 data: {
                     otp
@@ -64,8 +64,8 @@
                 success: (response) => {
                     console.log(response);
                     if (response.status == true) {
-                        // alert("success here")
-                        window.location.href = "http://localhost:3000/";
+                        
+                        window.location.href = "http://localhost:3000/home";
                     } else if(response.status == false) {
                         errorMessageElement.innerHTML = 'Entered OTP is incorrect';
                         errorMessageElement.style.display = 'block';
