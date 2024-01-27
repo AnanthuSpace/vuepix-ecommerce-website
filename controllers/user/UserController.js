@@ -96,7 +96,7 @@ const userVerification = async (req, res) => {
 const createUser = async (req, res) => {
 
     const { username, email, phone, password } = req.body
-    console.log(username, email, phone, password );
+    // console.log(username, email, phone, password );
 
     try {
         console.log("create user try");
@@ -341,7 +341,7 @@ const verifyForgotOtp = async (req,res)=>{
 
     let otpfromAjax = req.body.otp
         const {otp} = req.session.tempUser
-        // console.log(otp,otpfromAjax);
+        
         if(otpfromAjax == otp){
             console.log("otp matched");
     
