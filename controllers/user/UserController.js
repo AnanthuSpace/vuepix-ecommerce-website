@@ -278,7 +278,7 @@ const renderForgotPass = async(req,res)=>{
 const verifyForgotEmail = async (req,res)=>{
     try {
         const { email } = req.body
-        
+        req.session.forgotemail = email
         const existed = await User.findOne({ email })
         if(existed){
             const otp = generateOTP()
@@ -356,6 +356,41 @@ const verifyForgotOtp = async (req,res)=>{
     }
 }
 
+
+const  renderRePass = async (req,res)=>{
+    try {
+        res.render("user/rePassword")
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const newPass = async (req,res)=>{
+    try{
+        const { newPass1, newPass2 } =req.body
+        const email = req.session.forgotemail
+        const passwordHash = await bcrypt.hash(newPass1, 10)
+        if (newPass1 === newPass2) {
+            await User.updateOne(
+                { email: email },
+                {
+                    $set: {
+                        password: passwordHash
+                    }
+                }
+            )
+                .then((data) => console.log(data))
+            res.redirect("/login")
+        }else {
+            console.log("Password not match");
+            res.render("rePassword", { message: "Password not matching" })
+        }
+    }catch(error){
+        console.log(error.message);
+    }
+}
+
+
 module.exports = {
     renderLogin,
     renderSignUp,
@@ -369,5 +404,7 @@ module.exports = {
     getVerifyOtp,
     getVerifyForgot,
     verifyForgotEmail,
-    verifyForgotOtp
+    verifyForgotOtp,
+    renderRePass,
+    newPass
 }

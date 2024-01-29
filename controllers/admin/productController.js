@@ -12,13 +12,6 @@ const renderAddProduct = async (req,res)=>{
 } 
 
 
-const productList = async(req,res)=>{
-    await Product.find({})
-    .then(data=>res.render("admin/productList",{data}))
-    .catch(err=>console.log("Product Listing error",err))
-}
-
-
 
 const addProduct = async (req,res) => {
     try {
@@ -55,8 +48,17 @@ const addProduct = async (req,res) => {
 }
 
 
+// Render product list
+
+const productList = async(req,res)=>{
+    await Product.find({})
+    .then(data=>res.render("admin/productList",{data}))
+    .catch(err=>console.log("Product Listing error",err))
+}
+
+
 module.exports={
     productList,
     addProduct,
-    renderAddProduct 
+    renderAddProduct,
 }

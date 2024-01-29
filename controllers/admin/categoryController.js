@@ -34,8 +34,29 @@ const addCategory = async (req, res) => {
 };
 
 
+const listCategory = async (req, res) => {
+    try {
+        const id = req.query.id;
+        await Category.updateOne({ _id: id }, { $set: { isListed: false } });
+        res.redirect("/admin/category");
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+const unListCategory = async (req, res) => {
+    try {
+        const id = req.query.id;
+        await Category.updateOne({ _id: id }, { $set: { isListed: true } });
+        res.redirect("/admin/category");
+    } catch (error) {
+        console.log(error.message);
+    }
+};
 
 module.exports ={
     renderCategory,
-    addCategory
+    addCategory,
+    listCategory,
+    unListCategory
 }
