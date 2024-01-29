@@ -2,7 +2,7 @@ const mongoose =  require('mongoose');
 
 
 let categoryModel = new mongoose.Schema({
-    category:{
+    name:{
         type:String,
         require:true,
     },

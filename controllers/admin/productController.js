@@ -1,13 +1,19 @@
 const Product = require("../../models/productSchema")
+const category = require("../../models/categorySchema")
 
 
 const renderAddProduct = async (req,res)=>{
-    res.render("admin/addProduct")
+    try {
+        const cat = await category.find({})
+        res.render("admin/addProduct",{cat:cat})
+    } catch (error) {
+        console.log(error.message);
+    }
 } 
 
 
 const productList = async(req,res)=>{
-    await product.find({})
+    await Product.find({})
     .then(data=>res.render("admin/productList",{data}))
     .catch(err=>console.log("Product Listing error",err))
 }

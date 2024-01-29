@@ -62,7 +62,7 @@ const renderAdminHome = async (req,res)=>{
 
 
 const renderCategories = async (req,res)=>{
-    res.render("admin/categories")
+    res.render("admin/category")
 } 
 
 

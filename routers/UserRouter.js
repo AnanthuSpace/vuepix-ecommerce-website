@@ -18,4 +18,5 @@ router.post('/forgotEmailVerify',controller.verifyForgotEmail)
 router.get('/forgotOtp', controller.getVerifyForgot)
 router.post('/forgotOtp', controller.verifyForgotOtp)
 
+
 module.exports = router

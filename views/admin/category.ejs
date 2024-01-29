@@ -2,7 +2,7 @@
 <html lang="en">
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
 <head>
     <meta charset="utf-8">
     <title>Evara Dashboard</title>
@@ -50,7 +50,7 @@
                     <div class="submenu">
                         <a href="productList">Product List</a>
                         <a href="addproduct">Add Products</a>
-                        <a href="category">Categories</a>
+                        <a href="categories">Categories</a>
                     </div>
                 </li>
             <!-- <ul class="menu-aside">
@@ -156,6 +156,7 @@
             <br>
         </nav>
     </aside>
+    
     <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-search">
@@ -165,10 +166,10 @@
                         <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
                     </div>
                     <datalist id="search_terms">
-                        <option value value="Products">
-                        <option value value="New orders">
-                        <option value value="Apple iphone">
-                        <option value value="Ahmed Hassan">
+                        <option value="Products">
+                        <option value="New orders">
+                        <option value="Apple iphone">
+                        <option value="Ahmed Hassan">
                     </datalist>
                 </form>
             </div>
@@ -211,202 +212,137 @@
                 </ul>
             </div>
         </header>
-        <main class="main-wrap">
-            <section class="content-main">
-    <form action="/admin/add-product" method="post" enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-9">
-                <div class="content-header">
-                    <h2 class="content-title">Add New Product</h2>
-                    <div>
-                        <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
-                        <button onclick="validate()" class="btn btn-md rounded font-sm hover-up" type="submit">Publich</button>
-                    </div>
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Categories </h2>
+                    <p>Add, edit or delete a category</p>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search Categories" class="form-control bg-white">
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h4>Basic</h4>
-                    </div>
-                    <div class="card-body">
-                        <form>
-                            <div class="mb-4">
-                                <label for="product_name" class="form-label">Product title</label>
-                                <input name="product_name" required="true"  type="text" placeholder="Type here" class="form-control" id="name" maxlength="20">
-                            </div>
-                            <div class="mb-4">
-                                <label class="form-label">Full description</label>
-                                <textarea name="description" placeholder="Type here" class="form-control" rows="4" id="description"></textarea>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Regular price</label>
-                                        <div class="row gx-2">
-                                            <input name="regular_price" required="true" required="true" placeholder="$" type="text" class="form-control" id="Rprice">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Sale price</label>
-                                        <input name="sale_price" required="true" placeholder="$" type="text" class="form-control" id="Pprice">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Units</label>
-                                        <input name="units" required="true" type="number" class="form-control" id="unit">
-                                    </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <form action="/admin/addcategory" method="post" >
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Name</label>
+                                    <input name="name" pattern="^[^\s]+$" type="text" placeholder="Type here" class="form-control" id="name" required="true" maxlength="40" />
                                 </div>
 
-                            </div>
-                        </form>
-                    </div>
-                </div> <!-- card end// -->
-            </div>
-            <div class="col-lg-3">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h4>Media</h4>
-                    </div>
-                    <div class="card-body">
-                        <small style="font-weight: bold;">Upload images</small>
-                        <div class="input-upload">
-                            <img src="/assets/imgs/theme/upload.svg" alt="">
-                            <input name="image" required="true" class="form-control" type="file" multiple>
-                            
+                                <div class="mb-4">
+                                    <label class="form-label">Description</label>
+                                    <textarea name="description" placeholder="Type here" class="form-control" required="true" id="description"></textarea>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button onclick="validate()" class="btn btn-primary" type="submit">Create category</button>
+                                </div>
+                                <p id="err-msg"></p>
+                            </form>
                         </div>
-                    </div>
-                </div> <!-- card end// -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h4>Organization</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row gx-2">
-                            <div class="col-sm-6 mb-3">
-                                <label class="form-label">Category</label>
-                                <select class="form-select border" id="category" style="width: 150px;" name="category">
-                                    <% for (let i=0; i < cat.length; i++) { %>
-                                        <option value="<%= cat[i].name %>">
-                                            <%= cat[i].name %>
-                                        </option>
+                        <div class="col-md-9">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Category</th>
+                                            <th>Description</th>
+                                            <th>Status</th>
+                                            <th>List/Unlist</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for(let i=0; i < cat.length; i++) { %>
+                                            <tr>
+                                                <td class="text-start"><%= i+1 %></td>
+                                                <td class="text-start"><%= cat[i].name %></td>
+                                                <td class="text-start"><%= cat[i].description %></td>
+                                                <td class="text-start">
+                                                    <% if (cat[i].isListed === true) { %>
+                                                        <span class="badge rounded-pill alert-success" style="width: 60px;">Listed</span>
+                                                    <% } else { %>
+                                                        <span class="badge rounded-pill alert-danger" style="width: 60px;">Unlisted</span>
+                                                    <% } %>
+                                                </td>                                        
+                                                <td class="text-start">
+                                                    <% if (cat[i].isListed === true) { %>
+                                                        <button class="btn btn-danger" style="width: 70px;">
+                                                            <a href="/admin/listCategory?id=<%= cat[i]._id %>" class="text-white">Unlist</a>
+                                                        </button>
+                                                    <% } else { %>
+                                                        <button class="btn btn-success" style="width: 70px;">
+                                                            <a href="/admin/unListCategory?id=<%= cat[i]._id %>" class="text-white">List</a>
+                                                        </button>
+                                                    <% } %>
+                                                </td>
+                                                <td class="text-start">
+                                                    <button class="btn btn-info">
+                                                        <a href="/admin/editCategory?id=<%= cat[i]._id %>" class="text-white">Edit</a>
+                                                    </button>
+                                                </td>
+                                            </tr>
                                         <% } %>
-                                </select>
+                                    </tbody>
+                                </table>
                             </div>
-                        </div> <!-- row.// -->
+                        </div> <!-- .col// -->
+                    </div> <!-- .row // -->
+                </div> <!-- card body .// -->
+            </div> <!-- card .// -->
+        </section> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                    document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
                     </div>
-                </div> <!-- card end// -->
-            </div>
-        </div>
-        <p id="err-msg"></p>
-    </form>
-    </section> <!-- content-main end// -->
-    <footer class="main-footer font-xs">
-        <div class="row pb-30 pt-15">
-            <div class="col-sm-6">
-                <script>
-                document.write(new Date().getFullYear())
-                </script> ©, Evara - HTML Ecommerce Template .
-            </div>
-            <div class="col-sm-6">
-                <div class="text-sm-end">
-                    All rights reserved
                 </div>
             </div>
-        </div>
-    </footer>
-</main>
-<script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
-<script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/vendors/select2.min.js"></script>
-<script src="/assets/js/vendors/perfect-scrollbar.js"></script>
-<script src="/assets/js/vendors/jquery.fullscreen.min.js"></script>
-<!-- Main Script -->
-<script src="/assets/js/main.js" type="text/javascript"></script>
+        </footer>
+    </main>
+    <script src="/asset/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/asset/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/asset/js/vendors/select2.min.js"></script>
+    <script src="/asset/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/asset/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/asset/js/main.js" type="text/javascript"></script>
 </body>
+
 <script>
-function validate() {
-    document.getElementById('err-msg').innerHTML = ''
-    let name = document.getElementById('name').value;
-    let Pprice = parseInt(document.getElementById('Pprice').value);
-    let Rprice = parseInt(document.getElementById('Rprice').value);
-    let unit = document.getElementById('unit').value;
-    let description = document.getElementById('description').value;
+    function validate(){
+        document.getElementById('err-msg').innerHTML = ''
+        let name = document.getElementById('name').value;
+        let description = document.getElementById('description').value;
+        alert(name)
+        alert(description)
 
-    if (Rprice < Pprice) {
-        document.getElementById('Rprice').style.borderColor = 'red'
-        document.getElementById('Rprice').style.borderWidth = '1px'
-        document.getElementById('Pprice').style.borderColor = 'red'
-        document.getElementById('Pprice').style.borderWidth = '1px'
-        event.preventDefault();
-    }else{
-        document.getElementById('Rprice').style.borderColor = 'gray'
-        document.getElementById('Rprice').style.borderWidth = '1px'
-        document.getElementById('Pprice').style.borderColor = 'gray'
-        document.getElementById('Pprice').style.borderWidth = '1px'
+        const nameRegex = /^[A-Za-z0-9]{1,50}$/;
+        if (nameRegex.test(name)) {
+        } else {
+            document.getElementById('name').style.borderColor = '#cc0000'
+            document.getElementById('name').style.borderWidth = '1px'
+            document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Name error'
+            event.preventDefault()
+        }
+        const descRegex = /^(?!\s*$).+/;
+        if (descRegex.test(description)) { } else {
+            document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Description  error'
+            document.getElementById('description').style.borderColor = '#cc0000'
+            document.getElementById('description').style.borderWidth = '1px'
+            event.preventDefault()
+        }
     }
-
-    const nameRegex = /^[A-Za-z0-9]{1,50}$/;
-
-    if (nameRegex.test(name)) {
-    } else {
-        document.getElementById('name').style.borderColor = '#cc0000'
-        document.getElementById('name').style.borderWidth = '1px'
-        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Name error'
-        event.preventDefault()
-    }
-
-    const RpriceRegex = /^[1-9][0-9]*$/
-
-
-    if (RpriceRegex.test(Rprice)) {
-       
-     } else {
-        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Regular Price error'
-        document.getElementById('Rprice').style.borderColor = 'red'
-        document.getElementById('Rprice').style.borderWidth = '1px'
-        event.preventDefault()
-    }
-
-    const PpriceRegex = /^[1-9][0-9]*$/
-
-
-
-    if (RpriceRegex.test(Pprice)) { } else {
-        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Promotional Price error'
-        document.getElementById('Pprice').style.borderColor = 'red'
-        document.getElementById('Pprice').style.borderWidth = '1px'
-        event.preventDefault()
-    }
-
-    const unitRegex = /^\d+$/;
-
-    if (unitRegex.test(unit)) { } else {
-        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> unit  error'
-        document.getElementById('unit').style.borderColor = 'red'
-        document.getElementById('unit').style.borderWidth = '1px'
-        event.preventDefault()
-    }
-
-    const descRegex = /^(?!\s*$).+/;
-
-
-    if (descRegex.test(description)) { } else {
-        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Description  error'
-        document.getElementById('description').style.borderColor = 'red'
-        document.getElementById('description').style.borderWidth = '1px'
-        event.preventDefault()
-    }
-
-
-
-}
 </script>
-
-
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
 </html>
