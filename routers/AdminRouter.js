@@ -32,6 +32,8 @@ router.get("/category", categoryController.renderCategory)
 router.post("/addcategory", categoryController.addCategory)
 router.get("/listcategory",categoryController.listCategory)
 router.get("/unlistcategory", categoryController.unListCategory)
+router.get("/editCategory", categoryController.renderEditCategory)
+router.post("/editCategory/:id", categoryController.editCategory)
 
 
 

@@ -55,11 +55,53 @@ const unListCategory = async (req, res) => {
 };
 
 
+const renderEditCategory = async(req,res)=>{
+    // const id = req.query.id
+    // await Category.find({_id:id})
+    // .then(category=>{
+    //     console.log(category);
+    //     res.render("admin/editCategory",{category})})
+    // .catch(error=>console.log(error.message))
+    try {
+        const id = req.query.id;
+        const category = await Category.findOne({ _id: id });
+        res.render("admin/editCategory", { category: category });
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const editCategory = async (req, res) => {
+    try {
+        console.log("working");
+        const id = req.params.id;
+        const { categoryName, description } = req.body;
+        const findCategory = await Category.findById(id);
+
+        if (findCategory) {
+            await Category.updateOne(
+                { _id: id },
+                {
+                    name: categoryName,
+                    description: description
+                }
+            );
+            res.redirect("/admin/category");
+        } else {
+            console.log("Category not found");
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+};
 
 
 module.exports ={
     renderCategory,
     addCategory,
     listCategory,
-    unListCategory
+    unListCategory,
+    renderEditCategory,
+    editCategory
 }
