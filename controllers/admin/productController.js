@@ -33,7 +33,9 @@ const addProduct = async (req,res) => {
                 discription: products.description,
                 regularPrice: products.regular_price,
                 salesPrice: products.sale_price,
-                unit: products.units
+                unit: products.units,
+                category: products.category,
+                images: images
             })
 
             await newProduct.save()
