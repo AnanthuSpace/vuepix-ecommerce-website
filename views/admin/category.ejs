@@ -18,17 +18,19 @@
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Name</label>
                                     <input name="name" pattern="^[^\s]+$" type="text" placeholder="Type here" class="form-control" id="name" required="true" maxlength="40" />
+                                    <p id="name-err-msg" class="text-danger"></p>
                                 </div>
 
                                 <div class="mb-4">
                                     <label class="form-label">Description</label>
                                     <textarea name="description" placeholder="Type here" class="form-control" required="true" id="description"></textarea>
+                                    <p id="err-msg" class="text-danger"></p>
                                 </div>
                                 
                                 <div class="d-grid">
                                     <button onclick="validate()" class="btn btn-primary" type="submit">Create category</button>
                                 </div>
-                                <p id="err-msg"></p>
+                                
                             </form>
                         </div>
                         <div class="col-md-9">
@@ -88,17 +90,17 @@
 <script>
     function validate(){
         document.getElementById('err-msg').innerHTML = ''
+        document.getElementById('name-err-msg').innerHTML = ''
         let name = document.getElementById('name').value;
         let description = document.getElementById('description').value;
-        alert(name)
-        alert(description)
+        
 
         const nameRegex = /^[A-Za-z0-9]{1,50}$/;
         if (nameRegex.test(name)) {
         } else {
             document.getElementById('name').style.borderColor = '#cc0000'
             document.getElementById('name').style.borderWidth = '1px'
-            document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Name error'
+            document.getElementById('name-err-msg').innerHTML = document.getElementById('name-err-msg').innerHTML + '<br> Name error'
             event.preventDefault()
         }
         const descRegex = /^(?!\s*$).+/;

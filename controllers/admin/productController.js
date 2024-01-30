@@ -1,5 +1,6 @@
 const Product = require("../../models/productSchema")
 const category = require("../../models/categorySchema")
+const cropImg = require("../../config/crop")
 
 
 const renderAddProduct = async (req,res)=>{
@@ -17,8 +18,8 @@ const addProduct = async (req,res) => {
     try {
     const products =req.body
     console.log(req.body);
+    // await cropImg.crop(req);
     const existingProduct = await Product.findOne({ name: products.product_name})
-
     if(!existingProduct){
         const images = []
         if (req.files && req.files.length > 0) {

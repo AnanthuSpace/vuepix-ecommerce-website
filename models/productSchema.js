@@ -29,6 +29,10 @@ let productSchema = new mongoose.Schema({
     images:{
         type:Array,
         require:true 
+    },
+    isBlocked : {
+        type : Boolean,
+        default : false,
     }
 });
 
