@@ -1,5 +1,6 @@
 const mailer = require("nodemailer")
 const { User } = require("../../models/userSchema")
+const Product = require("../../models/productSchema")
 const bcrypt = require("bcrypt")
 
 
@@ -50,11 +51,13 @@ const generateOTP = () => {
 const renderHome = async (req, res) => {
     try {
         const user = req.session.user
-        if(user){
-            res.render("user/userHome",{user:user})
+        const products = await Product.find({})
+        
+        if(!user){
+            res.render("user/userLogin")
         }
         else{
-            res.render("user/userHome")
+            res.render("user/userHome",{user:user,products: products})
         }
     } catch (error) {
         res.redirect("/")
