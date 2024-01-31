@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const controller = require("../controllers/user/UserController")
+const productController = require("../controllers/user/productController")
 
 
 router.get("/", controller.renderLogin)
@@ -20,5 +21,12 @@ router.post('/forgotOtp', controller.verifyForgotOtp)
 router.get('/repassword', controller.renderRePass)
 router.post("/newpass", controller.newPass)
 router.get("/pageNotFound", controller.pageNotFound)
+
+
+
+// Products actions
+router.get("/productDetails", productController.getProductDetails)
+
+
 
 module.exports = router

@@ -1,0 +1,361 @@
+<%- include("../partials/userHeader") %>
+
+
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="product-detail accordion-detail">
+                        <div class="row mb-50">
+                            <div class="col-md-4 col-sm-12 col-xs-12">
+                                <div class="detail-gallery">
+                                    <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                                    <!-- MAIN SLIDES -->
+                                    <div class="product-image-slider">
+                                        <% for (let i=0; i < data.images.length; i++) { %>
+                                            <figure class="border-radius-10">
+                                                <img src="/uploads/products/<%= data.images[i] %>" alt="product image">
+                                            </figure>
+                                            <% } %>
+
+                                    </div>
+                                    <!-- THUMBNAILS -->
+                                    <div class="slider-nav-thumbnails pl-15 pr-15">
+                                        <% for (let i=0; i < data.images.length; i++) { %>
+                                            <div><img src="/uploads/products/<%= data.images[i] %>" alt="product image">
+                                            </div>
+                                            <% } %>
+                                    </div>
+                                </div>
+                                <!-- End Gallery -->
+                            </div>
+                            <div class="col-md-8 col-sm-12 col-xs-12 align-items-center">
+                                <div class="detail-info">
+                                    <h2 class="title-detail">
+                                        <%= data.name %>
+                                    </h2>
+                                    <div class="product-detail-rating">
+                                        <div class="pro-details-brand">
+                                            <!-- <span> Brands: <a href="shop-grid-right.html"></a></span> -->
+                                        </div>
+                                    </div>
+                                    <div class="clearfix product-price-cover">
+                                        <div class="product-price primary-color float-left">
+                                            <ins><span class="text-brand">₹<%= data.salesPrice.toLocaleString('en-IN')
+                                                        %>
+                                                </span></ins>
+                                            <ins><span class="old-price font-md ml-15">₹<%=
+                                                        data.regularPrice.toLocaleString('en-IN') %></span></ins>
+                                            <span class="save-price  font-md color3 ml-15">25% Off</span>
+                                        </div>
+                                    </div>
+                                    <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+                                    <div class="short-desc mb-30">
+                                        <p>
+                                            <%= data.description %>
+                                        </p>
+                                    </div>
+                                    <div class="product_sort_info font-xs mb-30">
+                                        <ul>
+                                            <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year Manufacturer
+                                                Warranty</li>
+                                            <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> 30 Day Return Policy
+                                            </li>
+                                            <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery available</li>
+                                        </ul>
+                                    </div>
+                                    <!-- <div class="attr-detail attr-color mb-15">
+                                        <strong class="mr-10">Color</strong>
+                                        <ul class="list-filter color-filter">
+                                            <li><a href="#" data-color="Red"><span class="product-color-red"></span></a>
+                                            </li>
+                                            <li><a href="#" data-color="Yellow"><span
+                                                        class="product-color-yellow"></span></a></li>
+                                            <li class="active"><a href="#" data-color="White"><span
+                                                        class="product-color-white"></span></a></li>
+                                            <li><a href="#" data-color="Orange"><span
+                                                        class="product-color-orange"></span></a></li>
+                                            <li><a href="#" data-color="Cyan"><span
+                                                        class="product-color-cyan"></span></a></li>
+                                            <li><a href="#" data-color="Green"><span
+                                                        class="product-color-green"></span></a></li>
+                                            <li><a href="#" data-color="Purple"><span
+                                                        class="product-color-purple"></span></a></li>
+                                        </ul>
+                                    </div> -->
+                                    <!-- <div class="attr-detail attr-size">
+                                        <strong class="mr-10">Size</strong>
+                                        <ul class="list-filter size-filter font-small">
+                                            <li><a href="#">S</a></li>
+                                            <li class="active"><a href="#">M</a></li>
+                                            <li><a href="#">L</a></li>
+                                            <li><a href="#">XL</a></li>
+                                            <li><a href="#">XXL</a></li>
+                                        </ul>
+                                    </div> -->
+                                    <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                    <div class="detail-extralink">
+                                        <div class="detail-qty border radius">
+                                            <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                            <span class="qty-val">1</span>
+                                            <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                        </div>
+                                        <div class="product-extra-link2">
+                                            <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                            <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                            <a aria-label="Compare" class="action-btn hover-up"
+                                                href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                        </div>
+                                    </div>
+                                    <ul class="product-meta font-xs color-grey mt-50">
+                                        <li class="mb-5">ID: <%= data.id %>
+                                        </li>
+                                        <li class="mb-5">Tags: Laptop, <%= data.category %>
+                                        </li>
+                                        <li>Availability:<span class="in-stock text-success ml-5">
+                                                <%= data.unit %> Items In Stock
+                                            </span></li>
+                                    </ul>
+                                </div>
+                                <!-- Detail Info -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-10 m-auto entry-main-content">
+                                <h2 class="section-title style-1 mb-30">Description</h2>
+                                <div class="description mb-50">
+                                    <p>Geometrical shapes were key in the 1990s when glasses constructions became more
+                                        daring and expressive. The Hexagonal frames are straight from the 90s and back
+                                        in our hearts. Classic but never dull, retro but never out of touch. The RB3548N
+                                        Hexagonal Flat Lens sunglasses are the perfect combination of a circle and a
+                                        square shape. They feature thin coined profiles with super thin temples.
+                                        Available in a variety of frame and lens combinations from silver to gunmetal
+                                        frames and solid, gradient, or polarized lenses. Ray-Ban sunglasses sold by
+                                        authorized sellers, like Amazon, are eligible for all manufacturer warranties
+                                        and guarantees. Click on the Ray-Ban link above the product title to shop the
+                                        entire Ray-Ban sunglass and eyeglass assortment.</p>
+                                    <br>
+                                    <p>100% UV PROTECTION: To protect your eyes from harmful UV rays, these sunglasses
+                                        include lenses that are coated with 100% UV protection.
+                                        MULTIPLE FRAME AND LENS COLOR: Choose from multiple frames colors—including
+                                        gold, copper, and gunmetal—and lenses—including non-polarized, mirrored and
+                                        gradient options. Made from high-quality glass, Ray-Ban lenses are prescription
+                                        ready.
+                                    </p>
+                                    <ul class="product-more-infor mt-30">
+                                        <li><span>Type Of Packing</span> Bottle</li>
+                                        <li><span>Color</span> Green, Pink, Powder Blue, Purple</li>
+                                        <li><span>Quantity Per Case</span> 100ml</li>
+                                        <li><span>Ethyl Alcohol</span> 70%</li>
+                                        <li><span>Piece In One</span> Carton</li>
+                                    </ul>
+                                    <hr class="wp-block-separator is-style-dots">
+                                    <p>REDUCE EYE STRAIN: Ray-Ban Wayfarer sunglasses feature precision-cut, scratch-resistant glass lenses that improve visual clarity, and help reduce eye strain while outdoors.
+                                        CASE & LENS CLOTH INCLUDED: Each pair of Ray-Ban sunglasses come with a case and lens cloth to clean and protect them from scratches and damage.
+                                        MADE IN ITALY
+                                        VISIT RAY-BAN BRAND SHOP: Click on the Ray-Ban logo above to view the entire Ray-Ban brand assortment.</p>
+                                    
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="row mt-60">
+                            <div class="col-12">
+                                <h3 class="section-title style-1 mb-30">Related products</h3>
+                            </div>
+                            <div class="col-12">
+                                <div class="row related-products">
+                                    <d<div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
+                                        <div class="row product-grid-4">
+                                            <% for (let i=0; i < 4; i++) { %>
+                
+                                                <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                                                    <div class="product-cart-wrap mb-30">
+                                                        <div class="product-img-action-wrap">
+                                                            <div class="product-img product-img-zoom">
+                                                                <a href="/productDetails?id=<%=products[i].id %>">
+                                                                    <img class="default-img"src="/uploads/products/<%=products[i].images[0]%>" alt="">
+                                                                </a>
+                                                            </div>
+                                                            <div class="product-action-1">
+                                                               
+                                                                <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                                    href="products-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                               
+                                                            </div>
+                                                            <div class="product-badges product-badges-position product-badges-mrg">
+                                                                <span class="hot">Related</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-content-wrap">
+                                                            
+                                                            <h2><a href="products-product-right.html"><%-products[i].name%></a></h2>
+                                                            <!-- <div class="rating-result" title="90%">
+                                                                <span>
+                                                                    <span>90%</span>
+                                                                </span>
+                                                            </div> -->
+                                                            <div class="product-price">
+                                                                <span>₹<%-products[i].salesPrice.toLocaleString('en-IN')%> </span>
+                                                                <span class="old-price">₹<%-products[i].regularPrice.toLocaleString('en-IN')%></span>
+                                                            </div>
+                                                            <div class="product-action-1 show">
+                                                                <a aria-label="Add To Cart" class="action-btn hover-up"
+                                                                    href="products-cart.html"><i
+                                                                        class="fi-rs-shopping-bag-add"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+    <footer class="main">
+        <hr>
+        <section class="section-padding footer-mid">
+            <div class="container pt-15 pb-20">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="widget-about font-md mb-md-5 mb-lg-0">
+                            <div class="logo logo-width-1 wow fadeIn animated">
+                                <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
+                            </div>
+                            <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
+                            <p class="wow fadeIn animated">
+                                <strong>Address: </strong>562 Wellington Road, Street 32, San Francisco
+                            </p>
+                            <p class="wow fadeIn animated">
+                                <strong>Phone: </strong>+01 2222 365 /(+91) 01 2345 6789
+                            </p>
+                            <p class="wow fadeIn animated">
+                                <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
+                            </p>
+                            <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">Follow Us</h5>
+                            <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                                <a href="#"><img src="assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-3">
+                        <h5 class="widget-title wow fadeIn animated">About</h5>
+                        <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Delivery Information</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms &amp; Conditions</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Support Center</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2  col-md-3">
+                        <h5 class="widget-title wow fadeIn animated">My Account</h5>
+                        <ul class="footer-list wow fadeIn animated">
+                            <li><a href="#">Sign In</a></li>
+                            <li><a href="#">View Cart</a></li>
+                            <li><a href="#">My Wishlist</a></li>
+                            <li><a href="#">Track My Order</a></li>
+                            <li><a href="#">Help</a></li>
+                            <li><a href="#">Order</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <h5 class="widget-title wow fadeIn animated">Install App</h5>
+                        <div class="row">
+                            <div class="col-md-8 col-lg-12">
+                                <p class="wow fadeIn animated">From App Store or Google Play</p>
+                                <div class="download-app wow fadeIn animated">
+                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active"
+                                            src="assets/imgs/theme/app-store.jpg" alt=""></a>
+                                    <a href="#" class="hover-up"><img src="assets/imgs/theme/google-play.jpg"
+                                            alt=""></a>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
+                                <p class="mb-20 wow fadeIn animated">Secured Payment Gateways</p>
+                                <img class="wow fadeIn animated" src="assets/imgs/theme/payment-method.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container pb-20 wow fadeIn animated">
+            <div class="row">
+                <div class="col-12 mb-20">
+                    <div class="footer-bottom"></div>
+                </div>
+                <div class="col-lg-6">
+                    <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong
+                            class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
+                </div>
+                <div class="col-lg-6">
+                    <p class="text-lg-end text-start font-sm text-muted mb-0">
+                        Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights
+                        reserved
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <h5 class="mb-5">Now Loading</h5>
+                    <div class="loader">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Vendor JS-->
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/plugins/slick.js"></script>
+    <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="assets/js/plugins/wow.js"></script>
+    <script src="assets/js/plugins/jquery-ui.js"></script>
+    <script src="assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="assets/js/plugins/magnific-popup.js"></script>
+    <script src="assets/js/plugins/select2.min.js"></script>
+    <script src="assets/js/plugins/waypoints.js"></script>
+    <script src="assets/js/plugins/counterup.js"></script>
+    <script src="assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="assets/js/plugins/images-loaded.js"></script>
+    <script src="assets/js/plugins/isotope.js"></script>
+    <script src="assets/js/plugins/scrollup.js"></script>
+    <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="assets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- Template  JS -->
+    <script src="assets/js/maind134.js?v=3.4"></script>
+    <script src="assets/js/shopd134.js?v=3.4"></script>
+    </body>
+
+
+    <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-product-full.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:46 GMT -->
+
+    </html>

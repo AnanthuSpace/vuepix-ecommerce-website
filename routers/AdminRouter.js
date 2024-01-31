@@ -27,6 +27,8 @@ router.post("/add-product",productMulter.array('image',4), productController.add
 router.get("/productList", productController.productList)
 router.get("/editProduct", productController.showEdit)
 router.post("/editProduct/:id", productMulter.array('image',4),productController.editProduct)
+router.get('/blockProduct' , productController.blockProduct)
+router.get('/unBlockProduct' , productController.unblockProduct)
 
 
 

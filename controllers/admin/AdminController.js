@@ -40,29 +40,23 @@ const adminHome = async (req, res) => {
 
 // Admin Logout
 
-const adminLogout = async(req,res)=>{
+const adminLogout = async (req, res) => {
     try {
-        req.session.destroy((err) => {
-          if (err) {
-            console.log("Logout error");
-            res.redirect("/admin/getHome");
-          }
-          console.log("Logged out successfully");
-          res.redirect("/admin/adminLogin");
-        });
-      } catch (error) {
-        console.log("Logout Error");
-      }
+        req.session.admin = null
+        res.redirect("/admin")
+    } catch (error) {
+        console.log(error.message);
+    }
 }
 
 
-const renderAdminHome = async (req,res)=>{
+const renderAdminHome = async (req, res) => {
     res.render("admin/adminHome")
 }
 
 
 
-const renderProductList = async (req,res)=>{
+const renderProductList = async (req, res) => {
     res.render("admin/productList")
 }
 
