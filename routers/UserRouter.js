@@ -19,5 +19,6 @@ router.get('/forgotOtp', controller.getVerifyForgot)
 router.post('/forgotOtp', controller.verifyForgotOtp)
 router.get('/repassword', controller.renderRePass)
 router.post("/newpass", controller.newPass)
+router.get("/pageNotFound", controller.pageNotFound)
 
 module.exports = router

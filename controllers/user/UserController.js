@@ -5,6 +5,16 @@ const bcrypt = require("bcrypt")
 
 
 
+const pageNotFound = async (req, res) => {
+    try {
+        res.render("user/page-404")
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
 // Login page rendering
 
 const renderLogin = async (req, res) => {
@@ -395,6 +405,7 @@ const newPass = async (req,res)=>{
 
 
 module.exports = {
+    pageNotFound,
     renderLogin,
     renderSignUp,
     renderHome,

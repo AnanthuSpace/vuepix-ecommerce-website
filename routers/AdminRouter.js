@@ -25,6 +25,8 @@ router.get("/unblockuser/:id", userViewController.unBlockUser)
 router.get("/addproduct", productController.renderAddProduct)
 router.post("/add-product",productMulter.array('image',4), productController.addProduct)
 router.get("/productList", productController.productList)
+router.get("/editProduct", productController.showEdit)
+router.post("/editProduct/:id", productMulter.array('image',4),productController.editProduct)
 
 
 
