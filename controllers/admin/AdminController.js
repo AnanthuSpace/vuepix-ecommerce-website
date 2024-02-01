@@ -1,3 +1,6 @@
+const {Admin} = require("../../models/adminSchema")
+const bcrypt = require("bcrypt");
+
 
 
 // Render admin login page
@@ -20,22 +23,25 @@ const renderAdminLogin = async (req, res) => {
 
 const adminHome = async (req, res) => {
     const { email, password } = req.body;
-
+  
     try {
-        if (email === "admin@gmail.com" && password === "123") {
-            req.session.admin = email;
-            res.cookie("sessionId", req.sessionID, { httpOnly: true });
-            res.redirect("/admin/home");
-            return;
-        } else {
-            console.log("Invalid User id and password");
-            res.render("admin/adminLogin", { login_err: "Invalid User id and password" });
-        }
+    
+        const admin = await Admin.findOne({ email });
+        console.log(admin);
+      if (!Admin || !(await bcrypt.compare(password, admin.password))) {
+        req.session.admin = admin.email;
+        res.cookie("sessionId", req.sessionID, { httpOnly: true });
+        res.redirect("/admin/home");
+        return;
+      }else{
+        res.render("admin/adminLogin", { login_err: "Invalid User id and password" });
+      }
     } catch (error) {
-        console.error("Login error:", error);
-        res.render("admin/adminLogin");
+      console.error("Login error:", error);
+      res.render("admin/adminLogin");
     }
 };
+
 
 
 // Admin Logout

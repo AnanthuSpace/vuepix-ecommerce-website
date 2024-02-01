@@ -8,6 +8,8 @@ const categoryController = require("../controllers/admin/categoryController")
 
 
 
+
+
 router.get("/", controller.renderAdminLogin)
 router.get("/home", controller.renderAdminHome)
 router.post("/getHome", controller.adminHome)

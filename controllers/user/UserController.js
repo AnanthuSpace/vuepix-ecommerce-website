@@ -61,7 +61,7 @@ const generateOTP = () => {
 const renderHome = async (req, res) => {
     try {
         const user = req.session.user
-        const products = await Product.find({})
+        const products = await Product.find({isBlocked:false})
         
         if(!user){
             res.render("user/userLogin")
@@ -79,29 +79,41 @@ const renderHome = async (req, res) => {
 
 const userVerification = async (req, res) => {
 
-    const { email, password } = req.body
-    
-    
-    try {
-        const user = await User.findOne({ email })
-        console.log(user);
 
-        if (!user || !(await bcrypt.compare(password, user.password))) {
-            res.render("user/userLogin", { login_err: "Invalid User id and password" });
-            console.log("Invalid User id and password");
-            return;
+    try {
+        const { email, password } = req.body
+        const findUser = await User.findOne({ email })
+
+        console.log("working");
+
+        if (findUser) {
+            const notBlocked = findUser.isBlocked === false;
+
+            if (notBlocked) {
+                const passwordMatch = await bcrypt.compare(password, findUser.password)
+                if (passwordMatch) {
+                    req.session.user = findUser.email
+                    console.log("Logged in");
+                    res.redirect("/home")
+                } else {
+                    console.log("Password is not matching");
+                    res.render("user/userLogin", { login_err: "Invalid User id and password" });
+                }
+            } else {
+                console.log("User is blocked by admin");
+                res.render("user/userLogin", { login_err: "User is blocked by admin" })
+            }
+        } else {
+            console.log("User is not found");
+            res.render("user/userLogin", { login_err: "User is not found" })
         }
 
-        // console.log(user.username);
-
-        req.session.user = user.username
-        res.cookie("sessionId", req.sessionId, { httpOnly: true })
-        res.redirect("/home")
-
     } catch (error) {
-        console.log("Login Error : ", error);
+        console.log(error.message);
+        res.render("user/userLogin", { login_err: "Login failed" })
     }
 }
+
 
 
 // Otp Generation and User validation

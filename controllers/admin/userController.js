@@ -16,7 +16,7 @@ const viewUser = (req, res) => {
 
 // 
 const blockUser = (req,res)=>{
-    User.findByIdAndUpdate(req.params.id, {isBlocked: 1},{new:true})
+    User.findByIdAndUpdate(req.params.id, {isBlocked: true},{new:true})
     .then((data)=>{
         console.log(data);
         res.redirect("/admin/userManagement");
@@ -24,7 +24,7 @@ const blockUser = (req,res)=>{
 }
 
 const unBlockUser = (req,res)=>{
-    User.findByIdAndUpdate(req.params.id, {isBlocked: 0},{new:true})
+    User.findByIdAndUpdate(req.params.id, {isBlocked: false},{new:true})
     .then((data)=>{
         console.log(data);
         res.redirect("/admin/userManagement");

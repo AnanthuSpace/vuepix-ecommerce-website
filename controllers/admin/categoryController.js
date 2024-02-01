@@ -56,12 +56,7 @@ const unListCategory = async (req, res) => {
 
 
 const renderEditCategory = async(req,res)=>{
-    // const id = req.query.id
-    // await Category.find({_id:id})
-    // .then(category=>{
-    //     console.log(category);
-    //     res.render("admin/editCategory",{category})})
-    // .catch(error=>console.log(error.message))
+
     try {
         const id = req.query.id;
         const category = await Category.findOne({ _id: id });
