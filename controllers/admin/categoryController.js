@@ -1,23 +1,23 @@
 const Category = require('../../models/categorySchema')
 
 
-const renderCategory = async(req,res)=>{
+const renderCategory = async (req, res) => {
     await Category.find({})
-    .then(data=>res.render("admin/category", {cat : data}))
-    .catch(error=>console.log(error.message))
+        .then(data => res.render("admin/category", { cat: data }))
+        .catch(error => console.log(error.message))
 }
 
 
 const addCategory = async (req, res) => {
     try {
-        const { name, description }=req.body;
+        const { name, description } = req.body;
         console.log(req.body.name);
         const categoryExists = await Category.findOne({ name });
 
         if (!categoryExists) {
-            const newCategory=new Category({
-                 name:name,
-               description:description
+            const newCategory = new Category({
+                name: name,
+                description: description
             });
 
             await newCategory.save();
@@ -55,7 +55,7 @@ const unListCategory = async (req, res) => {
 };
 
 
-const renderEditCategory = async(req,res)=>{
+const renderEditCategory = async (req, res) => {
 
     try {
         const id = req.query.id;
@@ -92,7 +92,7 @@ const editCategory = async (req, res) => {
 };
 
 
-module.exports ={
+module.exports = {
     renderCategory,
     addCategory,
     listCategory,

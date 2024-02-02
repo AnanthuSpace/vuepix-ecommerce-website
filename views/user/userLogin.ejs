@@ -14,17 +14,19 @@
                                     </div>
                                     <form method="post" action="/userVerification">
                                         <div class="form-group">
-                                            
+
                                             <% if (locals.login_err) { %>
                                                 <div class="alert alert-danger text-center" id="err">
-                                                  <%= login_err %>
+                                                    <%= login_err %>
                                                 </div>
                                                 <% } %>
 
-                                            <input type="text" required="" name="email" id="email" placeholder="Your Email">
+                                                    <input type="text" required="" name="email" id="email"
+                                                        placeholder="Your Email">
                                         </div>
                                         <div class="form-group">
-                                            <input required="" type="password" name="password" id="password" placeholder="Password">
+                                            <input required="" type="password" name="password" id="password"
+                                                placeholder="Password">
                                         </div>
                                         <div class="login_footer form-group">
                                             <div class="chek-form">
@@ -41,8 +43,8 @@
                                             <button type="submit" class="btn btn-fill-out btn-block hover-up"
                                                 name="login">Log in</button>
                                         </div>
-                                        <div class="text-muted text-center">Don't have an account? <a
-                                                href="signup">Sign up now</a></div>
+                                        <div class="text-muted text-center">Don't have an account? <a href="signup">Sign
+                                                up now</a></div>
                                     </form>
                                 </div>
                             </div>
@@ -56,11 +58,11 @@
     <script>
         const login_err = document.getElementById("err");
         if (login_err) {
-        setTimeout(() => {
-            login_err.style.display = "none";
+            setTimeout(() => {
+                login_err.style.display = "none";
             }, 3000);
         }
     </script>
 
-    
+
     <%- include("../partials/userFooter") %>

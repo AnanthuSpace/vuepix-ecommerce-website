@@ -14,55 +14,64 @@
 
                                     <% if (locals.err) { %>
                                         <div class="alert alert-danger text-center" id="invalid">
-                                          <%= err %>
+                                            <%= err %>
                                         </div>
                                         <% } %>
 
-                                    <form method="post" action="/userCreate" onsubmit="return Check_all()">
-                                        <div class="form-group">
-                                            <input type="text" id="username" name="username" onkeyup="validatename()" placeholder="Username">
-                                            <p class="text-danger" id="uname_err"></p>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" id="email" name="email" onkeyup="validateEmail()" placeholder="Email">
-                                            <p class="text-danger" id="email_err"></p>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" id="phone" name="phone" onkeyup="validatemobile()" placeholder="Phone">
-                                            <p class="text-danger" id="phone_err"></p>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="password" type="password" name="password" onkeyup="validate_password()" placeholder="Password">
-                                            <p class="text-danger" id="pass_err"></p>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="confirmPassword" type="password" name="confirmPassword" onkeyup="conformPassword()" placeholder="Confirm password">
-                                            <p class="text-danger" id="repass_err"></p>
-                                        </div>
-                                        
-                                        <div class="login_footer form-group">
-                                            <div class="chek-form">
-                                                <div class="custome-checkbox">
-                                                    <input class="form-check-input" type="checkbox" name="checkbox"
-                                                        id="exampleCheckbox12" value="">
-                                                    <label class="form-check-label" for="exampleCheckbox12"><span>I
-                                                            agree to terms &amp; Policy.</span></label>
+                                            <!-- <form method="post" action="/userCreate" onsubmit="return Check_all()"> -->
+                                            <form method="post" action="/userCreate" onsubmit="return Check_all(event)">
+                                                <div class="form-group">
+                                                    <input type="text" id="username" name="username"
+                                                        onkeyup="validatename()" placeholder="Username">
+                                                    <p class="text-danger" id="uname_err"></p>
                                                 </div>
+                                                <div class="form-group">
+                                                    <input type="text" id="email" name="email" onkeyup="validateEmail()"
+                                                        placeholder="Email">
+                                                    <p class="text-danger" id="email_err"></p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" id="phone" name="phone"
+                                                        onkeyup="validatemobile()" placeholder="Phone">
+                                                    <p class="text-danger" id="phone_err"></p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input id="password" type="password" name="password"
+                                                        onkeyup="validate_password()" placeholder="Password">
+                                                    <p class="text-danger" id="pass_err"></p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input id="confirmPassword" type="password" name="confirmPassword"
+                                                        onkeyup="conformPassword()" placeholder="Confirm password">
+                                                    <p class="text-danger" id="repass_err"></p>
+                                                </div>
+
+                                                <div class="login_footer form-group">
+                                                    <div class="chek-form">
+                                                        <div class="custome-checkbox">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="checkbox" id="exampleCheckbox12" value="">
+                                                            <label class="form-check-label"
+                                                                for="exampleCheckbox12"><span>I
+                                                                    agree to terms &amp; Policy.</span></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-fill-out btn-block hover-up"
+                                                        name="login">Submit &amp; Register</button>
+                                                </div>
+                                            </form>
+                                            <div class="divider-text-center mt-15 mb-15">
+                                                <span> or</span>
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-fill-out btn-block hover-up"
-                                                name="login">Submit &amp; Register</button>
-                                        </div>
-                                    </form>
-                                    <div class="divider-text-center mt-15 mb-15">
-                                        <span> or</span>
-                                    </div>
-                                    <ul class="btn-login list_none text-center mb-15">
-                                        <li><a href="#" class="btn btn-google hover-up">Login With Google</a></li>
-                                    </ul>
-                                    <div class="text-muted text-center">Already have an account? <a href="/">Sign in
-                                            now</a></div>
+                                            <ul class="btn-login list_none text-center mb-15">
+                                                <li><a href="#" class="btn btn-google hover-up">Login With Google</a>
+                                                </li>
+                                            </ul>
+                                            <div class="text-muted text-center">Already have an account? <a
+                                                    href="/">Sign in
+                                                    now</a></div>
                                 </div>
                             </div>
                         </div>
@@ -89,87 +98,94 @@
 
         // User name field validation
         function validatename() {
-          const name_value = username.value;
-          if (name_value.trim() === "") {
-            uname_err.innerHTML = "Please Enter a valid Name.";
-            uname_err.style.display = "block";
-          } else {
-            uname_err.style.display = "none";
-            uname_err.innerHTML = "";
-          }
+            const name_value = username.value;
+            if (name_value.trim() === "") {
+                uname_err.innerHTML = "Please Enter a valid Name.";
+                uname_err.style.display = "block";
+                return false;
+            } else {
+                uname_err.style.display = "none";
+                uname_err.innerHTML = "";
+                return true;
+            }
         }
 
         const err = document.getElementById("invalid");
         if (err) {
-        setTimeout(() => {
-            err.style.display = "none";
+            setTimeout(() => {
+                err.style.display = "none";
             }, 3000);
         }
 
-        // Phone number validation 
+
         function validatemobile() {
-          const mobileNumber = phone.value;
-          if (mobileNumber.length < 10) {
-            phone_err.innerHTML = "Enter a valid mobile number (at least 10 digits)";
-            phone_err.style.display = "block";
-            } else if (mobileNumber.length >= 14) {
-            phone_err.innerHTML = "Enter a valid mobile number (less than 14 digits)";
-            phone_err.style.display = "block";
+            const mobileNumber = phone.value;
+            if (mobileNumber.length < 10 || mobileNumber.length >= 14) {
+                phone_err.innerHTML = "Enter a valid mobile number (between 10 and 14 digits)";
+                phone_err.style.display = "block";
+                return false;
             } else {
-            phone_err.style.display = "none";
-            phone_err.innerHTML = "";
+                phone_err.style.display = "none";
+                phone_err.innerHTML = "";
+                return true;
             }
         }
-        
+
 
         function validateEmail() {
-          const Email = email.value;
-          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailPattern.test(Email) || Email === "") {
-            email_err.innerHTML = "Enter a valid email";
-            email_err.style.display = "block";
-          } else {
-            email_err.style.display = "none";
-            email_err.innerHTML = "";
-          }
+            const Email = email.value;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(Email) || Email === "") {
+                email_err.innerHTML = "Enter a valid email";
+                email_err.style.display = "block";
+                return false;
+            } else {
+                email_err.style.display = "none";
+                email_err.innerHTML = "";
+                return true;
+            }
         }
 
-        
+
 
         function validate_password() {
             const Password = password.value;
 
             if (Password.length < 8) {
-            pass_err.innerHTML = "Password must be at least 8 characters long";
-            pass_err.style.display = "block";
+                pass_err.innerHTML = "Password must be at least 8 characters long";
+                pass_err.style.display = "block";
+                return false;
             } else {
-            pass_err.style.display = "none";
-            pass_err.innerHTML = "";
+                pass_err.style.display = "none";
+                pass_err.innerHTML = "";
+                return true;
             }
         }
 
 
         function conformPassword() {
-          const passwordValue = password.value;
-          const confirmPasswordValue = confirmPassword.value;
-  
-          if (passwordValue !== confirmPasswordValue) {
-  
-            repass_err.innerHTML = "Passwords must match";
-            repass_err.style.display = "block";
-          } else {
-            repass_err.style.display = "none";
-            repass_err.innerHTML = "";
-          }
+            const passwordValue = password.value;
+            const confirmPasswordValue = confirmPassword.value;
+
+            if (passwordValue !== confirmPasswordValue) {
+
+                repass_err.innerHTML = "Passwords must match";
+                repass_err.style.display = "block";
+                return false;
+            } else {
+                repass_err.style.display = "none";
+                repass_err.innerHTML = "";
+                return true;
+            }
         }
 
         function Check_all(e) {
-          if ( validatename() || validateEmail() || validatemobile() || validate_password() || conformPassword()) {
-            return false;    
-        }else{
-              return true
-              e.preventDefault()
-          }
+            if (!validatename() || !validateEmail() || !validatemobile() || !validate_password() || !conformPassword()) {
+                e.preventDefault()
+                return false;
+            } else {
+                return true
+            }
         }
     </script>
 

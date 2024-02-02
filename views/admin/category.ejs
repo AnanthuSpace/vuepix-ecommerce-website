@@ -1,116 +1,130 @@
 <%- include("../partials/adminHeader") %>
 
-        <section class="content-main">
-            <div class="content-header">
-                <div>
-                    <h2 class="content-title card-title">Categories </h2>
-                    <p>Add, edit or delete a category</p>
-                </div>
-                <div>
-                    <input type="text" placeholder="Search Categories" class="form-control bg-white">
-                </div>
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Categories </h2>
+                <p>Add, edit or delete a category</p>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <form action="/admin/addcategory" method="post" >
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Name</label>
-                                    <input name="name" pattern="^[^\s]+$" type="text" placeholder="Type here" class="form-control" id="name" required="true" maxlength="40" />
-                                    <p id="name-err-msg" class="text-danger"></p>
-                                </div>
+            <div>
+                <input type="text" placeholder="Search Categories" class="form-control bg-white">
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <form action="/admin/addcategory" method="post">
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Name</label>
+                                <input name="name" pattern="^[^\s]+$" type="text" placeholder="Type here"
+                                    class="form-control" id="name" required="true" maxlength="40" />
+                                <p id="name-err-msg" class="text-danger"></p>
+                            </div>
 
-                                <div class="mb-4">
-                                    <label class="form-label">Description</label>
-                                    <textarea name="description" placeholder="Type here" class="form-control" required="true" id="description"></textarea>
-                                    <p id="err-msg" class="text-danger"></p>
-                                </div>
-                                
-                                <div class="d-grid">
-                                    <button onclick="validate()" class="btn btn-primary" type="submit">Create category</button>
-                                </div>
-                                
-                            </form>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
+                            <div class="mb-4">
+                                <label class="form-label">Description</label>
+                                <textarea name="description" placeholder="Type here" class="form-control"
+                                    required="true" id="description"></textarea>
+                                <p id="err-msg" class="text-danger"></p>
+                            </div>
+
+                            <div class="d-grid">
+                                <button onclick="validate()" class="btn btn-primary" type="submit">Create
+                                    category</button>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Category</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                        <th>List/Unlist</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(let i=0; i < cat.length; i++) { %>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Category</th>
-                                            <th>Description</th>
-                                            <th>Status</th>
-                                            <th>List/Unlist</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% for(let i=0; i < cat.length; i++) { %>
-                                            <tr>
-                                                <td class="text-start"><%= i+1 %></td>
-                                                <td class="text-start"><%= cat[i].name %></td>
-                                                <td class="text-start"><%= cat[i].description %></td>
-                                                <td class="text-start">
-                                                    <% if (cat[i].isListed === true) { %>
-                                                        <span class="badge rounded-pill alert-success" style="width: 60px;">Listed</span>
+                                            <td class="text-start">
+                                                <%= i+1 %>
+                                            </td>
+                                            <td class="text-start">
+                                                <%= cat[i].name %>
+                                            </td>
+                                            <td class="text-start">
+                                                <%= cat[i].description %>
+                                            </td>
+                                            <td class="text-start">
+                                                <% if (cat[i].isListed===true) { %>
+                                                    <span class="badge rounded-pill alert-success"
+                                                        style="width: 60px;">Listed</span>
                                                     <% } else { %>
-                                                        <span class="badge rounded-pill alert-danger" style="width: 60px;">Unlisted</span>
-                                                    <% } %>
-                                                </td>                                        
-                                                <td class="text-start">
-                                                    <% if (cat[i].isListed === true) { %>
-                                                        <button class="btn btn-danger" style="width: 70px;">
-                                                            <a href="/admin/listcategory?id=<%= cat[i]._id %>" class="text-white">Unlist</a>
-                                                        </button>
+                                                        <span class="badge rounded-pill alert-danger"
+                                                            style="width: 60px;">Unlisted</span>
+                                                        <% } %>
+                                            </td>
+                                            <td class="text-start">
+                                                <% if (cat[i].isListed===true) { %>
+                                                    <button class="btn btn-danger" style="width: 70px;">
+                                                        <a href="/admin/listcategory?id=<%= cat[i]._id %>"
+                                                            class="text-white">Unlist</a>
+                                                    </button>
                                                     <% } else { %>
                                                         <button class="btn btn-success" style="width: 70px;">
-                                                            <a href="/admin/unListcategory?id=<%= cat[i]._id %>" class="text-white">List</a>
+                                                            <a href="/admin/unListcategory?id=<%= cat[i]._id %>"
+                                                                class="text-white">List</a>
                                                         </button>
-                                                    <% } %>
-                                                </td>
-                                                <td class="text-start">
-                                                    <button class="btn btn-info">
-                                                        <a href="/admin/editCategory?id=<%= cat[i]._id %>" class="text-white">Edit</a>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                                        <% } %>
+                                            </td>
+                                            <td class="text-start">
+                                                <button class="btn btn-info">
+                                                    <a href="/admin/editCategory?id=<%= cat[i]._id %>"
+                                                        class="text-white">Edit</a>
+                                                </button>
+                                            </td>
+                                        </tr>
                                         <% } %>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> <!-- .col// -->
-                    </div> <!-- .row // -->
-                </div> <!-- card body .// -->
-            </div> <!-- card .// -->
-        </section> <!-- content-main end// -->
-  
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> <!-- .col// -->
+                </div> <!-- .row // -->
+            </div> <!-- card body .// -->
+        </div> <!-- card .// -->
+    </section> <!-- content-main end// -->
 
-<script>
-    function validate(){
-        document.getElementById('err-msg').innerHTML = ''
-        document.getElementById('name-err-msg').innerHTML = ''
-        let name = document.getElementById('name').value;
-        let description = document.getElementById('description').value;
-        
 
-        const nameRegex = /^[A-Za-z0-9]{1,50}$/;
-        if (nameRegex.test(name)) {
-        } else {
-            document.getElementById('name').style.borderColor = '#cc0000'
-            document.getElementById('name').style.borderWidth = '1px'
-            document.getElementById('name-err-msg').innerHTML = document.getElementById('name-err-msg').innerHTML + '<br> Name error'
-            event.preventDefault()
+    <script>
+        function validate() {
+            document.getElementById('err-msg').innerHTML = ''
+            document.getElementById('name-err-msg').innerHTML = ''
+            let name = document.getElementById('name').value;
+            let description = document.getElementById('description').value;
+
+
+            const nameRegex = /^[A-Za-z0-9]{1,50}$/;
+            if (nameRegex.test(name)) {
+            } else {
+                document.getElementById('name').style.borderColor = '#cc0000'
+                document.getElementById('name').style.borderWidth = '1px'
+                document.getElementById('name-err-msg').innerHTML = document.getElementById('name-err-msg').innerHTML + '<br> Name error'
+                event.preventDefault()
+            }
+            const descRegex = /^(?!\s*$).+/;
+            if (descRegex.test(description)) { } else {
+                document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Description  error'
+                document.getElementById('description').style.borderColor = '#cc0000'
+                document.getElementById('description').style.borderWidth = '1px'
+                event.preventDefault()
+            }
         }
-        const descRegex = /^(?!\s*$).+/;
-        if (descRegex.test(description)) { } else {
-            document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Description  error'
-            document.getElementById('description').style.borderColor = '#cc0000'
-            document.getElementById('description').style.borderWidth = '1px'
-            event.preventDefault()
-        }
-    }
-</script>
+    </script>
 
-<%- include("../partials/adminFooter") %>
+    <%- include("../partials/adminFooter") %>

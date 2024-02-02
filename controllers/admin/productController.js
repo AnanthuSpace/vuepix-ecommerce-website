@@ -73,7 +73,7 @@ const showEdit = async (req, res) => {
     try {
         const id = req.query.id
         const findProduct = await Product.findOne({ _id: id })
-        const category = await Category.find({isListed: true})
+        const category = await Category.find({ isListed: true })
         res.render("admin/editProduct", { product: findProduct, cat: category })
     } catch (error) {
         console.log(error.message);

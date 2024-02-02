@@ -25,10 +25,11 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(nocache())
 
-app.use("/", userRoute)
+
 app.use("/admin", adminRoute)
-// app.get('*', function (req, res) {
-//     res.redirect("/pageNotFound");
-// });
+app.use("/", userRoute)
+app.get('*', function (req, res) {
+    res.redirect("/pageNotFound");
+});
 
 app.listen(PORT, () => console.log(`Server Running on http://localhost:${PORT}`))

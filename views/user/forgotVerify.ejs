@@ -64,9 +64,9 @@
                 success: (response) => {
                     console.log(response);
                     if (response.status == true) {
-                        
+
                         window.location.href = "http://localhost:3000/repassword";
-                    } else if(response.status == false) {
+                    } else if (response.status == false) {
                         errorMessageElement.innerHTML = 'Entered OTP is incorrect';
                         errorMessageElement.style.display = 'block';
 

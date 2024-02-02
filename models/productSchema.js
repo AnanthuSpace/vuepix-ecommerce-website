@@ -1,38 +1,38 @@
-const mongoose =  require('mongoose');
+const mongoose = require('mongoose');
 
 
 let productSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        require:true,
+    name: {
+        type: String,
+        require: true,
     },
-    description:{
-        type:String,
-        require:true
+    description: {
+        type: String,
+        require: true
     },
-    category:{
-        type:String,
-        require:true,
+    category: {
+        type: String,
+        require: true,
     },
-    regularPrice:{
-        type:String,
-        requrie:true
+    regularPrice: {
+        type: String,
+        requrie: true
     },
-    salesPrice:{
-        type:String,
-        require:true
+    salesPrice: {
+        type: String,
+        require: true
     },
-    unit:{
-        type:Number,
-        require:true
+    unit: {
+        type: Number,
+        require: true
     },
-    images:{
-        type:Array,
-        require:true 
+    images: {
+        type: Array,
+        require: true
     },
-    isBlocked : {
-        type : Boolean,
-        default : false,
+    isBlocked: {
+        type: Boolean,
+        default: false,
     }
 });
 

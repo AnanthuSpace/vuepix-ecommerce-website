@@ -1,4 +1,4 @@
-const {Admin} = require("../../models/adminSchema")
+const { Admin } = require("../../models/adminSchema")
 const bcrypt = require("bcrypt");
 
 
@@ -23,22 +23,22 @@ const renderAdminLogin = async (req, res) => {
 
 const adminHome = async (req, res) => {
     const { email, password } = req.body;
-  
+
     try {
-    
+
         const admin = await Admin.findOne({ email });
         console.log(admin);
-      if (!Admin || !(await bcrypt.compare(password, admin.password))) {
-        req.session.admin = admin.email;
-        res.cookie("sessionId", req.sessionID, { httpOnly: true });
-        res.redirect("/admin/home");
-        return;
-      }else{
-        res.render("admin/adminLogin", { login_err: "Invalid User id and password" });
-      }
+        if (!Admin || !(await bcrypt.compare(password, admin.password))) {
+            req.session.admin = admin.email;
+            res.cookie("sessionId", req.sessionID, { httpOnly: true });
+            res.redirect("/admin/home");
+            return;
+        } else {
+            res.render("admin/adminLogin", { login_err: "Invalid User id and password" });
+        }
     } catch (error) {
-      console.error("Login error:", error);
-      res.render("admin/adminLogin");
+        console.error("Login error:", error);
+        res.render("admin/adminLogin");
     }
 };
 

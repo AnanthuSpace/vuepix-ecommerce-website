@@ -1,79 +1,92 @@
 <%- include("../partials/adminHeader") %>
 
-        
-<section class="content-main">
-    <div class="content-header">
-        <div>
-            <h2 class="content-title card-title">Products List</h2>
-            <p></p>
-        </div>
-    </div>
 
-    <div class="card mb-4">
-        <div class="card-body">
-            <div class="right mt-5">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col"><b>Product name</b></th>
-                            <th scope="col"><b>ProductImage</b></th>
-                            <th scope="col"><b>Category</b></th>
-                            <th scope="col"><b>Regular Price</b></th>
-                            <th scope="col"><b>Sale Price</b></th>
-                            <th scope="col"><b>Action</b></th>
-                            <th scope="col"><b>Edit</b></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for(let i = 0; i < data.length; i++) { %>
-                            <tr>
-                                <td><%= data[i].name %></td>
-                                <td>
-                                        <% if (data[i].images && Array.isArray(data[i].images) && data[i].images.length > 0) { %>
-                                            <img src="/uploads/products/<%= data[i].images[0] %>" class="img-sm img-thumbnail" alt="Item">
-                                        <% } else { %>
-                                            <img src="/default-productImage.jpg" class="img-sm img-thumbnail" alt="Default Item">
-                                        <% } %>
-                                </td>
-                                <td><%= data[i].category %></td>
-                                <td>₹<%= data[i].regularPrice %></td>
-                                <td>₹<%= data[i].salesPrice %></td>
-                                <td>
-                                    <% if (data[i].isBlocked === false) { %>
-                                        <button class="btn btn-danger" style="width: 90px;">
-                                            <a href="/admin/blockProduct?id=<%= data[i]._id %>" class="text-white" style="text-decoration: none;">Block</a>
-                                        </button>
-                                    <% } else { %>
-                                        <button class="btn btn-success" style="width: 90px;">
-                                            <a href="/admin/unBlockProduct?id=<%= data[i]._id %>" class="text-white" style="text-decoration: none;">Unblock</a>
-                                        </button>
-                                    <% } %>
-                                </td>
-                                <td>
-                                    <button class="btn btn-info" style="width: 80px;">
-                                        <a href="/admin/editProduct?id=<%= data[i]._id %>" class="text-white" style="text-decoration: none;">Edit</a>
-                                    </button>
-                                </td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                </table>
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Products List</h2>
+                <p></p>
             </div>
         </div>
-    </div>
 
-    <div class="pagination-area mt-30 mb-50">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-start">
-                <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                <li class="page-item"><a class="page-link" href="#">02</a></li>
-                <li class="page-item"><a class="page-link" href="#">03</a></li>
-                <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                <li class="page-item"><a class="page-link" href="#">16</a></li>
-                <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-            </ul>
-        </nav>
-    </div>
-</section> <!-- content -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="right mt-5">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col"><b>Product name</b></th>
+                                <th scope="col"><b>ProductImage</b></th>
+                                <th scope="col"><b>Category</b></th>
+                                <th scope="col"><b>Regular Price</b></th>
+                                <th scope="col"><b>Sale Price</b></th>
+                                <th scope="col"><b>Action</b></th>
+                                <th scope="col"><b>Edit</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(let i=0; i < data.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <%= data[i].name %>
+                                    </td>
+                                    <td>
+                                        <% if (data[i].images && Array.isArray(data[i].images) && data[i].images.length>
+                                            0) { %>
+                                            <img src="/uploads/products/<%= data[i].images[0] %>"
+                                                class="img-sm img-thumbnail" alt="Item">
+                                            <% } else { %>
+                                                <img src="/default-productImage.jpg" class="img-sm img-thumbnail"
+                                                    alt="Default Item">
+                                                <% } %>
+                                    </td>
+                                    <td>
+                                        <%= data[i].category %>
+                                    </td>
+                                    <td>₹<%= data[i].regularPrice %>
+                                    </td>
+                                    <td>₹<%= data[i].salesPrice %>
+                                    </td>
+                                    <td>
+                                        <% if (data[i].isBlocked===false) { %>
+                                            <button class="btn btn-danger" style="width: 90px;">
+                                                <a href="/admin/blockProduct?id=<%= data[i]._id %>" class="text-white"
+                                                    style="text-decoration: none;">Block</a>
+                                            </button>
+                                            <% } else { %>
+                                                <button class="btn btn-success" style="width: 90px;">
+                                                    <a href="/admin/unBlockProduct?id=<%= data[i]._id %>"
+                                                        class="text-white" style="text-decoration: none;">Unblock</a>
+                                                </button>
+                                                <% } %>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-info" style="width: 80px;">
+                                            <a href="/admin/editProduct?id=<%= data[i]._id %>" class="text-white"
+                                                style="text-decoration: none;">Edit</a>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-        <%- include("../partials/adminFooter") %>
+        <div class="pagination-area mt-30 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                    <li class="page-item"><a class="page-link" href="#">02</a></li>
+                    <li class="page-item"><a class="page-link" href="#">03</a></li>
+                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                    <li class="page-item"><a class="page-link" href="#">16</a></li>
+                    <li class="page-item"><a class="page-link" href="#"><i
+                                class="material-icons md-chevron_right"></i></a></li>
+                </ul>
+            </nav>
+        </div>
+    </section> <!-- content -->
+
+    <%- include("../partials/adminFooter") %>

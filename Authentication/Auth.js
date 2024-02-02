@@ -1,17 +1,17 @@
 const User = require("../models/userSchema")
 
 
-const isLogged = (req, res, next)=>{
-    if(req.session.user){
-        User.findById({email : req.session.user}).lean()
-        .then((data)=>{
-            if(data.isBlocked == false){
-                next()
-            }else{
-                res.redirect("/login")
-            }
-        })
-    }else{
+const isLogged = (req, res, next) => {
+    if (req.session.user) {
+        User.findById({ email: req.session.user }).lean()
+            .then((data) => {
+                if (data.isBlocked == false) {
+                    next()
+                } else {
+                    res.redirect("/login")
+                }
+            })
+    } else {
         res.redirect("/login")
     }
 }

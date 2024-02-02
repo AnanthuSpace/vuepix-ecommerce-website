@@ -49,7 +49,7 @@ const generateOTP = () => {
 
     for (let i = 0; i < otpLength; i++) {
         const digit = Math.floor(Math.random() * 10);
-        otp += digit.toString(); 
+        otp += digit.toString();
     }
 
     return otp;
@@ -61,13 +61,13 @@ const generateOTP = () => {
 const renderHome = async (req, res) => {
     try {
         const user = req.session.user
-        const products = await Product.find({isBlocked:false})
-        
-        if(!user){
+        const products = await Product.find({ isBlocked: false })
+
+        if (!user) {
             res.render("user/userLogin")
         }
-        else{
-            res.render("user/userHome",{user:user,products: products})
+        else {
+            res.render("user/userHome", { user: user, products: products })
         }
     } catch (error) {
         res.redirect("/")
@@ -121,18 +121,17 @@ const userVerification = async (req, res) => {
 const createUser = async (req, res) => {
 
     const { username, email, phone, password } = req.body
-    // console.log(username, email, phone, password );
 
     try {
-        console.log("create user try");
+
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             console.log("Existed username");
-            return res.render("user/signup",{err:"Existed user"})
+            return res.render("user/signup", { err: "Existed user" })
         }
 
         const hashPassword = await bcrypt.hash(password, 10)
-        const otp =generateOTP()
+        const otp = generateOTP()
 
 
         // Store user datat temporary session
@@ -151,10 +150,10 @@ const createUser = async (req, res) => {
         const transporter = mailer.createTransport({
             service: 'gmail',
             auth: {
-              user: process.env.EMAIL_ID,
-              pass: process.env.EMAIL_PASS
+                user: process.env.EMAIL_ID,
+                pass: process.env.EMAIL_PASS
             }
-          });
+        });
 
 
         // Set Email options
@@ -168,17 +167,17 @@ const createUser = async (req, res) => {
 
         // Sending email
 
-        transporter.sendMail(mailOption, (error,info)=>{
+        transporter.sendMail(mailOption, (error, info) => {
 
-            if(error){
-                console.error("Mailing error",error);
-            }else{
+            if (error) {
+                console.error("Mailing error", error);
+            } else {
                 console.log('Email sent: ' + info.response);
             }
             console.log(otp);
             res.redirect("/verifyOtp")
         })
-        
+
     } catch (error) {
         console.error("Error Creating User : ", error);
     }
@@ -188,12 +187,12 @@ const createUser = async (req, res) => {
 
 // Handle OTP Submission
 
-const verifyOtp = async (req,res) => {
-    try{
+const verifyOtp = async (req, res) => {
+    try {
         let otpfromAjax = req.body.otp
-        const {username, email, phone, password,otp} = req.session.tempUser
-        console.log(otp,otpfromAjax);
-        if(otpfromAjax == otp){
+        const { username, email, phone, password, otp } = req.session.tempUser
+        console.log(otp, otpfromAjax);
+        if (otpfromAjax == otp) {
             console.log("otp matched");
             const newUser = new User({
                 username,
@@ -201,16 +200,16 @@ const verifyOtp = async (req,res) => {
                 phone,
                 password
             })
-    
+
             await newUser.save();
-            res.json({status : true})
+            res.json({ status: true })
             delete req.session.tempUser
-        }else{
+        } else {
             console.log("otp invalid");
-            res.json({status : false})
+            res.json({ status: false })
         }
     } catch (error) {
-       console.log(error.message);
+        console.log(error.message);
     }
 }
 
@@ -218,7 +217,7 @@ const verifyOtp = async (req,res) => {
 
 // Resend Otp 
 
-const resendOTP = async(req,res)=>{
+const resendOTP = async (req, res) => {
     try {
         const { email } = req.session.tempUser;
 
@@ -227,10 +226,10 @@ const resendOTP = async(req,res)=>{
         const transporter = mailer.createTransport({
             service: 'gmail',
             auth: {
-              user: process.env.EMAIL_ID,
-              pass: process.env.EMAIL_PASS
+                user: process.env.EMAIL_ID,
+                pass: process.env.EMAIL_PASS
             }
-          });
+        });
 
 
         // Set Email options
@@ -246,11 +245,11 @@ const resendOTP = async(req,res)=>{
 
         req.session.tempUser.otp = newotp
 
-        transporter.sendMail(mailOption, (error,info)=>{
+        transporter.sendMail(mailOption, (error, info) => {
 
-            if(error){
-                console.error("Mailing error",error);
-            }else{
+            if (error) {
+                console.error("Mailing error", error);
+            } else {
                 console.log('Email sent: ' + info.response);
             }
             res.redirect("/verifyOtp")
@@ -281,7 +280,7 @@ const logout = async (req, res) => {
 
 // Get otp verification page
 
-const getVerifyOtp = async (req, res)=>{
+const getVerifyOtp = async (req, res) => {
     try {
         res.render("user/verify")
     } catch (error) {
@@ -289,23 +288,23 @@ const getVerifyOtp = async (req, res)=>{
     }
 }
 
-const renderForgotPass = async(req,res)=>{
+const renderForgotPass = async (req, res) => {
     try {
         res.render("user/forgotPass")
     } catch (error) {
         console.log(error.message);
     }
-} 
+}
 
 
 
 
-const verifyForgotEmail = async (req,res)=>{
+const verifyForgotEmail = async (req, res) => {
     try {
         const { email } = req.body
         req.session.forgotemail = email
         const existed = await User.findOne({ email })
-        if(existed){
+        if (existed) {
             const otp = generateOTP()
 
             req.session.tempUser = {
@@ -315,44 +314,44 @@ const verifyForgotEmail = async (req,res)=>{
             const transporter = mailer.createTransport({
                 service: 'gmail',
                 auth: {
-                  user: process.env.EMAIL_ID,
-                  pass: process.env.EMAIL_PASS
+                    user: process.env.EMAIL_ID,
+                    pass: process.env.EMAIL_PASS
                 }
-              });
-    
-    
+            });
+
+
             // Set Email options
-    
+
             const mailOption = {
                 from: process.env.EMAIL_ID,
                 to: email,
                 subject: "OTP Verification",
                 text: `Your OTP for Verification is ${otp}`
             }
-    
+
             // Sending email
-    
-            transporter.sendMail(mailOption, (error,info)=>{
-    
-                if(error){
-                    console.error("Mailing error",error);
-                }else{
+
+            transporter.sendMail(mailOption, (error, info) => {
+
+                if (error) {
+                    console.error("Mailing error", error);
+                } else {
                     console.log('Email sent: ' + info.response);
                 }
                 console.log(otp);
                 res.redirect("/forgotOtp")
             })
-            
-        }else{
+
+        } else {
             res.render("user/forgotPass", { message: "User with this email not exists" })
         }
-    }catch{
+    } catch {
         console.log(error.message);
     }
 }
 
 
-const getVerifyForgot = async (req,res)=>{
+const getVerifyForgot = async (req, res) => {
     try {
         res.render("user/forgotVerify")
     } catch (error) {
@@ -361,28 +360,28 @@ const getVerifyForgot = async (req,res)=>{
 }
 
 
-const verifyForgotOtp = async (req,res)=>{
-    try{
+const verifyForgotOtp = async (req, res) => {
+    try {
 
-    let otpfromAjax = req.body.otp
-        const {otp} = req.session.tempUser
-        
-        if(otpfromAjax == otp){
+        let otpfromAjax = req.body.otp
+        const { otp } = req.session.tempUser
+
+        if (otpfromAjax == otp) {
             console.log("otp matched");
-    
-            res.json({status : true})
+
+            res.json({ status: true })
             delete req.session.tempUser
-        }else{
+        } else {
             console.log("otp invalid");
-            res.json({status : false})
+            res.json({ status: false })
         }
     } catch (error) {
-       console.log(error.message);
+        console.log(error.message);
     }
 }
 
 
-const  renderRePass = async (req,res)=>{
+const renderRePass = async (req, res) => {
     try {
         res.render("user/rePassword")
     } catch (error) {
@@ -390,9 +389,9 @@ const  renderRePass = async (req,res)=>{
     }
 }
 
-const newPass = async (req,res)=>{
-    try{
-        const { newPass1, newPass2 } =req.body
+const newPass = async (req, res) => {
+    try {
+        const { newPass1, newPass2 } = req.body
         const email = req.session.forgotemail
         const passwordHash = await bcrypt.hash(newPass1, 10)
         if (newPass1 === newPass2) {
@@ -406,11 +405,11 @@ const newPass = async (req,res)=>{
             )
                 .then((data) => console.log(data))
             res.redirect("/login")
-        }else {
+        } else {
             console.log("Password not match");
             res.render("rePassword", { message: "Password not matching" })
         }
-    }catch(error){
+    } catch (error) {
         console.log(error.message);
     }
 }
