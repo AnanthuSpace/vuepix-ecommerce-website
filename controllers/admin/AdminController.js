@@ -1,4 +1,4 @@
-const { Admin } = require("../../models/adminSchema")
+const Admin  = require("../../models/adminSchema")
 const bcrypt = require("bcrypt");
 
 
@@ -57,7 +57,11 @@ const adminLogout = async (req, res) => {
 
 
 const renderAdminHome = async (req, res) => {
-    res.render("admin/adminHome")
+    try {
+        res.render("admin/adminHome")
+    } catch (error) {
+        console.log(error.message);
+    }
 }
 
 

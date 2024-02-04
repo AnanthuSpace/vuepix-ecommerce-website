@@ -22,7 +22,7 @@ const renderLogin = async (req, res) => {
         if (!req.session.user) {
             res.render("user/userLogin");
         } else {
-            res.redirect("/Home")
+            res.redirect("/home")
         }
     } catch (error) {
         res.render("user/userHome")
@@ -92,7 +92,7 @@ const userVerification = async (req, res) => {
             if (notBlocked) {
                 const passwordMatch = await bcrypt.compare(password, findUser.password)
                 if (passwordMatch) {
-                    req.session.user = findUser.email
+                    req.session.user = findUser._id
                     console.log("Logged in");
                     res.redirect("/home")
                 } else {

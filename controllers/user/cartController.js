@@ -1,5 +1,6 @@
 const Product = require("../../models/productSchema")
 const Category = require("../../models/categorySchema")
+const { User } = require("../../models/userSchema")
 
 
 
@@ -16,9 +17,9 @@ const addToCart = async (req, res) => {
     try {
         const id = req.query.id
         console.log(id);
-        const userId = req.session.user
-        const findUser = await User.findById(userId)
-        // console.log(findUser);
+        const user = req.session.user
+        const findUser = await User.findOne({email:user})
+        console.log(findUser);
         const product = await Product.findById({ _id: id }).lean()
         if (!product) {
             return res.json({ status: "Product not found" });

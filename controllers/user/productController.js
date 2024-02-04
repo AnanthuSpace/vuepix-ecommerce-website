@@ -9,7 +9,6 @@ const getProductDetails = async (req, res) => {
         const productId = req.query.id
         const findProduct = await Product.findOne({ _id: productId });
         const products = await Product.find({})
-        console.log(findProduct._id);
         if (user) {
             res.render("user/productDetails", { data: findProduct, user: user, products })
         } else {

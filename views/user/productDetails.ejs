@@ -102,7 +102,7 @@
                                         </div>
                                         <div class="product-extra-link2">
 
-                                            <button type="submit" id="addtocart" onclick="addToCart('<%=data._id%>')"
+                                            <button type="submit" id="addtocart" onclick="addToCart('<%= data.id %>')"
                                                 class="button button-add-to-cart">Add to cart</button>
 
                                             <a aria-label="Add To Wishlist" class="action-btn hover-up"
@@ -256,11 +256,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
 
-function addToCart(prodId) {
-    console.log("addtocart funtion ${prodId}");
+function addToCart(productId) {
+    console.log("addtocart funtion ${productId}");
 var quantity = 1;
 $.ajax({
-    url: `/addToCart?id=${prodId}`,
+    url: `/cart?id=${productId}`,
     method: "post",
     data: {
         quantity: quantity
