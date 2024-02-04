@@ -1,7 +1,10 @@
 const express = require("express")
 const router = express.Router()
+
 const controller = require("../controllers/user/UserController")
 const productController = require("../controllers/user/productController")
+const cartController = require("../controllers/user/cartController")
+
 
 
 router.get("/", controller.renderLogin)
@@ -26,7 +29,13 @@ router.get("/pageNotFound", controller.pageNotFound)
 
 // Products actions
 router.get("/productDetails", productController.getProductDetails)
+router.get("/shop", productController.getShop)
 
+
+
+// Cart controll
+router.get("/cart", cartController.renderCart)
+router.post("/cart", cartController.addToCart)
 
 
 module.exports = router
