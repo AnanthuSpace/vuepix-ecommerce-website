@@ -174,7 +174,7 @@
                                             </div>
                                             <div class="product-action-1 show">
                                                 <a aria-label="Add To Cart" class="action-btn hover-up"
-                                                    href="cart"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                    href="#"><i class="fi-rs-shopping-bag-add"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -201,12 +201,13 @@
         <script>
             
             function submitOtp() {
-            let otp = document.getElementById("otp").value
+            let id = products[i].id
+            console.log(id);
             const errorMessageElement = document.getElementById('errorMessage');
 
             // alert(otp)
             $.ajax({
-                url: "/addTo",
+                url: "/cart",
                 method: "post",
                 data: {
                     otp
@@ -215,7 +216,7 @@
                     console.log(response);
                     if (response.status == true) {
                         // alert("success here")
-                        window.location.href = "http://localhost:3000/";
+                        window.location.href = "http://localhost:3000/home";
                     } else if (response.status == false) {
                         errorMessageElement.innerHTML = 'Entered OTP is incorrect';
                         errorMessageElement.style.display = 'block';

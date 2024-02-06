@@ -21,6 +21,12 @@ const userSchema = mongoose.Schema({
     isBlocked: {
         type: Boolean,
         default: false
+    },
+    cart:{
+        type:Array,
+    },
+    orders:{
+        type:Array,
     }
 })
 

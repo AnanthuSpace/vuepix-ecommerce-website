@@ -21,6 +21,7 @@
                                 <th scope="col"><b>Product name</b></th>
                                 <th scope="col"><b>ProductImage</b></th>
                                 <th scope="col"><b>Category</b></th>
+                                <th scope="col"><b>Quantity</b></th>
                                 <th scope="col"><b>Regular Price</b></th>
                                 <th scope="col"><b>Sale Price</b></th>
                                 <th scope="col"><b>Action</b></th>
@@ -45,6 +46,9 @@
                                     </td>
                                     <td>
                                         <%= data[i].category %>
+                                    </td>
+                                    <td>
+                                        <%= data[i].unit %>
                                     </td>
                                     <td>₹<%= data[i].regularPrice %>
                                     </td>

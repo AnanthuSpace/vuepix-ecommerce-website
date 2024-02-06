@@ -39,32 +39,38 @@
                                             <!-- <span> Brands: <a href="shop-grid-right.html"></a></span> -->
                                         </div>
                                     </div>
-                                    <div class="clearfix product-price-cover">
-                                        <div class="product-price primary-color float-left">
-                                            <ins><span class="text-brand">₹<%= data.salesPrice.toLocaleString('en-IN')
-                                                        %>
-                                                </span></ins>
-                                            <ins><span class="old-price font-md ml-15">₹<%=
-                                                        data.regularPrice.toLocaleString('en-IN') %></span></ins>
-                                            <span class="save-price  font-md color3 ml-15">25% Off</span>
-                                        </div>
-                                    </div>
-                                    <div class="bt-1 border-color-1 mt-15 mb-15"></div>
-                                    <div class="short-desc mb-30">
-                                        <p>
-                                            <%= data.description %>
-                                        </p>
-                                    </div>
-                                    <div class="product_sort_info font-xs mb-30">
-                                        <ul>
-                                            <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year Manufacturer
-                                                Warranty</li>
-                                            <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> 30 Day Return Policy
-                                            </li>
-                                            <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery available</li>
-                                        </ul>
-                                    </div>
-                                    <!-- <div class="attr-detail attr-color mb-15">
+
+
+                                                <div class="clearfix product-price-cover">
+                                                    <div class="product-price primary-color float-left">
+                                                        <ins><span class="text-brand">₹<%=
+                                                                    data.salesPrice.toLocaleString('en-IN') %>
+                                                            </span></ins>
+                                                        <ins><span class="old-price font-md ml-15">₹<%=
+                                                                    data.regularPrice.toLocaleString('en-IN') %>
+                                                                    </span></ins>
+                                                        <span class="save-price  font-md color3 ml-15">25% Off</span>
+                                                    </div>
+                                                </div>
+                                                <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+                                                <div class="short-desc mb-30">
+                                                    <p>
+                                                        <%= data.description %>
+                                                    </p>
+                                                </div>
+                                                <div class="product_sort_info font-xs mb-30">
+                                                    <ul>
+                                                        <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year
+                                                            Manufacturer
+                                                            Warranty</li>
+                                                        <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> 30 Day
+                                                            Return Policy
+                                                        </li>
+                                                        <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery
+                                                            available</li>
+                                                    </ul>
+                                                </div>
+                                                <!-- <div class="attr-detail attr-color mb-15">
                                         <strong class="mr-10">Color</strong>
                                         <ul class="list-filter color-filter">
                                             <li><a href="#" data-color="Red"><span class="product-color-red"></span></a>
@@ -83,7 +89,7 @@
                                                         class="product-color-purple"></span></a></li>
                                         </ul>
                                     </div> -->
-                                    <!-- <div class="attr-detail attr-size">
+                                                <!-- <div class="attr-detail attr-size">
                                         <strong class="mr-10">Size</strong>
                                         <ul class="list-filter size-filter font-small">
                                             <li><a href="#">S</a></li>
@@ -93,34 +99,41 @@
                                             <li><a href="#">XXL</a></li>
                                         </ul>
                                     </div> -->
-                                    <div class="bt-1 border-color-1 mt-30 mb-30"></div>
-                                    <div class="detail-extralink">
-                                        <div class="detail-qty border radius">
+                                                <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                                <div class="detail-extralink">
+                                                    <!-- <div class="detail-qty border radius">
                                             <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
                                             <span class="qty-val">1</span>
                                             <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
-                                        </div>
-                                        <div class="product-extra-link2">
+                                        </div> -->
+                                                    <div class="product-extra-link2">
 
-                                            <button type="submit" id="addtocart" onclick="addToCart('<%= data.id %>')"
-                                                class="button button-add-to-cart">Add to cart</button>
+                                                        <button type="submit"
+                                                            onclick="addToCart('<%=data.id%>', '<%=data.unit%>')"
+                                                            class="button button-add-to-cart">Add to cart</button>
 
-                                            <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                            href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
 
-                                            <!-- <a aria-label="Compare" class="action-btn hover-up"
+                                                        <!-- <a aria-label="Compare" class="action-btn hover-up"
                                                 href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> -->
-                                        </div>
-                                    </div>
-                                    <ul class="product-meta font-xs color-grey mt-50">
-                                        <li class="mb-5">ID: <%= data.id %>
-                                        </li>
-                                        <li class="mb-5">Tags: Eyewear, <%= data.category %>
-                                        </li>
-                                        <li>Availability:<span class="in-stock text-success ml-5">
-                                                <%= data.unit %> Items In Stock
-                                            </span></li>
-                                    </ul>
+                                                    </div>
+                                                </div>
+                                                <ul class="product-meta font-xs color-grey mt-50">
+                                                    <li class="mb-5">ID: <%= data.id %>
+                                                    </li>
+                                                    <li class="mb-5">Tags: Eyewear, <%= data.category %>
+                                                    </li>
+                                                    <li>Availability:<%if(data.unit<=0){%>
+                                                            <span class="text-danger ms-2">Out of stock</span>
+                                                            <%}else{%>
+                                                                <span class="text-success"><i
+                                                                        class="fas fa-shopping-basket fa-sm mx-1"></i>
+                                                                    <%=data.unit%> Items In Stock
+                                                                </span>
+                                                                <%}%>
+                                                    </li>
+                                                </ul>
                                 </div>
                                 <!-- Detail Info -->
                             </div>
@@ -230,7 +243,7 @@
                                                             </div>
                                                             <div class="product-action-1 show">
                                                                 <a aria-label="Add To Cart" class="action-btn hover-up"
-                                                                onclick="addToCart('<%=products[i]._id%>')"><i
+                                                                    onclick="addToCart('<%=products[i]._id%>')"><i
                                                                         class="fi-rs-shopping-bag-add"></i></a>
                                                             </div>
                                                         </div>
@@ -256,48 +269,48 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
 
-function addToCart(productId) {
-    console.log("addtocart funtion ${productId}");
-var quantity = 1;
-$.ajax({
-    url: `/cart?id=${productId}`,
-    method: "post",
-    data: {
-        quantity: quantity
-    },
-    success: (res) => {
-        if (res.status === true) {
+        function addToCart(proId, stock) {
+            // console.log(proId, stock);
+            if (stock <= 0) {
+                Swal.fire({
+                    title: 'STOCK!',
+                    text: 'Quantity exceed the unit the in cart.',
+                    icon: 'error',
+                    timer: 5000
+                })
+                return;
+            }
+            
+            const quantity = 1
 
-            Swal.fire({
-                title: 'Added to Cart!',
-                text: 'Continue Shopping',
-                icon: 'success',
-                timer: 2000,
-                showConfirmButton: false
+            $.ajax({
+                url: `/cart/${proId}`,
+                method: 'post',
+                data: {
+                    unit: quantity,
+                    // size: size,
+                },
+                success(response) {
+                    if (response.added == true) {
+                        Swal.fire({
+                            title: 'CART',
+                            text: 'Product ADDED TO CART.',
+                            icon: 'success',
+                            timer: 5000
+                        })
+                    } else if (response.err == true) {
+                        Swal.fire({
+                            title: 'STOCK!',
+                            text: 'Product is out of stock.',
+                            icon: 'error',
+                            timer: 5000
+                        })
+                    } else {
+                        location.href = '/login'
+                    }
+                }
             })
-        } else if (res.status === "Out of stock") {
-            Swal.fire({
-                title: 'Stock!!',
-                text: "The product is out of stock",
-                icon: 'error', // Corrected from 'fail' to 'error'
-                timer: 2000,
-            })
-        } else {
-            Swal.fire({
-                title: 'You need to Login first',
-                text: 'Continue Shopping',
-                icon: 'warning',
-                timer: 2000,
-                showConfirmButton: false
-            }).then(() => { window.location.href = '/login' });
         }
-    },
-    error: (err) => {
-        console.error(err, "hello");
-        res.alert("error occured")
-    }
-});
-}
     </script>
 
 

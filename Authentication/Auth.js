@@ -1,8 +1,9 @@
-const User = require("../models/userSchema")
+const { User } = require("../models/userSchema")
 const Admin = require("../models/adminSchema")
 
 const isLogged = (req, res, next)=>{
     if(req.session.user){
+        console.log(req.session.user);
         User.findById({_id : req.session.user}).lean()
         .then((data)=>{
             if(data.isBlocked == false){

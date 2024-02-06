@@ -84,7 +84,7 @@ const showEdit = async (req, res) => {
 const editProduct = async (req, res) => {
     try {
 
-        req.body.units = parseInt(req.body.units);
+        req.body.unit = parseInt(req.body.unit);
         req.body.regular_price = parseInt(req.body.regular_price)
         req.body.regular_price = parseInt(req.body.sale_price)
 
@@ -107,9 +107,9 @@ const editProduct = async (req, res) => {
                 unit: products.unit,
                 category: products.category,
                 images: productImage,
-
             }, { new: true })
             console.log("product updated");
+            console.log(products.unit);
             res.redirect("/admin/productList")
         } else {
             console.log("no change in image")
@@ -122,6 +122,7 @@ const editProduct = async (req, res) => {
                 category: products.category
             }, { new: true })
             console.log("product updated");
+            console.log(products.unit); 
             res.redirect("/admin/productList")
         }
     } catch (error) {
