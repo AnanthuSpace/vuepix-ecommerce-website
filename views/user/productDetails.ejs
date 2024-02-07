@@ -109,7 +109,7 @@
                                                     <div class="product-extra-link2">
 
                                                         <button type="submit"
-                                                            onclick="addToCart('<%=data.id%>', '<%=data.unit%>')"
+                                                            onclick="addToCart('<%=data.id%>', 1)"
                                                             class="button button-add-to-cart">Add to cart</button>
 
                                                         <a aria-label="Add To Wishlist" class="action-btn hover-up"
@@ -281,14 +281,14 @@
                 return;
             }
             
-            const quantity = 1
+            // const quantity = 1
 
             $.ajax({
-                url: `/cart/${proId}`,
+                url: `/cart`,
                 method: 'post',
                 data: {
-                    unit: quantity,
-                    // size: size,
+                    id:proId,
+                    unit: stock,
                 },
                 success(response) {
                     if (response.added == true) {

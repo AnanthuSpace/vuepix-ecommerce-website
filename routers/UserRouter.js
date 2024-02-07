@@ -36,7 +36,7 @@ router.get("/shop", productController.getShop)
 
 // Cart controll
 router.get("/cart", isLogged,cartController.renderCart)
-router.post("/cart/:id", isLogged,cartController.addToCart)
+router.post("/cart", isLogged,cartController.addToCart)
 
 
 
