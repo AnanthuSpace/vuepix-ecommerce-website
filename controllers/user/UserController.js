@@ -415,6 +415,8 @@ const newPass = async (req, res) => {
 }
 
 
+
+
 module.exports = {
     pageNotFound,
     renderLogin,
@@ -431,5 +433,5 @@ module.exports = {
     verifyForgotEmail,
     verifyForgotOtp,
     renderRePass,
-    newPass
+    newPass,
 }

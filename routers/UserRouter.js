@@ -5,6 +5,7 @@ const {isLogged} = require('../Authentication/Auth')
 const controller = require("../controllers/user/UserController")
 const productController = require("../controllers/user/productController")
 const cartController = require("../controllers/user/cartController")
+const profileController = require("../controllers/user/userProfile")
 
 
 
@@ -37,6 +38,13 @@ router.get("/shop", productController.getShop)
 // Cart controll
 router.get("/cart", isLogged,cartController.renderCart)
 router.post("/cart", isLogged,cartController.addToCart)
+
+
+
+// Profile routes
+router.get('/profile', isLogged, profileController.renderProfile)
+router.post('/editUserDetails', isLogged, profileController.editUser)
+router.get("/addAddress", profileController.renderAddAddress)
 
 
 

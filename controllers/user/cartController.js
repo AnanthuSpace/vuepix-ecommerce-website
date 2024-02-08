@@ -75,7 +75,7 @@ const addToCart = async (req, res) => {
 
         const userData = await User.findById(userId);
         const productData = await Product.findById(id);
-
+        // console.log(productData.unit);
         const salesPrice = parseInt(productData.salesPrice);
 
         if (productData.unit > 0) {
@@ -88,33 +88,34 @@ const addToCart = async (req, res) => {
                         $push: {
                             cart: {
                                 ProductId: id,
-                                unit: unit, 
+                                unit: parseInt(unit), 
                                 price: salesPrice
                             }
                         }
                     }
                 );
                 
-                return res.json({ added: true, message: "Product added to cart successfully" });
+                return res.json({ added: true});
             } else {
+                const existingUnit = parseInt(existingProduct.unit)
                 await User.findOneAndUpdate(
                     { _id: userId, "cart.ProductId": id }, 
                     { 
-                        $inc: { 
-                            "cart.$.unit": 1, 
+                        $set: { 
+                            "cart.$.unit": existingUnit + 1, 
                             "cart.$.price": salesPrice 
                         }
                     }, 
                     { new: true } 
-                );
+                )
                 
-                return res.json({ added: true, message: "Product quantity and price updated successfully" });
+                return res.json({ added: true});
             }
         } else {
-            return res.json({ err: false, message: "Product is out of stock" });
+            return res.json({ added: false});
         }
     } catch (error) {
-        return res.json({ err: false, error: error.message });
+        console.log(error.message);
     }
 };
 
