@@ -119,7 +119,7 @@ body {
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
+
 <script>
     function validate(){
         const nameRegex = /^[A-Z][a-z]*$/;
@@ -144,59 +144,6 @@ body {
 
     }
 
-    function viewImage1(event) {
-            document.getElementById('imgView1').src = URL.createObjectURL(event.target.files[0])
-        }
 
-        function viewImage(event, index) {
-            let input = event.target;
-            let reader = new FileReader();
-
-            reader.onload = function () {
-                let dataURL = reader.result;
-                let image = document.getElementById('imgView' + index);
-                image.src = dataURL;
-
-                // Initialize Cropper.js on the image
-                let cropper = new Cropper(image, {
-                    aspectRatio:1, // Initial aspect ratio
-                    viewMode: 1,
-                    guides: true,
-                    background: false,
-                    autoCropArea: 1,
-                    zoomable: true
-                });
-
-
-                // Show the image cropper container
-                let cropperContainer = document.querySelector('#croppedImg' + index).parentNode;
-                cropperContainer.style.display = 'block';
-
-                // Update the cropped image when the "Save" button is clicked
-                let saveButton = document.querySelector('#saveButton' + index);
-                saveButton.addEventListener('click', async function () {
-                    let croppedCanvas = cropper.getCroppedCanvas({
-                        width: 487,
-                        height: 203
-                    });
-                    let croppedImage = document.getElementById("croppedImg" + index);
-                    croppedImage.src = croppedCanvas.toDataURL('image/jpeg', 1.0);
-
-                    // Generate a unique name for the cropped image file based on the current timestamp
-                    let timestamp = new Date().getTime();
-                    let fileName = `cropped-img-${timestamp}-${index}.png`;
-
-                    await croppedCanvas.toBlob(blob => {
-                        let input = document.getElementById('input' + index)
-                        let imgFile = new File([blob], fileName, blob)
-                        const fileList = new DataTransfer();
-                        fileList.items.add(imgFile);
-                        input.files = fileList.files
-                    });
-                    // cropperContainer.style.display = 'none';
-                });
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
 
 

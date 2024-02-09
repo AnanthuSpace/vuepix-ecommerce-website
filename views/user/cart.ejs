@@ -48,7 +48,7 @@
                                                         </p>
                                                     </td>
                                                     <td class="price" data-title="Price">₹<span> <text
-                                                                id="subTotal<%= data[i].productDetails[0].id %>">
+                                                                id="subTotal<%= data[i].productDetails[0]._id %>">
                                                                 <%= data[i].productDetails[0].salesPrice * data[i].unit
                                                                     %>
                                                             </text><br>
@@ -74,11 +74,11 @@
 
                                                                         </script>
                                                                         <button class="btn btn-sm increment-button"
-                                                                            onclick="changeQuantity('<%= data[i].productDetails[0]._id %>', '<%= data[i].unit %>', 1, '<%= data[i].productDetails[0].salePrice %>',  '<%= data[i].productDetails[0].id %>', '<%= data[i].productDetails[0].unit%>')">+</button>
+                                                                            onclick="changeQuantity('<%= data[i].productDetails[0]._id %>', '<%= data[i].unit %>', 1, '<%= data[i].productDetails[0].salesPrice %>',  '<%= data[i].productDetails[0].id %>', '<%= data[i].productDetails[0].unit%>')">+</button>
 
 
                                                                         <input class="quantity-input"
-                                                                            id="cartProductQuantity<%= data[i].productDetails[0].id %>"
+                                                                            id="cartProductQuantity<%= data[i].productDetails[0]._id %>"
                                                                             value="<%= data[i].unit %>"
                                                                             style="width: 45px;" type="text" readonly
                                                                             value="">
@@ -119,9 +119,9 @@
 
                                                 </tr>
                                                 <% } %>
-                                                    
 
-                                                        <input type="hidden" name="" id="totalabc" value="<%= x  %>">
+
+                                                    <input type="hidden" name="" id="totalabc" value="<%= x  %>">
 
                                 </tbody>
                             </table>
@@ -171,40 +171,18 @@
     <script>
         function changeQuantity(productId, cartQuantity, count, productPrice, i, productQuantity) {
 
-            // alert(productPrice)
-            // alert(cartQuantity)
-            // alert(i)
+            const cartProductQuantityElement = document.querySelector(`#cartProductQuantity${productId}`)
+            const subtotalElement = document.querySelector(`#subTotal${productId}`);
+            const totalElements = document.getElementById('total');
 
-            const abc = document.getElementById("totalabc").value
-            console.log(abc, "hi");
-            console.log(productId, cartQuantity, count, productPrice, i, productQuantity);
-            const cartProductQuantityElement = document.querySelector(`#cartProductQuantity${i}`)
-            // alert('quantity')
-            // alert(cartProductQuantityElement.value,'quantity')
-            const subtotalElement = document.querySelector(`#subTotal${i}`);
-            // alert(subtotalElement.innerHTML,"subelm")
-            const totalElements = document.getElementById('total').innerHTML;
-            // alert(parseInt(subtotalElement.innerHTML)+ parseInt(productPrice))
-
-
-
-
-            let currentQuantity = parseInt(cartProductQuantityElement.value)
+            const currentQuantity = parseInt(cartProductQuantityElement.value)
 
             const currentSubTotal = parseInt(subtotalElement.innerHTML)
-            // alert(currentSubTotal+"sub")
-
-            // alert(currentTotal+"total")
 
             const newQuantity = currentQuantity + count
-            // alert(newQuantity)
 
             if (count === -1 && newQuantity < 1) {
                 return;
-            }
-
-            if (currentSubTotal < currentSubTotal) {
-                return
             }
 
             if (count == 1 && newQuantity > productQuantity) {
@@ -220,62 +198,35 @@
             }
 
             const newSubtotal = newQuantity * productPrice
-            if (count == 1) {
-                // alert('1')
-                document.getElementById(`subTotal${i}`).innerHTML = parseInt(subtotalElement.innerHTML) + parseInt(productPrice)
-            } else {
-                // alert('else')
-                document.getElementById(`subTotal${i}`).innerHTML = parseInt(subtotalElement.innerHTML) - parseInt(productPrice)
-            }
 
+            
+            cartProductQuantityElement.value = newQuantity;
+            subtotalElement.innerHTML = newSubtotal;
 
+            
+            const currentTotal = parseInt(totalElements.innerHTML);
+            const newTotal = currentTotal + (count * productPrice);
 
-            // alert('in starting '+newTotal)
+            
+            totalElements.innerHTML = newTotal;
+
+            // Send AJAX request to update quantity on the server
             $.ajax({
                 url: '/changeQuantity',
                 method: 'POST',
                 data: {
-                    productId: productId,
+                    id: productId,
                     quantity: newQuantity,
                     count: count
                 },
-
                 success: (response) => {
-                    //   alert('sucess')
-                    // location.reload()
-
-
-                    let currentQuantity = parseInt(cartProductQuantityElement.value)
-                    // alert(currentQuantity,"currQua")
-                    let currentSubTotal = parseInt(subtotalElement.value)
-                    // alert(subtotalElement.value,"subttl")
-                    // alert(currentTotal,"ctotal")
-                    document.getElementById(`cartProductQuantity${i}`).value = currentQuantity + count
-
-                    document.getElementById(`subTotal${i}`).value = currentSubTotal * count
-                    // alert(parseInt(abc) + parseInt(response.totalAmount),"helloooooooooooooooooooo")
-                    if (response.count == 1) {
-                        console.log("TOtal Element == >", totalElements)
-                        document.getElementById(`total`).innerHTML = parseInt(totalElements) + parseInt(response.totalAmount)
-                    } else {
-                        document.getElementById(`total`).innerHTML = parseInt(totalElements) - parseInt(response.totalAmount)
-
-                    }
-
-
+                    // Handle success response
                 },
                 error: (error) => {
-                    // alert(error)    
+                    // Handle error
                 }
-            })
+            });
         }
-
-
-
-
-
-
-
 
     </script>
     <%- include("../partials/userFooter") %>

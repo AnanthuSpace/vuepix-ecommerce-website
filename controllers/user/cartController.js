@@ -1,5 +1,4 @@
 const Product = require("../../models/productSchema")
-// const Category = require("../../models/categorySchema")
 const mongodb = require('mongodb');
 
 const { User } = require("../../models/userSchema")
@@ -120,8 +119,81 @@ const addToCart = async (req, res) => {
 };
 
 
+const deleteCartItem = async (req,res)=>{
+    try {
+        const id = req.query.id
+        console.log(id, "id");
+        const userId = req.session.user
+        const user = await User.findById(userId)
+        const cartIndex = user.cart.findIndex(item => item.productId == id)
+        user.cart.splice(cartIndex, 1)
+        await user.save()
+        console.log("item deleted from cart");
+        res.redirect("/cart")
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+const changeQuantity = async(req,res)=>{
+    try {
+        console.log('wrkg');
+        const userId = req.session.user
+        const id = req.body.id
+        const count = req.body.count
+        
+        const findUser = await User.findById(userId)
+        const findProduct = await Product.findById(id)
+        
+        if(findUser){
+            
+            const productExistinCart = findUser.cart.find(item => item.ProductId == id);
+            let newUnit 
+            if(productExistinCart){
+                if(count == 1){
+                    newUnit = productExistinCart.unit + 1
+                }else if ( count == -1){
+                    newUnit = productExistinCart.unit - 1
+                }else{
+                    res.json({ status: false, error: "Invalid count" })
+                }
+            } else {
+                console.log("user not found");
+            }
+        
+            if (newUnit > 0 && newUnit <= findProduct.unit) {
+                let quantityUpdated = await User.updateOne(
+                    { _id: userId, "cart.ProductId": id },
+                    {
+                        $set: {
+                            "cart.$.unit": newUnit
+                        }
+                    }
+                )
+                const totalAmount = findProduct.salesPrice
+                console.log(totalAmount);
+                if (quantityUpdated) {
+                    res.json({ status: true, quantityInput: newUnit,count:count, totalAmount: totalAmount })
+                } else {
+                    res.json({ status: false, error: 'cart quantity is less' });
+                }
+            } else {
+                res.json({ status: false, error: 'out of stock' });
+            }
+        }
+
+    } catch (error) {
+        
+    }
+}
+
+
 
 module.exports = {
     renderCart,
-    addToCart
+    addToCart,
+    deleteCartItem,
+    changeQuantity
 }

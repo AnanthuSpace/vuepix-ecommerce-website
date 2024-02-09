@@ -6,6 +6,7 @@ const controller = require("../controllers/user/UserController")
 const productController = require("../controllers/user/productController")
 const cartController = require("../controllers/user/cartController")
 const profileController = require("../controllers/user/userProfile")
+const orderController = require("../controllers/user/orderController")
 
 
 
@@ -38,6 +39,9 @@ router.get("/shop", productController.getShop)
 // Cart controll
 router.get("/cart", isLogged,cartController.renderCart)
 router.post("/cart", isLogged,cartController.addToCart)
+router.get("/deleteItem", isLogged, cartController.deleteCartItem)
+router.post("/changeQuantity", isLogged, cartController.changeQuantity)
+
 
 
 
@@ -49,6 +53,10 @@ router.post("/addAddress", isLogged,profileController.addAddress)
 router.get("/editAddress", isLogged, profileController.getEditAddress)
 router.post("/editAddress", isLogged, profileController.editAddress)
 
+
+
+// Order controll
+router.get('/checkout', isLogged, orderController.checkout)
 
 
 module.exports = router
