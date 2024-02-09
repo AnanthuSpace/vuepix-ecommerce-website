@@ -44,7 +44,10 @@ router.post("/cart", isLogged,cartController.addToCart)
 // Profile routes
 router.get('/profile', isLogged, profileController.renderProfile)
 router.post('/editUserDetails', isLogged, profileController.editUser)
-router.get("/addAddress", profileController.renderAddAddress)
+router.get("/addAddress", isLogged,profileController.renderAddAddress)
+router.post("/addAddress", isLogged,profileController.addAddress)
+router.get("/editAddress", isLogged, profileController.getEditAddress)
+router.post("/editAddress", isLogged, profileController.editAddress)
 
 
 

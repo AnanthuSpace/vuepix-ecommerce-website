@@ -11,8 +11,8 @@ const { isAdmin } = require("../Authentication/Auth")
 
 
 router.get("/", controller.renderAdminLogin)
-router.get("/home", isAdmin,controller.renderAdminHome)
 router.post("/getHome", controller.adminHome)
+router.get("/home", isAdmin,controller.renderAdminHome)
 router.get("/logout", isAdmin,controller.adminLogout)
 
 
