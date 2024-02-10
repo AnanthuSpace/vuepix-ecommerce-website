@@ -57,6 +57,7 @@ router.post("/editAddress", isLogged, profileController.editAddress)
 
 // Order controll
 router.get('/checkout', isLogged, orderController.checkout)
+router.post('/orderPlaced', isLogged, orderController.placeOrder)
 
 
 module.exports = router

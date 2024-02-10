@@ -218,7 +218,7 @@
                 event.preventDefault()
             }
 
-            const unitRegex = /^\d+$/;
+            const unitRegex = /^(?:[1-9]|1\d|20)\d*$/;
 
             if (unitRegex.test(unit)) { } else {
                 document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> unit  error'

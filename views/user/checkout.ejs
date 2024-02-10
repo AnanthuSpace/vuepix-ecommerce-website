@@ -148,7 +148,7 @@
                                     data-target="#CashOnDelivey" aria-controls="CashOnDelivey">Cash on
                                     Delivery</label>
                             </div>
-                            <div class="custome-radio ml-150">
+                            <!-- <div class="custome-radio ml-150">
                                 <input class="form-check-input payment" required="" value="wallet" type="radio"
                                     name="payment_option" id="wallet" checked="">
                                 <label class="form-check-label" for="wallet" data-bs-toggle="collapse"
@@ -159,7 +159,7 @@
                                     name="payment_option" id="Razorpay" checked="">
                                 <label class="form-check-label" for="Razorpay" data-bs-toggle="collapse"
                                     data-target="#Razorpay" aria-controls="paypal">Razorpay</label>
-                            </div>
+                            </div> -->
 
                         </div>
 
@@ -220,16 +220,7 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="input-group mb-3 col-2"
-                                                        style="border: 1px solid #ced4da; border-radius: 5px; width: 300px; margin-left: 200px; margin-top: 60px;">
-                                                        <input type="text" class="form-control" id="inputCoupon"
-                                                            placeholder="Paste Coupon Name">
-                                                        <div class="input-group-append">
-                                                            <button class="btn btn-primary" id="applyButton"
-                                                                type="button"
-                                                                onclick="applyCoupon('<%=totalAmount%>')">Apply</button>
-                                                        </div>
-                                                    </div>
+
 
                     </div>
 
@@ -348,7 +339,6 @@
                         addressId: address,
                         payment: payment,
                         productId: prodId,
-                        isSingle
                     },
                     success: function (response) {
                         if (response.method === "cod") {
@@ -360,98 +350,20 @@
                                 timer: 2000,
                             })
                             location.href("/orderHistory")
-                        } else if (response.method === "online") {
-
-                            let orderAmount = Math.round(numericValue * 100)
-                            console.log(response, "res");
-                            var options = {
-                                "key": "rzp_test_kkytoEMYHJ1dn3",
-                                "amount": orderAmount,
-                                "currency": "INR",
-                                "name": "LapLux",
-                                "description": "Test Transaction",
-                                "image": "https://example.com/your_logo",
-                                "order_id": response.razorpayOrder.id,
-                                "handler": function (status) {
-                                    verifyPayment(response.razorpayOrder, status, response.razorpayOrder.id);
-                                },
-                                "prefill": {
-                                    "name": "Customer Name",
-                                    "email": "customer@example.com",
-                                    "contact": "9000090000"
-                                },
-
-                                "theme": {
-                                    "color": "#3399cc"
-                                }
-                            }
-                            var rzp1 = new Razorpay(options);
-                            rzp1.open();
-                        } else if (response.method === "wallet") {
-
-                            if (response.payment === true) {
-                                Swal.fire({
-                                    title: "Order success",
-                                    text: "Order placed successfully",
-                                    icon: "success",
-                                    showConfirmButton: false,
-                                    timer: 2000,
-                                });
-
-                            } else {
-                                // Handle the case when the response status is not successful
-                                Swal.fire({
-                                    title: "Order failed",
-                                    text: "Wallet amount is not enough",
-                                    icon: "error",
-                                    showConfirmButton: true,
-                                });
-                            }
+                        } else {
+                            // Handle the case when the response status is not successful
+                            Swal.fire({
+                                title: "Order failed",
+                                text: "Wallet amount is not enough",
+                                icon: "error",
+                                showConfirmButton: true,
+                            });
                         }
                     }
-
-
-
                 })
-            }
         }
 
-        function verifyPayment(order, payment, id) {
-            console.log(order)
-            console.log(payment);
-            console.log(id);
-            $.ajax({
-                url: '/verifyPayment',
-                method: 'post',
-                data: {
-                    order,
-                    payment
-                }, success: (response) => {
-                    if (response.status) {
-                        Swal.fire({
-                            title: "Order success",
-                            text: "order placed successfully",
-                            icon: "success",
-                            showCancelButton: true,
-                            confirmButtonText: "view orders",
-                            cancelButtonText: "continue shopping",
-                            reverseButtons: true
-                        }).then(function (result) {
-                            if (result.value) {
-                                location.href = '/profile';
-                                // result.dismiss can be "cancel", "overlay",
-                                // "close", and "timer"
-                            } else if (result.dismiss === "cancel") {
-                                location.href = '/'
-                            }
-                        });
-                    }
-
-                }
-            })
-        }
-
-
+    }
     </script>
 
 

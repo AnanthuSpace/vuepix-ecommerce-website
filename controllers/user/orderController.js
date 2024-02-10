@@ -1,6 +1,7 @@
 const { User } = require("../../models/userSchema")
 const Product = require("../../models/productSchema")
 const Address = require("../../models/addressSchema")
+const Order = require("../../models/orderShema")
 const mongodb = require('mongodb');
 
 const checkout = async (req, res) => {
@@ -33,7 +34,6 @@ const checkout = async (req, res) => {
 
 
         const grandTotal = req.session.grandTotal
-        console.log(data);
 
 
         res.render("user/checkout", { data: data, user: findUser, isCart: true, userAddress: userAddress, isSingle: false, grandTotal })
@@ -43,6 +43,84 @@ const checkout = async (req, res) => {
     }
 }
 
+
+
+
+const placeOrder = async (req, res) => {
+    try {
+        const { totalPrice, addressId, payment, productId } = req.body
+        const userId = req.session.user
+
+        const findUser = await User.findOne({ _id: userId })
+        const findProductId = await findUser.cart.map(item => item.productId)
+        const findAddress = await Address.findOne({ 'address._id': addressId })
+        const desiredAddress = findAddress.address.find(item => item._id.toString() === addressId.toString());
+        const findProduct = await Product.find({ _id: { $in: productId } })
+
+
+        const cartItemUnit = findUser.cart.map((item) => ({
+            productId: item.ProductId,
+            unit: item.unit
+        }))
+
+
+        const orderedProducts = findProduct.map((item) => ({
+            _id: item._id,
+            price: item.salesPrice,
+            name: item.name,
+            images: item.images[0],
+            unit: cartItemUnit.find(cartItem => cartItem.productId.toString() === item._id.toString()).unit
+        }))
+
+        console.log(orderedProducts);
+
+
+        const newOrder = new Order({
+            product: orderedProducts,
+            totalPrice: totalPrice,
+            address: desiredAddress,
+            payment: payment,
+            userId: userId,
+            status: "Confirmed",
+            createdOn: Date.now()
+
+        })
+
+        await User.updateOne(
+            { _id: userId },
+            { $set: { cart: [] } }
+        );
+        
+
+        for (let i = 0; i < orderedProducts.length; i++) {
+
+            const product = await Product.findOne({ _id: orderedProducts[i]._id });
+            if (product) {
+                const newUnit = product.unit - orderedProducts[i].unit;
+                product.unit = Math.max(newUnit, 0);
+                await product.save();
+            }
+        }
+
+        
+        let orderDone
+        if (newOrder.payment == 'cod') {
+            console.log('order placed by cod');
+            orderDone = await newOrder.save();
+            res.json({ payment: true, method: "cod", order: orderDone, quantity: cartItemUnit, orderId: findUser });
+        } 
+
+
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+
 module.exports = {
     checkout,
+    placeOrder
 }
