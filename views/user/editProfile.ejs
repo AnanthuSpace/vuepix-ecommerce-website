@@ -1,117 +1,127 @@
 <style>
-    body{
-    background: #f7f7ff;
-    margin-top:20px;
-}
-.card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 0 solid transparent;
-    border-radius: .25rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
-}
-.me-2 {
-    margin-right: .5rem!important;
-}
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    body {
+        background: #f7f7ff;
+        margin-top: 20px;
+    }
 
-:root {
-	--blue: #0071FF;
-	--light-blue: #B6DBF6;
-	--dark-blue: #005DD1;
-	--grey: #f2f2f2;
-}
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid transparent;
+        border-radius: .25rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
+    }
 
-body {
-	background: var(--light-blue);
-}
-.img-area .icon {
-	font-size: 100px;
-}
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-	font-family: 'Poppins', sans-serif;
-}
+    .me-2 {
+        margin-right: .5rem !important;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --blue: #0071FF;
+        --light-blue: #B6DBF6;
+        --dark-blue: #005DD1;
+        --grey: #f2f2f2;
+    }
+
+    body {
+        background: var(--light-blue);
+    }
+
+    .img-area .icon {
+        font-size: 100px;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
 
 
 
- .select-image {
-	display: block;
-	width: 100%;
-	padding: 16px 0;
-	border-radius: 15px;
-	background: var(--blue);
-	color: #fff;
-	font-weight: 500;
-	font-size: 16px;
-	border: none;
-	cursor: pointer;
-	transition: all .3s ease;
-}
+    .select-image {
+        display: block;
+        width: 100%;
+        padding: 16px 0;
+        border-radius: 15px;
+        background: var(--blue);
+        color: #fff;
+        font-weight: 500;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        transition: all .3s ease;
+    }
 </style>
+
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css">
 </head>
 <div class="container">
     <div class="main-body">
         <div class="row">
-            
+
             <div class="col-lg-8">
                 <div class="card">
                     <form action="/edit-profile/<%=userData._id%>" method="post" enctype="multipart/form-data">
-                    <div class="card-body p-5">
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Full Name</h6>
+                        <div class="card-body p-5">
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Full Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input id="name" name="name" type="text" class="form-control"
+                                        value="<%=userData.name%>">
+                                </div>
                             </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input id="name" name="name" type="text" class="form-control" value="<%=userData.name%>">
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Email</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input id="email" name="email" type="text" class="form-control"
+                                        value="<%=userData.email%>">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Phone</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input id="number" name="number" type="text" class="form-control"
+                                        value="<%=userData.number%>">
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="input-upload">
+                                    <h6>Profile picture</h6>
+                                    <img src="admin-assets/imgs/theme/upload.svg" alt="" id="imgView1">
+                                    <input class="form-control" type="file" name="bannerImg" id="input1"
+                                        accept="image/png, image/jpeg, image/jpg"
+                                        onchange="viewImage1(event),viewImage(event, 1)">
+                                </div>
+                                <div class="image-cropper" style="display:none; width: 300px; height: 200px;">
+                                    <img src="" id="croppedImg1" alt="">
+                                    <button type="button" id="saveButton1" class="btn-sm btn-primary">Save</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input onclick="validate()" type="submit" class="btn btn-primary px-4"
+                                        value="Save Changes">
+                                </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Email</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input id="email" name="email" type="text" class="form-control" value="<%=userData.email%>">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Phone</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input id="number" name="number" type="text" class="form-control" value="<%=userData.number%>">
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="input-upload">
-                                <h6>Profile picture</h6>
-                                <img src="admin-assets/imgs/theme/upload.svg" alt="" id="imgView1">
-                                <input class="form-control" type="file" name="bannerImg" id="input1"
-                                    accept="image/png, image/jpeg, image/jpg"
-                                    onchange="viewImage1(event),viewImage(event, 1)">
-                            </div>
-                            <div class="image-cropper" style="display:none; width: 300px; height: 200px;">
-                                <img src="" id="croppedImg1" alt="">
-                                <button type="button" id="saveButton1" class="btn-sm btn-primary">Save</button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-9 text-secondary">
-                                <input onclick="validate()" type="submit" class="btn btn-primary px-4" value="Save Changes">
-                            </div>
-                        </div>
-                    </div>
                     </form>
                 </div>
             </div>
@@ -121,29 +131,25 @@ body {
 
 
 <script>
-    function validate(){
+    function validate() {
         const nameRegex = /^[A-Z][a-z]*$/;
         let name = document.getElementById('name').value;
-        if(nameRegex.test(name)){}else{
+        if (nameRegex.test(name)) { } else {
             document.getElementById('name').style.borderColor = 'red';
             event.preventDefault()
         }
         const phoneNumberRegex = /^\d{10}$/;
         let number = document.getElementById('number').value;
-        if(phoneNumberRegex.test(number)){}else{
+        if (phoneNumberRegex.test(number)) { } else {
             document.getElementById('number').style.borderColor = 'red';
             event.preventDefault()
         }
         const emailRegex = '/^[\w\.-]+@[\w\.-]+\.\w+$/';
         let email = document.getElementById('email').value;
-        if(emailRegex.test(email)){}else{
+        if (emailRegex.test(email)) { } else {
             document.getElementById('email').style.borderColor = 'red';
             event.preventDefault()
         }
 
 
     }
-
-
-
-

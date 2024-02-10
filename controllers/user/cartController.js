@@ -13,7 +13,7 @@ const renderCart = async (req, res) => {
         const user = await User.findOne({ _id: id })
         console.log(user);
         const productId = user.cart.map(item => item.ProductId)
-        
+
         const oid = new mongodb.ObjectId(id);
 
         let data = await User.aggregate([
@@ -44,12 +44,12 @@ const renderCart = async (req, res) => {
 
         for (let i = 0; i < data.length; i++) {
 
-            if(data[i].productDetails && data[i].productDetails.length > 0){
+            if (data[i].productDetails && data[i].productDetails.length > 0) {
                 unit += data[i].unit
                 grandTotal += data[i].productDetails[0].salesPrice * data[i].unit
-            } 
             }
-            req.session.grandTotal = grandTotal;
+        }
+        req.session.grandTotal = grandTotal;
 
         res.render("user/cart", {
             user,
@@ -79,7 +79,7 @@ const addToCart = async (req, res) => {
 
         if (productData.unit > 0) {
             const existingProduct = userData.cart.find(product => product.ProductId === id);
-            
+
             if (!existingProduct) {
                 await User.findByIdAndUpdate(
                     userId,
@@ -87,31 +87,31 @@ const addToCart = async (req, res) => {
                         $push: {
                             cart: {
                                 ProductId: id,
-                                unit: parseInt(unit), 
+                                unit: parseInt(unit),
                                 price: salesPrice
                             }
                         }
                     }
                 );
-                
-                return res.json({ added: true});
+
+                return res.json({ added: true });
             } else {
                 const existingUnit = parseInt(existingProduct.unit)
                 await User.findOneAndUpdate(
-                    { _id: userId, "cart.ProductId": id }, 
-                    { 
-                        $set: { 
-                            "cart.$.unit": existingUnit + 1, 
-                            "cart.$.price": salesPrice 
+                    { _id: userId, "cart.ProductId": id },
+                    {
+                        $set: {
+                            "cart.$.unit": existingUnit + 1,
+                            "cart.$.price": salesPrice
                         }
-                    }, 
-                    { new: true } 
+                    },
+                    { new: true }
                 )
-                
-                return res.json({ added: true});
+
+                return res.json({ added: true });
             }
         } else {
-            return res.json({ added: false});
+            return res.json({ added: false });
         }
     } catch (error) {
         console.log(error.message);
@@ -119,7 +119,7 @@ const addToCart = async (req, res) => {
 };
 
 
-const deleteCartItem = async (req,res)=>{
+const deleteCartItem = async (req, res) => {
     try {
         const id = req.query.id
         console.log(id, "id");
@@ -137,32 +137,32 @@ const deleteCartItem = async (req,res)=>{
 
 
 
-const changeQuantity = async(req,res)=>{
+const changeQuantity = async (req, res) => {
     try {
         console.log('wrkg');
         const userId = req.session.user
         const id = req.body.id
         const count = req.body.count
-        
+
         const findUser = await User.findById(userId)
         const findProduct = await Product.findById(id)
-        
-        if(findUser){
-            
+
+        if (findUser) {
+
             const productExistinCart = findUser.cart.find(item => item.ProductId == id);
-            let newUnit 
-            if(productExistinCart){
-                if(count == 1){
+            let newUnit
+            if (productExistinCart) {
+                if (count == 1) {
                     newUnit = productExistinCart.unit + 1
-                }else if ( count == -1){
+                } else if (count == -1) {
                     newUnit = productExistinCart.unit - 1
-                }else{
+                } else {
                     res.json({ status: false, error: "Invalid count" })
                 }
             } else {
                 console.log("user not found");
             }
-        
+
             if (newUnit > 0 && newUnit <= findProduct.unit) {
                 let quantityUpdated = await User.updateOne(
                     { _id: userId, "cart.ProductId": id },
@@ -175,7 +175,7 @@ const changeQuantity = async(req,res)=>{
                 const totalAmount = findProduct.salesPrice
                 console.log(totalAmount);
                 if (quantityUpdated) {
-                    res.json({ status: true, quantityInput: newUnit,count:count, totalAmount: totalAmount })
+                    res.json({ status: true, quantityInput: newUnit, count: count, totalAmount: totalAmount })
                 } else {
                     res.json({ status: false, error: 'cart quantity is less' });
                 }
@@ -185,7 +185,7 @@ const changeQuantity = async(req,res)=>{
         }
 
     } catch (error) {
-        
+
     }
 }
 

@@ -152,7 +152,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="/checkout?userId=<%= user._id %>" class="btn "> <i class="fi-rs-box-alt mr-10"></i>
+                            <a href="/checkout" class="btn "> <i class="fi-rs-box-alt mr-10"></i>
                                 Proceed To CheckOut</a>
                         </div>
                     </div>
@@ -199,15 +199,15 @@
 
             const newSubtotal = newQuantity * productPrice
 
-            
+
             cartProductQuantityElement.value = newQuantity;
             subtotalElement.innerHTML = newSubtotal;
 
-            
+
             const currentTotal = parseInt(totalElements.innerHTML);
             const newTotal = currentTotal + (count * productPrice);
 
-            
+
             totalElements.innerHTML = newTotal;
 
             // Send AJAX request to update quantity on the server

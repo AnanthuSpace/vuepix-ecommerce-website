@@ -21,15 +21,15 @@ const getProductDetails = async (req, res) => {
 
 
 
-const getShop = async(req,res)=>{
+const getShop = async (req, res) => {
     try {
         const user = req.session.user
         const count = await Product.countDocuments({ isBlocked: false });
         const products = await Product.find({ isBlocked: false });
-        const cat = await Category.find({isListed:true})
+        const cat = await Category.find({ isListed: true })
         console.log(products);
-            res.render("user/shop", { products, user, count, cat})
-        
+        res.render("user/shop", { products, user, count, cat })
+
     } catch (error) {
         console.log(error.message);
     }

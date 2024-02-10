@@ -157,7 +157,7 @@ const editAddress = async (req, res) => {
                     }
                 }
             }
-        ).then((result=>res.redirect("/profile")))
+        ).then((result => res.redirect("/profile")))
     } catch (error) {
         console.log(error.message);
     }
