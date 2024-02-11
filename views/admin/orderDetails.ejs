@@ -1,0 +1,190 @@
+<%- include("../partials/adminHeader") %>
+
+<main class="container">
+       
+    <section class="content-main">
+        <div class="content-header">
+            <div class="mt-20">
+                <h2 class="content-title card-title">Order detail</h2>
+                <p>Details for Order ID: <%=orders._id%></p>
+            </div>
+        </div>
+        <div class="card mt-60">
+       
+
+
+            <header class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                        <span>
+                            <i class="material-icons md-calendar_today">Ordered Date: </i>
+                            <b>
+                                <% const dateOptions = { day: '2-digit', month: 'short', year: 'numeric' }; %>
+                                <%= new Date(orders.createdOn).toLocaleDateString('en-US', dateOptions) %>
+                            </b>
+                        </span> <br>
+                        <small class="text-muted">Order ID: <%=orders._id%></small>
+                    </div>
+                    <div class="col-lg-4 col-md-4 ms-auto text-md-end">
+                        <% if (orders.status !== "Canceled") { %>
+                            <% if (orders.status === "Delivered") { %>
+                                <div class="row">
+                               <div class="col-2 ">
+                                <a href="/invoice?id=<%= orders._id %>"><button  class="btn btn-primary">Invoice</button></a>
+                                    </div>
+                                    <div class="col-5" style="margin-top: 10px; margin-left: 50px;">
+
+
+
+                                        <h4 class="text-success">Delivered</h4>
+                                    </div>
+                                    </div>
+                            <% } else if (orders.status === "Returned") { %>
+                                <h4 class="text-warning">Returned</h4>
+                            <% } else { %>
+                                <select id="actionDropdown" class="form-select form-select-sm d-inline-block mb-lg-0 mb-15 mw-100" onchange="handleDropdownChange(this)">
+                                    <option value="status">Status</option>
+                                    <option value="Shipped">Shipped</option>
+                                    <option value="Delivered">Delivered</option>
+                                </select>
+                            <% } %>
+                        <% } else { %>
+                            <h4 class="text-danger">Cancelled</h4>
+                        <% } %>
+                    </div>
+                    
+            </header>
+            
+                  
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-50 mt-20 order-info-wrap background-info">
+                    <div class="col-md-4">
+                        <article class="icontext align-items-start ml-130">
+                            <span class="icon icon-sm rounded-circle bg-primary-light">
+                                <i class="material-icons text-primary person"></i>
+                            </span>
+                            <div class="text">
+                                <h6 class="mb-1">Customer</h6>
+                                <p class="mb-1">
+                                    <%= orders.address[0].name %> <br> <%= orders.address[0].phone %>
+                                </p>
+                            </div>
+                          
+                        </article>
+                        
+                    </div> <!-- col// -->
+                    <div class="col-md-4">
+                        <article class="icontext align-items-start ml-130">
+                            <span class="icon icon-sm rounded-circle bg-primary-light">
+                                <i class="text-primary material-icons md-local_shipping"></i>
+                            </span>
+                            <div class="text">
+                                <h6 class="mb-1">Order info</h6>
+                                <p class="mb-1">
+                                    <%if(locals.orders){%>
+                                    Pay method: <%=orders.payment%> <br> Status:
+                                    <%if(orders.status=="Pending"){%> 
+                                        Pending
+                                            <%}else if(orders.status=="Delivered"){%>
+                                                Delivered
+                                                <%}else if(orders.status=="Confirmed"){%>
+                                                    Confirmed
+                                                <%}else if(orders.status=="Returned"){%>
+                                                    Returned
+                                                    <%}else if(orders.status=="Canceled"){%>
+                                                        Cancelled
+                                                        <%}else if(orders.status=="Shipped"){%>
+                                                            Shipped
+                                                            <%}%>
+                                                <%}%>
+
+                                </p>
+                                
+                            </div>
+                        </article>
+                    </div> <!-- col// -->
+                    <div class="col-md-4">
+                        <article class="icontext align-items-start ml-130">
+                            <span class="icon icon-sm rounded-circle bg-primary-light">
+                                <i class="text-primary material-icons md-place"></i>
+                            </span>
+                            <div class="text">
+                                <h6 class="mb-1">Deliver to</h6>
+                                <p class="mb-1">
+                                    Address: <%=orders.address[0].landMark%>,<%=orders.address[0].city%> <br><%=orders.address[0].state%>,<%=orders.address[0].addressType%> <br><%=orders.address[0].pincode%>
+                                </p>
+                                
+                            </div>
+                        </article>
+                    </div> <!-- col// -->
+                </div> <!-- row // -->
+                <div class="row">
+                    <div class="col-lg">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Product</th>
+                                        <th>Name</th>
+                                        <th>Unit Price</th>
+                                        <th>Quantity</th>
+                                        <th class="text-center" width="20%" class="text-end">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%if(locals.orders){%>
+                                        <% let orderId; %>
+                                        <% for (let i = 0; i < orders.product.length; i++) { %>
+                                            <tr>
+                                                <td class="text-center"> 
+                                                  
+                                                       
+                                                            <img src="/uploads/product-images/<%= orders.product[i].image %>" style="height: 7rem; width: 7rem;" class="img-xs" alt="Item">
+                                                    
+                                                
+                                                </td>
+                                                <td class="text-center"> 
+                                                   
+                                                        <%= orders.product[i].title || orders.product[i].name %>
+                                               
+                                                </td>
+                                                <td class="text-center"> 
+                                                    ₹<%= orders.product[i].price.toLocaleString() %>
+                                                </td>
+                                                <td class="text-center"> 
+                                                    <%= orders.product[i].quantity %>
+                                                </td>
+                                                <td class="text-center"> 
+                                                    ₹<%= (parseInt(orders.product[i].price) * parseInt(orders.product[i].quantity)).toLocaleString() %>
+
+                                                </td>
+                                            </tr>
+                                            
+                                           
+                                               
+                                            
+                                                
+                                      
+
+
+                                        <% } %>
+                                        
+                                    <%}%>
+
+                                    <input type="hidden" name="" id="orderId" value="<%= orderId %>">
+                                   
+                                </tbody>
+                            </table>
+                        </div> <!-- table-responsive// -->
+                    </div> <!-- col// -->
+                    <div class="col-lg-1"></div>
+                     <!-- col// -->
+                </div>
+            </div> <!-- card-body end// -->
+        </div> <!-- card end// -->
+    </section> <!-- content-main end// -->
+
+</main>
+<%- include("../partials/adminFooter") %>

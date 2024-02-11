@@ -5,6 +5,7 @@ const controller = require("../controllers/admin/AdminController")
 const userViewController = require("../controllers/admin/userController")
 const productController = require("../controllers/admin/productController")
 const categoryController = require("../controllers/admin/categoryController")
+const orderController = require("../controllers/admin/orderController")
 
 
 const { isAdmin } = require("../Authentication/Auth")
@@ -42,5 +43,9 @@ router.get("/editCategory", isAdmin, categoryController.renderEditCategory)
 router.post("/editCategory/:id", isAdmin, categoryController.editCategory)
 
 
+
+
+router.get("/orders", isAdmin, orderController.orderListing)
+router.get("/orderDetails", isAdmin, orderController.getOrderDetails)
 
 module.exports = router
