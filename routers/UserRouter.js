@@ -52,6 +52,7 @@ router.get("/addAddress", isLogged, profileController.renderAddAddress)
 router.post("/addAddress", isLogged, profileController.addAddress)
 router.get("/editAddress", isLogged, profileController.getEditAddress)
 router.post("/editAddress", isLogged, profileController.editAddress)
+router.get('/orderDetails', isLogged, profileController.orderDetails)
 
 
 

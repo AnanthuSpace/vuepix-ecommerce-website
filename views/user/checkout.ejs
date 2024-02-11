@@ -351,15 +351,7 @@
                             })
                             setTimeout(() => {
                                 window.location.href = "/profile";
-                            }, 1000);
-                        } else {
-                            // Handle the case when the response status is not successful
-                            Swal.fire({
-                                title: "Order failed",
-                                text: "Wallet amount is not enough",
-                                icon: "error",
-                                showConfirmButton: true,
-                            });
+                            }, 700);
                         }
                     }
                 })
