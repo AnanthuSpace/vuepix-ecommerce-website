@@ -1,5 +1,6 @@
 const { User } = require("../../models/userSchema")
 const Address = require("../../models/addressSchema")
+const Order = require('../../models/orderShema')
 
 
 
@@ -9,7 +10,8 @@ const renderProfile = async (req, res) => {
         const userId = req.session.user
         const user = await User.findOne({ _id: userId })
         const userAddress = await Address.findOne({ userId: userId })
-        res.render("user/profile", { user, userAddress })
+        const orderDetails = await Order.find({userId:userId})
+        res.render("user/profile", { user, userAddress, order: orderDetails })
 
     } catch (error) {
         console.log(error.message);

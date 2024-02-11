@@ -349,7 +349,9 @@
                                 showConfirmButton: false,
                                 timer: 2000,
                             })
-                            location.href("/orderHistory")
+                            setTimeout(() => {
+                                window.location.href = "/profile";
+                            }, 1000);
                         } else {
                             // Handle the case when the response status is not successful
                             Swal.fire({
@@ -361,9 +363,9 @@
                         }
                     }
                 })
-        }
+            }
 
-    }
+        }
     </script>
 
 
