@@ -81,7 +81,7 @@
                             <td> <% const dateOptions = { day: '2-digit', month: 'short', year: 'numeric' }; %>
                                 <%= new Date(orders[0].createdOn).toLocaleDateString('en-US', dateOptions) %></td>
                             <td class="text-end">
-                                <a href="/admin/orderDetails?id=<%= orders[i]._id %>" class="btn btn-md rounded font-sm">Detail</a>
+                                <a href="/admin/orderDetailsAdmin?id=<%= orders[i]._id %>" class="btn btn-md rounded font-sm">Detail</a>
                                
                             </td>
                         </tr>

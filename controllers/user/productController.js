@@ -12,7 +12,7 @@ const getProductDetails = async (req, res) => {
         if (user) {
             res.render("user/productDetails", { data: findProduct, user: user, products })
         } else {
-            res.render("user/productDetails", { data: findProduct })
+            res.render("user/productDetails", { data: findProduct ,products})
         }
     } catch (error) {
         console.log(error.message);

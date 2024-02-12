@@ -1,5 +1,6 @@
 const express = require("express")
 const session = require("express-session")
+// const morgan = require('morgan');
 const userRoute = require("./routers/UserRouter")
 const adminRoute = require("./routers/AdminRouter")
 const nocache = require("nocache")
@@ -10,6 +11,7 @@ const dotenv = require("dotenv")
 dotenv.config()
 
 const app = new express()
+// app.use(morgan('dev'));
 
 app.use(
     session({

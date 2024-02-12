@@ -5,6 +5,16 @@ const bcrypt = require("bcrypt")
 
 
 
+const renderGuest = async (req,res)=>{
+    try {
+        const products = await Product.find({ isBlocked: false })
+        console.log(products);
+        res.render("user/userHome", { products: products })
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 const pageNotFound = async (req, res) => {
     try {
         res.render("user/page-404")
@@ -22,7 +32,7 @@ const renderLogin = async (req, res) => {
         if (!req.session.user) {
             res.render("user/userLogin");
         } else {
-            res.redirect("/home")
+            res.redirect("/VuePix")
         }
     } catch (error) {
         res.render("user/userHome")
@@ -64,13 +74,14 @@ const renderHome = async (req, res) => {
         const products = await Product.find({ isBlocked: false })
 
         if (!user) {
-            res.render("user/userLogin")
+            // res.render("user/userHome")
+            res.redirect("/")
         }
         else {
             res.render("user/userHome", { user: user, products: products })
         }
     } catch (error) {
-        res.redirect("/")
+        res.redirect("/login")
     }
 }
 
@@ -94,7 +105,7 @@ const userVerification = async (req, res) => {
                 if (passwordMatch) {
                     req.session.user = findUser._id
                     console.log("Logged in");
-                    res.redirect("/home")
+                    res.redirect("/VuePix")
                 } else {
                     console.log("Password is not matching");
                     res.render("user/userLogin", { login_err: "Invalid User id and password" });
@@ -270,7 +281,7 @@ const logout = async (req, res) => {
                 console.log("Logout Error");
             }
             console.log("Logout Successfully");
-            res.redirect("/")
+            res.redirect("/login")
         })
     } catch (error) {
         console.log("Logout Error : ", error);
@@ -418,6 +429,7 @@ const newPass = async (req, res) => {
 
 
 module.exports = {
+    renderGuest,
     pageNotFound,
     renderLogin,
     renderSignUp,

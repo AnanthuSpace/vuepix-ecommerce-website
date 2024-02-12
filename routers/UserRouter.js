@@ -10,11 +10,11 @@ const orderController = require("../controllers/user/orderController")
 
 
 
-router.get("/", controller.renderLogin)
+router.get("/", controller.renderGuest)
 router.get("/login", controller.renderLogin)
 router.get("/signup", controller.renderSignUp)
 router.post("/userCreate", controller.createUser);
-router.get("/Home", controller.renderHome)
+router.get("/VuePix", controller.renderHome)
 router.get("/verifyOtp", controller.getVerifyOtp)
 router.post("/verifyOtp", controller.verifyOtp)
 router.post("/userVerification", controller.userVerification)
