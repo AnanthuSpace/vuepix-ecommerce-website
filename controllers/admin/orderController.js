@@ -1,5 +1,5 @@
 const Order = require("../../models/orderShema")
-
+const mongoose = require("mongoose")
 
 
 const orderListing = async (req,res)=>{
@@ -27,16 +27,43 @@ const getOrderDetails = async (req, res) => {
         const orderId = req.query.id
         // console.log(orderId);
         const findOrder = await Order.findOne({ _id: orderId }).sort({ createdOn: 1 })
-        // console.log(findOrder);
+        console.log(findOrder);
 
 
-        res.render("user/orderDetails", { orders: findOrder, orderId })
+        res.render("admin/orderDetails", { orders: findOrder, orderId })
     } catch (error) {
         console.log(error.message);
     }
 }
 
+
+
+
+
+const changeOrderStatus = async (req, res) => {
+    try {
+        console.log(req.query);
+
+        const orderId = req.query.orderId.trim(); 
+        console.log(orderId);
+
+        await Order.updateOne({ _id: orderId },
+            { status: req.query.status }
+        ).then((data) => console.log(data))
+        
+        res.redirect('/admin/orders');
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+
+
 module.exports = {
     orderListing,
-    getOrderDetails
+    getOrderDetails,
+    changeOrderStatus
 }

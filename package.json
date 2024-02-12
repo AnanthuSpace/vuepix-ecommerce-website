@@ -25,6 +25,7 @@
     "sharp": "^0.33.2"
   },
   "devDependencies": {
+    "morgan": "^1.10.0",
     "nodemon": "^3.0.3"
   },
   "description": ""

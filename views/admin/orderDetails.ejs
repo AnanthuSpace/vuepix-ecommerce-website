@@ -1,79 +1,87 @@
 <%- include("../partials/adminHeader") %>
 
-<main class="container">
-       
-    <section class="content-main">
-        <div class="content-header">
-            <div class="mt-20">
-                <h2 class="content-title card-title">Order detail</h2>
-                <p>Details for Order ID: <%=orders._id%></p>
-            </div>
-        </div>
-        <div class="card mt-60">
-       
+    <main class="container">
 
-
-            <header class="card-header">
-                <div class="row align-items-center">
-                    <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
-                        <span>
-                            <i class="material-icons md-calendar_today">Ordered Date: </i>
-                            <b>
-                                <% const dateOptions = { day: '2-digit', month: 'short', year: 'numeric' }; %>
-                                <%= new Date(orders.createdOn).toLocaleDateString('en-US', dateOptions) %>
-                            </b>
-                        </span> <br>
-                        <small class="text-muted">Order ID: <%=orders._id%></small>
-                    </div>
-                    <div class="col-lg-4 col-md-4 ms-auto text-md-end">
-                        <% if (orders.status !== "Canceled") { %>
-                            <% if (orders.status === "Delivered") { %>
-                                <div class="row">
-                               <div class="col-2 ">
-                                <a href="/invoice?id=<%= orders._id %>"><button  class="btn btn-primary">Invoice</button></a>
-                                    </div>
-                                    <div class="col-5" style="margin-top: 10px; margin-left: 50px;">
-
-
-
-                                        <h4 class="text-success">Delivered</h4>
-                                    </div>
-                                    </div>
-                            <% } else if (orders.status === "Returned") { %>
-                                <h4 class="text-warning">Returned</h4>
-                            <% } else { %>
-                                <select id="actionDropdown" class="form-select form-select-sm d-inline-block mb-lg-0 mb-15 mw-100" onchange="handleDropdownChange(this)">
-                                    <option value="status">Status</option>
-                                    <option value="Shipped">Shipped</option>
-                                    <option value="Delivered">Delivered</option>
-                                </select>
-                            <% } %>
-                        <% } else { %>
-                            <h4 class="text-danger">Cancelled</h4>
-                        <% } %>
-                    </div>
-                    
-            </header>
-            
-                  
+        <section class="content-main">
+            <div class="content-header">
+                <div class="mt-20">
+                    <h2 class="content-title card-title">Order detail</h2>
+                    <p>Details for Order ID: <span id="orderId">
+                            <%=orders._id%>
+                        </span></p>
                 </div>
+            </div>
+            <div class="card mt-60">
+
+
+
+                <header class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                            <span>
+                                <i class="material-icons md-calendar_today">Ordered Date: </i>
+                                <b>
+                                    <% const dateOptions={ day: '2-digit' , month: 'short' , year: 'numeric' }; %>
+                                        <%= new Date(orders.createdOn).toLocaleDateString('en-US', dateOptions) %>
+                                </b>
+                            </span> <br>
+                            <small class="text-muted">Order ID: <%=orders._id%></small>
+                        </div>
+                        <div class="col-lg-4 col-md-4 ms-auto text-md-end">
+                            <% if (orders.status !=="Canceled" ) { %>
+                                <% if (orders.status==="Delivered" ) { %>
+                                    <div class="row">
+                                        <div class="col-2 ">
+                                            <a href="/invoice?id=<%= orders._id %>"><button
+                                                    class="btn btn-primary">Invoice</button></a>
+                                        </div>
+                                        <div class="col-5" style="margin-top: 10px; margin-left: 50px;">
+
+
+
+                                            <h4 class="text-success">Delivered</h4>
+                                        </div>
+                                    </div>
+                                    <% } else if (orders.status==="Returned" ) { %>
+                                        <h4 class="text-warning">Returned</h4>
+                                        <% } else { %>
+                                            <select id="actionDropdown"
+                                                class="form-select form-select-sm d-inline-block mb-lg-0 mb-15 mw-100"
+                                                onchange="handleDropdownChange(this)">
+                                                <option value="status">Status</option>
+                                                <option value="Shipped">Shipped</option>
+                                                <option value="Delivered">Delivered</option>
+                                            </select>
+                                            <% } %>
+                                                <% } else { %>
+                                                    <h4 class="text-danger">Cancelled</h4>
+                                                    <% } %>
+                        </div>
+
+                </header>
+
+
+
+
+            </div>
             </div>
             <div class="card-body">
                 <div class="row mb-50 mt-20 order-info-wrap background-info">
                     <div class="col-md-4">
                         <article class="icontext align-items-start ml-130">
                             <span class="icon icon-sm rounded-circle bg-primary-light">
-                                <i class="material-icons text-primary person"></i>
+                                <i class="text-primary material-icons md-person"></i>
                             </span>
                             <div class="text">
                                 <h6 class="mb-1">Customer</h6>
                                 <p class="mb-1">
-                                    <%= orders.address[0].name %> <br> <%= orders.address[0].phone %>
+                                    <%= orders.address[0].name %> <br>
+                                        <%= orders.address[0].phone %>
                                 </p>
                             </div>
-                          
+
                         </article>
-                        
+
                     </div> <!-- col// -->
                     <div class="col-md-4">
                         <article class="icontext align-items-start ml-130">
@@ -84,24 +92,24 @@
                                 <h6 class="mb-1">Order info</h6>
                                 <p class="mb-1">
                                     <%if(locals.orders){%>
-                                    Pay method: <%=orders.payment%> <br> Status:
-                                    <%if(orders.status=="Pending"){%> 
-                                        Pending
-                                            <%}else if(orders.status=="Delivered"){%>
-                                                Delivered
-                                                <%}else if(orders.status=="Confirmed"){%>
-                                                    Confirmed
-                                                <%}else if(orders.status=="Returned"){%>
-                                                    Returned
-                                                    <%}else if(orders.status=="Canceled"){%>
-                                                        Cancelled
-                                                        <%}else if(orders.status=="Shipped"){%>
-                                                            Shipped
-                                                            <%}%>
-                                                <%}%>
+                                        Pay method: <%=orders.payment%> <br> Status:
+                                            <%if(orders.status=="Pending"){%>
+                                                Pending
+                                                <%}else if(orders.status=="Delivered" ){%>
+                                                    Delivered
+                                                    <%}else if(orders.status=="Confirmed" ){%>
+                                                        Confirmed
+                                                        <%}else if(orders.status=="Returned" ){%>
+                                                            Returned
+                                                            <%}else if(orders.status=="Canceled" ){%>
+                                                                Cancelled
+                                                                <%}else if(orders.status=="Shipped" ){%>
+                                                                    Shipped
+                                                                    <%}%>
+                                                                        <%}%>
 
                                 </p>
-                                
+
                             </div>
                         </article>
                     </div> <!-- col// -->
@@ -113,9 +121,11 @@
                             <div class="text">
                                 <h6 class="mb-1">Deliver to</h6>
                                 <p class="mb-1">
-                                    Address: <%=orders.address[0].landMark%>,<%=orders.address[0].city%> <br><%=orders.address[0].state%>,<%=orders.address[0].addressType%> <br><%=orders.address[0].pincode%>
+                                    Address: <%=orders.address[0].landMark%>,<%=orders.address[0].city%> <br>
+                                            <%=orders.address[0].state%>,<%=orders.address[0].addressType%> <br>
+                                                    <%=orders.address[0].pincode%>
                                 </p>
-                                
+
                             </div>
                         </article>
                     </div> <!-- col// -->
@@ -130,61 +140,172 @@
                                         <th>Name</th>
                                         <th>Unit Price</th>
                                         <th>Quantity</th>
-                                        <th class="text-center" width="20%" class="text-end">Total</th>
+                                        <th class="text-center" width="20%">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%if(locals.orders){%>
+                                    <% if (locals.orders) { %>
                                         <% let orderId; %>
-                                        <% for (let i = 0; i < orders.product.length; i++) { %>
-                                            <tr>
-                                                <td class="text-center"> 
-                                                  
-                                                       
-                                                            <img src="/uploads/product-images/<%= orders.product[i].image %>" style="height: 7rem; width: 7rem;" class="img-xs" alt="Item">
-                                                    
-                                                
-                                                </td>
-                                                <td class="text-center"> 
-                                                   
-                                                        <%= orders.product[i].title || orders.product[i].name %>
-                                               
-                                                </td>
-                                                <td class="text-center"> 
-                                                    ₹<%= orders.product[i].price.toLocaleString() %>
-                                                </td>
-                                                <td class="text-center"> 
-                                                    <%= orders.product[i].quantity %>
-                                                </td>
-                                                <td class="text-center"> 
-                                                    ₹<%= (parseInt(orders.product[i].price) * parseInt(orders.product[i].quantity)).toLocaleString() %>
-
-                                                </td>
-                                            </tr>
-                                            
-                                           
-                                               
-                                            
-                                                
-                                      
-
-
-                                        <% } %>
-                                        
-                                    <%}%>
-
-                                    <input type="hidden" name="" id="orderId" value="<%= orderId %>">
-                                   
+                                            <% for (let i=0; i < orders.product.length; i++) { %>
+                                                <tr>
+                                                    <td class="align-middle text-center">
+                                                        <!-- Added align-middle for vertical centering -->
+                                                        <img src="/uploads/products/<%= orders.product[i].images %>"
+                                                            style="height: 7rem; width: 7rem;" class="img-xs"
+                                                            alt="Item">
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <!-- Added align-middle for vertical centering -->
+                                                        <%= orders.product[i].name %>
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <!-- Added align-middle for vertical centering -->
+                                                        ₹<%= orders.product[i].price.toLocaleString() %>
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <!-- Added align-middle for vertical centering -->
+                                                        <%= orders.product[i].unit %>
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <!-- Added align-middle for vertical centering -->
+                                                        ₹<%= (parseInt(orders.product[i].price) *
+                                                            parseInt(orders.product[i].unit)).toLocaleString() %>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                                    <% } %>
                                 </tbody>
                             </table>
+
                         </div> <!-- table-responsive// -->
                     </div> <!-- col// -->
                     <div class="col-lg-1"></div>
-                     <!-- col// -->
+                    <!-- col// -->
                 </div>
             </div> <!-- card-body end// -->
-        </div> <!-- card end// -->
-    </section> <!-- content-main end// -->
+            </div> <!-- card end// -->
+        </section> <!-- content-main end// -->
 
-</main>
-<%- include("../partials/adminFooter") %>
+
+        <!-- Tosting  -->
+
+        <!-- <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+            <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+                <div class="toast-header">
+                    <strong class="me-auto text-danger">Notification</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body text-danger">
+                    Status you selected is same as the old one
+                </div>
+            </div>
+        </div> -->
+
+
+    </main>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+    <script>
+        function tracking() {
+            Swal.fire({
+                title: '<strong><u>ORDER DETAILS</u></strong>',
+                html: `
+      <div class="modal-body">
+        <div class="progress-track">
+          <ul id="progressbar">
+            <li class="step0 active " id="step1">Order placed</li>
+            <li class="step0 active text-center" id="step2">In Transit</li>
+            <li class="step0 active text-right" id="step3"><span>Out for Delivery</span></li>
+            <li class="step0 text-right" id="step4">Delivered</li>
+          </ul>
+        </div>
+      </div>
+    `,
+            });
+        }
+
+
+
+
+    </script>
+
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="progress-track">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        /* Center the text */
+        h3 {
+            text-align: center;
+        }
+
+        /* Set the text color to red */
+        h3 {
+            color: red;
+        }
+
+        /* Set the font size */
+        h3 {
+            font-size: 24px;
+            /* You can adjust the size as needed */
+        }
+    </style>
+
+
+
+    <script>
+        // function changeSatus() {
+
+        //     const selectedValue = document.querySelector('.form-select').value;
+        //     const currentStatus = document.getElementById("orderStatus").value
+        //     const orderId = document.getElementById("orderId").innerHTML
+
+        //     if (selectedValue == currentStatus) {
+        //         const toast = new bootstrap.Toast(document.getElementById('toast'));
+        //         toast.show();
+        //     } else {
+
+        //         if (selectedValue == "Shipped") {
+        //             alert("condetions")
+        //             window.location.href = `http://localhost:3000/admin/changeStatus?orderId=${orderId}&status=${selectedValue}`;
+        //         } else if (selectedValue == "Delivered") {
+        //             window.location.href = `http://localhost:3000/admin/changeStatus?orderId=${orderId}&status=${selectedValue}`;
+        //         } else {
+        //             alert("error")
+        //         }
+
+        //     }
+        // }
+
+
+
+        function handleDropdownChange(selectElement) {
+            const selectedValue = document.querySelector('.form-select').value;
+            const orderId = document.getElementById("orderId").innerHTML
+
+
+            if (selectedValue == "Shipped") {
+                window.location.href = `http://localhost:3000/admin/changeStatus?orderId=${orderId}&status=${selectedValue}`;
+            } else if (selectedValue == "Delivered") {
+                window.location.href = `http://localhost:3000/admin/changeStatus?orderId=${orderId}&status=${selectedValue}`;
+            } else {
+                alert("error")
+            }
+
+
+        }
+
+    </script>
+
+    <%- include("../partials/adminFooter") %>

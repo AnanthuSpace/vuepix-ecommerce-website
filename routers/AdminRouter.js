@@ -46,6 +46,9 @@ router.post("/editCategory/:id", isAdmin, categoryController.editCategory)
 
 
 router.get("/orders", isAdmin, orderController.orderListing)
-router.get("/orderDetails", isAdmin, orderController.getOrderDetails)
+router.get("/orderDetailsAdmin", isAdmin, orderController.getOrderDetails)
+router.get("/changeStatus", isAdmin, orderController.changeOrderStatus)
+
+
 
 module.exports = router
