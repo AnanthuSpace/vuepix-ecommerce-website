@@ -6,7 +6,6 @@ const orderListing = async (req,res)=>{
     try {
         const orders = await Order.find({}).sort({ createdOn: -1 });
 
-        // console.log(req.query);
 
         let itemsPerPage = 3
         let currentPage = parseInt(req.query.page) || 1

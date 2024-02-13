@@ -52,13 +52,17 @@ router.get("/addAddress", isLogged, profileController.renderAddAddress)
 router.post("/addAddress", isLogged, profileController.addAddress)
 router.get("/editAddress", isLogged, profileController.getEditAddress)
 router.post("/editAddress", isLogged, profileController.editAddress)
-router.get('/orderDetails', isLogged, profileController.orderDetails)
+router.get("/deleteAddress", isLogged, profileController.deleteAddress)
+router.get("/changepassword", profileController.changePass)
 
 
 
 // Order controll
 router.get('/checkout', isLogged, orderController.checkout)
 router.post('/orderPlaced', isLogged, orderController.placeOrder)
+router.get('/orderDetails', isLogged, orderController.orderDetails)
+router.get("/cancelOrder", isLogged, orderController.cancelOrder)
+
 
 
 module.exports = router

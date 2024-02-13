@@ -41,6 +41,11 @@
                                             aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
                                     </li>
                                     <li class="nav-item">
+                                        <a class="nav-link" id="changepass-tab" data-bs-toggle="tab"
+                                            href="#changepassword" role="tab" aria-controls="password"
+                                            aria-selected="true"><i class="fi-rs-lock mr-10"></i>Change password</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link" href="logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
                                     </li>
                                 </ul>
@@ -132,7 +137,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="track-orders" role="tabpanel"
+                                <!-- <div class="tab-pane fade" id="track-orders" role="tabpanel"
                                     aria-labelledby="track-orders-tab">
                                     <div class="card">
                                         <div class="card-header">
@@ -165,7 +170,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
                                     <div class="row">
 
@@ -260,6 +265,45 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="tab-pane fade" id="changepassword" role="tabpanel"
+                                    aria-labelledby="changepass-tab">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Change Password</h5>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <form action="/changepassword" method="post"
+                                                onsubmit="return Check_all(event)">
+
+                                                <div class="mb-3">
+                                                    <label for="oldPassword" class="form-label">Old Password:</label>
+                                                    <input type="password" id="oldPass" name="oldPass"
+                                                        class="form-control" onkeyup="oldPassword()">
+                                                    <p class="text-danger" id="oldpass_err"></p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="newPassword" class="form-label">New Password:</label>
+                                                    <input type="password" id="newPassword" name="newPassword"
+                                                        class="form-control" onkeyup="newPassword()">
+                                                    <p class="text-danger" id="newpass_err"></p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="confirmPassword" class="form-label">Confirm New
+                                                        Password:</label>
+                                                    <input type="password" id="confirmPassword" name="confirmPassword"
+                                                        class="form-control" onkeyup="confirmPassword()">
+                                                    <p class="text-danger" id="confirmpass_err"></p>
+                                                </div>
+                                                <div class="text-center">
+                                                    <button type="submit" class="btn btn-primary">Change
+                                                        Password</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -267,5 +311,81 @@
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+    <script>
+
+        const oldpassword = document.getElementById("oldPass").value;
+        const newpassword = document.getElementById("newPassword").value;
+        const confirmpassword = document.getElementById("confirmPassword").value;
+
+        const oldpass_err = document.getElementById("oldpass_err");
+        const newpass_err = document.getElementById("newpass_err");
+        const confirmpass_err = document.getElementById("confirmpass_err");
+
+        function oldPassword() {
+
+            if (oldpassword.length < 8) {
+                oldpass_err.innerHTML = "Password must be at least 8 characters long";
+                oldpass_err.style.display = "block";
+                return false;
+            } else {
+                oldpass_err.style.display = "none";
+                oldpass_err.innerHTML = "";
+                return true;
+            }
+        }
+
+        function newPassword() {
+
+            if (newpassword.length < 8) {
+                newpass_err.innerHTML = "Password must be at least 8 characters long";
+                newpass_err.style.display = "block";
+                return false;
+            } else if (oldpassword === newpassword) {
+                newpass_err.innerHTML = "Passwords must not be the old one";
+                newpass_err.style.display = "block";
+                return false;
+            } else {
+                newpass_err.style.display = "none";
+                newpass_err.innerHTML = "";
+                return true;
+            }
+        }
+
+        function confirmPassword() {
+
+            if (newpassword !== confirmpassword) {
+                confirmpass_err.innerHTML = "Passwords must match as new password";
+                confirmpass_err.style.display = "block";
+                return false;
+            } else {
+                confirmpass_err.style.display = "none";
+                confirmpass_err.innerHTML = "";
+                return true;
+            }
+        }
+
+        document.getElementById("oldPass").addEventListener("keyup", oldPassword);
+        document.getElementById("newPassword").addEventListener("keyup", newPassword);
+        document.getElementById("confirmPassword").addEventListener("keyup", confirmPassword);
+
+        function Check_all(e) {
+            if (!oldPassword() || !newPassword() || !confirmPassword()) {
+                e.preventDefault();
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+
+
+
 
     <%- include("../partials/userFooter") %>

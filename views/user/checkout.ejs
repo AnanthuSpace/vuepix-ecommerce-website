@@ -313,8 +313,6 @@
             let address = $("input[name='selectedAddress']:checked").val();
             let payment = $("input[name='payment_option']:checked").val();
 
-            const sum = document.getElementById("totalValue").textContent;
-            const numericValue = parseInt(sum.replace(/[^\d.]/g, ''));
 
             if (!payment) {
                 Swal.fire({
@@ -335,7 +333,6 @@
                     url: '/orderPlaced',
                     method: 'POST',
                     data: {
-                        totalPrice: numericValue,
                         addressId: address,
                         payment: payment,
                         productId: prodId,

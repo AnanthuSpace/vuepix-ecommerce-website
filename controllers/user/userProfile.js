@@ -10,7 +10,9 @@ const renderProfile = async (req, res) => {
         const userId = req.session.user
         const user = await User.findOne({ _id: userId })
         const userAddress = await Address.findOne({ userId: userId })
-        const orderDetails = await Order.find({ userId: userId })
+        // const orderDetails = await Order.find({ userId: userId }).sort(-1)
+        const orderDetails = await Order.find({ userId: userId }).sort({ createdOn: -1 });
+
         res.render("user/profile", { user, userAddress, order: orderDetails })
 
     } catch (error) {
@@ -166,15 +168,33 @@ const editAddress = async (req, res) => {
 }
 
 
-const orderDetails = async (req, res) => {
-
-    const userId = req.session.user
-    const orderId = req.query.id
-    const findOrder = await Order.findOne({ _id: orderId })
-    const findUser = await User.findOne({ _id: userId })
-    console.log(findOrder, findUser);
-    res.render("user/orderDetails", { orders: findOrder, orderId , user:findUser})
+const deleteAddress = async (req,res)=>{
+    try {
+        const addressId = req.query.id
+        console.log(addressId);
+        await Address.updateOne(
+            {"address._id":addressId},
+            {$pull:
+            {
+                address:{_id:addressId }
+            }}
+        )
+        .then((data) => res.redirect("/profile"))
+    } catch (error) {
+        console.log(error.message);
+    }
 }
+
+
+
+const changePass = async(req,res)=>{
+    try {
+        res.render("user/changePass")
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 
 module.exports = {
     renderProfile,
@@ -183,5 +203,6 @@ module.exports = {
     addAddress,
     getEditAddress,
     editAddress,
-    orderDetails
+    deleteAddress,
+    changePass
 }
