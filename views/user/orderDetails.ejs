@@ -280,11 +280,11 @@
     <script>
         function handleDropdownChange(selectElement) {
 
-           alert(orderId.value, "hiiiiiiiiiiiiiiiiiiiii");
+        //    alert(orderId.value, "hiiiiiiiiiiiiiiiiiiiii");
             var selectedValue = selectElement.value;
-            alert(selectedValue);
+            // alert(selectedValue);
             if (selectedValue == "cancel") {
-                alert("keri");
+                // alert("keri");
                 window.location.href = `http://localhost:3000/cancelOrder?orderId=${orderId.value}`;
             }
         }

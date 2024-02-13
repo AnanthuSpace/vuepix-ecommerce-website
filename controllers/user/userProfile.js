@@ -1,7 +1,7 @@
 const { User } = require("../../models/userSchema")
 const Address = require("../../models/addressSchema")
 const Order = require('../../models/orderShema')
-
+const bcrypt = require("bcrypt")
 
 
 const renderProfile = async (req, res) => {
@@ -168,18 +168,20 @@ const editAddress = async (req, res) => {
 }
 
 
-const deleteAddress = async (req,res)=>{
+const deleteAddress = async (req, res) => {
     try {
         const addressId = req.query.id
         console.log(addressId);
         await Address.updateOne(
-            {"address._id":addressId},
-            {$pull:
+            { "address._id": addressId },
             {
-                address:{_id:addressId }
-            }}
+                $pull:
+                {
+                    address: { _id: addressId }
+                }
+            }
         )
-        .then((data) => res.redirect("/profile"))
+            .then((data) => res.redirect("/profile"))
     } catch (error) {
         console.log(error.message);
     }
@@ -187,9 +189,35 @@ const deleteAddress = async (req,res)=>{
 
 
 
-const changePass = async(req,res)=>{
+const changePass = async (req, res) => {
     try {
-        res.render("user/changePass")
+
+        const { oldPass, newPass } = req.body
+        const userId = req.session.user
+        const findUser = await User.findOne({ _id: userId })
+        const passwordMatch = await bcrypt.compare(oldPass, findUser.password);
+
+        if (passwordMatch) {
+
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(newPass, saltRounds);
+            console.log('Hashed Password:', hashedPassword);
+            await User.updateOne(
+                { _id: userId },
+                {
+                    $set: {
+                        password: hashedPassword
+                    }
+                }
+            )
+            console.log('Password changed successfully.');
+            res.json({ status: true })
+
+        } else {
+            console.log('Old password does not match.');
+            res.json({ status: false })
+        }
+
     } catch (error) {
         console.log(error.message);
     }

@@ -53,7 +53,7 @@ router.post("/addAddress", isLogged, profileController.addAddress)
 router.get("/editAddress", isLogged, profileController.getEditAddress)
 router.post("/editAddress", isLogged, profileController.editAddress)
 router.get("/deleteAddress", isLogged, profileController.deleteAddress)
-router.get("/changepassword", profileController.changePass)
+router.post("/changepassword", isLogged, profileController.changePass)
 
 
 

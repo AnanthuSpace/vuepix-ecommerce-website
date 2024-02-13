@@ -274,33 +274,31 @@
                                         </div>
                                         <div class="card-body">
 
-                                            <form action="/changepassword" method="post"
-                                                onsubmit="return Check_all(event)">
 
                                                 <div class="mb-3">
                                                     <label for="oldPassword" class="form-label">Old Password:</label>
-                                                    <input type="password" id="oldPass" name="oldPass"
-                                                        class="form-control" onkeyup="oldPassword()">
+                                                    <input type="password" id="oldPass" class="form-control"
+                                                        onkeyup="oldPassword()">
                                                     <p class="text-danger" id="oldpass_err"></p>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="newPassword" class="form-label">New Password:</label>
-                                                    <input type="password" id="newPassword" name="newPassword"
-                                                        class="form-control" onkeyup="newPassword()">
+                                                    <input type="password" id="newPassword" class="form-control"
+                                                        onkeyup="newPassword()">
                                                     <p class="text-danger" id="newpass_err"></p>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="confirmPassword" class="form-label">Confirm New
                                                         Password:</label>
-                                                    <input type="password" id="confirmPassword" name="confirmPassword"
-                                                        class="form-control" onkeyup="confirmPassword()">
+                                                    <input type="password" id="confirmPassword" class="form-control"
+                                                        onkeyup="confirmPassword()">
                                                     <p class="text-danger" id="confirmpass_err"></p>
                                                 </div>
                                                 <div class="text-center">
-                                                    <button type="submit" class="btn btn-primary">Change
+                                                    <button type="submit" class="btn btn-primary" onclick="Check_all(event)">Change
                                                         Password</button>
                                                 </div>
-                                            </form>
+
                                         </div>
                                     </div>
                                 </div>
@@ -314,21 +312,17 @@
 
 
 
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 
     <script>
-
-        const oldpassword = document.getElementById("oldPass").value;
-        const newpassword = document.getElementById("newPassword").value;
-        const confirmpassword = document.getElementById("confirmPassword").value;
-
         const oldpass_err = document.getElementById("oldpass_err");
         const newpass_err = document.getElementById("newpass_err");
         const confirmpass_err = document.getElementById("confirmpass_err");
 
         function oldPassword() {
+            const oldpassword = document.getElementById("oldPass").value;
 
             if (oldpassword.length < 8) {
                 oldpass_err.innerHTML = "Password must be at least 8 characters long";
@@ -342,6 +336,8 @@
         }
 
         function newPassword() {
+            const newpassword = document.getElementById("newPassword").value;
+            const oldpassword = document.getElementById("oldPass").value;
 
             if (newpassword.length < 8) {
                 newpass_err.innerHTML = "Password must be at least 8 characters long";
@@ -359,6 +355,8 @@
         }
 
         function confirmPassword() {
+            const newpassword = document.getElementById("newPassword").value;
+            const confirmpassword = document.getElementById("confirmPassword").value;
 
             if (newpassword !== confirmpassword) {
                 confirmpass_err.innerHTML = "Passwords must match as new password";
@@ -375,15 +373,56 @@
         document.getElementById("newPassword").addEventListener("keyup", newPassword);
         document.getElementById("confirmPassword").addEventListener("keyup", confirmPassword);
 
-        function Check_all(e) {
+
+        function Check_all() {
+            const oldpassword = document.getElementById("oldPass").value;
+            const newpassword = document.getElementById("newPassword").value;
             if (!oldPassword() || !newPassword() || !confirmPassword()) {
-                e.preventDefault();
+                e.preventDefault()
                 return false;
+
             } else {
-                return true;
+                alert("Function wrking")
+                $.ajax({
+                    
+                    url: `/changepassword`,
+                    method: 'post',
+                    data: {
+                        oldPass: oldpassword,
+                        newPass: newpassword
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        if (response.status === true) {
+                            Swal.fire({
+                                title: 'Reset Password',
+                                text: 'Password changed.',
+                                icon: 'success',
+                                timer: 5000
+                            });
+                           
+                        } else if (response.status === false) {
+                            Swal.fire({
+                                title: 'Reset Password',
+                                text: 'Current Password is not correct.',
+                                icon: 'error',
+                                timer: 5000
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'An unexpected error occurred.',
+                                icon: 'error',
+                                timer: 5000
+                            });
+                        }
+                    }
+                });
             }
         }
+
     </script>
+
 
 
 
