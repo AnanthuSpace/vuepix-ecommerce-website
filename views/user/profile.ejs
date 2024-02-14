@@ -275,29 +275,30 @@
                                         <div class="card-body">
 
 
-                                                <div class="mb-3">
-                                                    <label for="oldPassword" class="form-label">Old Password:</label>
-                                                    <input type="password" id="oldPass" class="form-control"
-                                                        onkeyup="oldPassword()">
-                                                    <p class="text-danger" id="oldpass_err"></p>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="newPassword" class="form-label">New Password:</label>
-                                                    <input type="password" id="newPassword" class="form-control"
-                                                        onkeyup="newPassword()">
-                                                    <p class="text-danger" id="newpass_err"></p>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="confirmPassword" class="form-label">Confirm New
-                                                        Password:</label>
-                                                    <input type="password" id="confirmPassword" class="form-control"
-                                                        onkeyup="confirmPassword()">
-                                                    <p class="text-danger" id="confirmpass_err"></p>
-                                                </div>
-                                                <div class="text-center">
-                                                    <button type="submit" class="btn btn-primary" onclick="Check_all(event)">Change
-                                                        Password</button>
-                                                </div>
+                                            <div class="mb-3">
+                                                <label for="oldPassword" class="form-label">Old Password:</label>
+                                                <input type="password" id="oldPass" class="form-control"
+                                                    onkeyup="oldPassword()">
+                                                <p class="text-danger" id="oldpass_err"></p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="newPassword" class="form-label">New Password:</label>
+                                                <input type="password" id="newPassword" class="form-control"
+                                                    onkeyup="newPassword()">
+                                                <p class="text-danger" id="newpass_err"></p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="confirmPassword" class="form-label">Confirm New
+                                                    Password:</label>
+                                                <input type="password" id="confirmPassword" class="form-control"
+                                                    onkeyup="confirmPassword()">
+                                                <p class="text-danger" id="confirmpass_err"></p>
+                                            </div>
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-primary"
+                                                    onclick="Check_all(event)">Change
+                                                    Password</button>
+                                            </div>
 
                                         </div>
                                     </div>
@@ -382,16 +383,15 @@
                 return false;
 
             } else {
-                alert("Function wrking")
                 $.ajax({
-                    
+
                     url: `/changepassword`,
                     method: 'post',
                     data: {
                         oldPass: oldpassword,
                         newPass: newpassword
                     },
-                    success: function(response) {
+                    success: function (response) {
                         console.log(response);
                         if (response.status === true) {
                             Swal.fire({
@@ -399,8 +399,11 @@
                                 text: 'Password changed.',
                                 icon: 'success',
                                 timer: 5000
-                            });
-                           
+                            }).then(() => {
+                                location.reload()
+
+                            })
+
                         } else if (response.status === false) {
                             Swal.fire({
                                 title: 'Reset Password',
