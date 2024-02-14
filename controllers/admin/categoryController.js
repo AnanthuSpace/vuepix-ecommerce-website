@@ -2,9 +2,23 @@ const Category = require('../../models/categorySchema')
 
 
 const renderCategory = async (req, res) => {
-    await Category.find({})
-        .then(data => res.render("admin/category", { cat: data }))
-        .catch(error => console.log(error.message))
+    try {
+        const cat = await Category.find({})
+
+        let itemsPerPage = 4
+        let currentPage = parseInt(req.query.page) || 1
+        let startIndex = (currentPage - 1) * itemsPerPage
+        let endIndex = startIndex + itemsPerPage
+        let totalPages = Math.ceil(cat.length / 4 )
+        const currentCategory = cat.slice(startIndex, endIndex)
+
+        res.render("admin/category", { cat: currentCategory, totalPages, currentPage })
+    } catch (error) {
+        console.log(error.message);
+    }
+    // await Category.find({})
+    //     .then(data => res.render("admin/category", { cat: data }))
+    //     .catch(error => console.log(error.message))
 }
 
 

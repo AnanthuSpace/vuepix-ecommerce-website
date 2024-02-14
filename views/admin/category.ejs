@@ -93,6 +93,25 @@
                                         <% } %>
                                 </tbody>
                             </table>
+
+                            <% if (totalPages) { %>
+                                <div class="pagination">
+                                  <% if (currentPage > 1) { %>
+                                    <button class="btn btn-sm"><a href="/admin/category?page=<%= currentPage - 1 %>">Previous</a></button>
+                                  <% } %>
+                              
+                                  <% for (let i = 1; i <= totalPages; i++) { %> 
+                                    <button class="btn btn-sm <%= i === currentPage ? 'active' : '' %>">
+                                      <a href="/admin/category?page=<%= i %>"><%= i %></a>
+                                    </button>
+                                  <% } %>
+                              
+                                  <% if (currentPage < totalPages) { %>
+                                    <button class="btn btn-sm"><a href="/admin/category?page=<%= currentPage + 1 %>">Next</a></button>
+                                  <% } %>
+                                </div>
+                              <% } %>
+                              
                         </div>
                     </div> <!-- .col// -->
                 </div> <!-- .row // -->

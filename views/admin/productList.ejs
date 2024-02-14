@@ -8,7 +8,8 @@
                 <p></p>
             </div>
             <div>
-                <a href="addproduct" class="btn btn-primary"><i class="icon material-icons md-add_box"></i>Add Product</a>
+                <a href="addproduct" class="btn btn-primary"><i class="icon material-icons md-add_box"></i>Add
+                    Product</a>
             </div>
         </div>
 
@@ -81,19 +82,24 @@
             </div>
         </div>
 
-        <div class="pagination-area mt-30 mb-50">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-start">
-                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                    <li class="page-item"><a class="page-link" href="#">02</a></li>
-                    <li class="page-item"><a class="page-link" href="#">03</a></li>
-                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#">16</a></li>
-                    <li class="page-item"><a class="page-link" href="#"><i
-                                class="material-icons md-chevron_right"></i></a></li>
-                </ul>
-            </nav>
-        </div>
-    </section> 
+
+        <% if (totalPages) { %>
+                        <div class="pagination">
+                          <% if (currentPage > 1) { %>
+                            <button class="btn btn-sm"><a href="/admin/productList?page=<%= currentPage - 1 %>">Previous</a></button>
+                          <% } %>
+                      
+                          <% for (let i = 1; i <= totalPages; i++) { %> 
+                            <button class="btn btn-sm <%= i === currentPage ? 'active' : '' %>">
+                              <a href="/admin/productList?page=<%= i %>"><%= i %></a>
+                            </button>
+                          <% } %>
+                      
+                          <% if (currentPage < totalPages) { %>
+                            <button class="btn btn-sm"><a href="/admin/productList?page=<%= currentPage + 1 %>">Next</a></button>
+                          <% } %>
+                        </div>
+                      <% } %>
+    </section>
 
     <%- include("../partials/adminFooter") %>

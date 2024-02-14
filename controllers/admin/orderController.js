@@ -7,12 +7,14 @@ const orderListing = async (req,res)=>{
         const orders = await Order.find({}).sort({ createdOn: -1 });
 
 
-        let itemsPerPage = 3
+        let itemsPerPage = 5
         let currentPage = parseInt(req.query.page) || 1
         let startIndex = (currentPage - 1) * itemsPerPage
         let endIndex = startIndex + itemsPerPage
-        let totalPages = Math.ceil(orders.length / 3)
+        let totalPages = Math.ceil(orders.length / 5)
         const currentOrder = orders.slice(startIndex, endIndex)
+
+
 
         res.render("admin/order", { orders: currentOrder, totalPages, currentPage })
     } catch (error) {

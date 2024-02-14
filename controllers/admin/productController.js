@@ -62,9 +62,23 @@ const addProduct = async (req, res) => {
 // Render product list
 
 const productList = async (req, res) => {
-    await Product.find({})
-        .then(data => res.render("admin/productList", { data }))
-        .catch(err => console.log("Product Listing error", err))
+    try {
+        const pro = await Product.find({})
+
+        let itemsPerPage = 3
+        let currentPage = parseInt(req.query.page) || 1
+        let startIndex = (currentPage - 1) * itemsPerPage
+        let endIndex = startIndex + itemsPerPage
+        let totalPages = Math.ceil(pro.length / 3)
+        const currentProduct = pro.slice(startIndex, endIndex)
+
+        res.render("admin/productList", { data: currentProduct, totalPages, currentPage })
+    } catch (error) {
+        console.log(error.message);
+    }
+
+    // .then(data => res.render("admin/productList", { data }))
+    // .catch(err => console.log("Product Listing error", err))
 }
 
 
@@ -122,7 +136,7 @@ const editProduct = async (req, res) => {
                 category: products.category
             }, { new: true })
             console.log("product updated");
-            console.log(products.unit); 
+            console.log(products.unit);
             res.redirect("/admin/productList")
         }
     } catch (error) {
