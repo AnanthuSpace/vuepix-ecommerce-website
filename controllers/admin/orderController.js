@@ -1,4 +1,5 @@
 const Order = require("../../models/orderShema")
+const Product = require("../../models/productSchema")
 const mongoose = require("mongoose")
 
 
@@ -44,9 +45,22 @@ const getOrderDetails = async (req, res) => {
 const changeOrderStatus = async (req, res) => {
     try {
         console.log(req.query);
-
+        
         const orderId = req.query.orderId.trim(); 
         console.log(orderId);
+
+        const order = await Order.findById(orderId)
+
+        for (const product of order.product) {
+            
+            const productId = product._id;
+            const quantity = product.unit;
+
+            await Product.findByIdAndUpdate(productId, { $inc: { unit: quantity } });
+            console.log(`Increasing quantity for product ${productId} by ${quantity}`);
+        }
+
+        console.log(req.query.status)
 
         await Order.updateOne({ _id: orderId },
             { status: req.query.status }

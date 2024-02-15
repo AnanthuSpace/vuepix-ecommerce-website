@@ -294,7 +294,6 @@
                     confirmButtonText: 'Yes, cancel it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        
                         window.location.href = `http://localhost:3000/cancelOrder?orderId=${orderId.value}`;
                     } else {
                         location.reload();
