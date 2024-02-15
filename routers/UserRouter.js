@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 
-const { isLogged } = require('../Authentication/Auth')
+const { isLogged, isBlocked } = require('../Authentication/Auth')
 const controller = require("../controllers/user/UserController")
 const productController = require("../controllers/user/productController")
 const cartController = require("../controllers/user/cartController")
@@ -37,31 +37,31 @@ router.get("/shop", productController.getShop)
 
 
 // Cart controll
-router.get("/cart", isLogged, cartController.renderCart)
-router.post("/cart", isLogged, cartController.addToCart)
-router.get("/deleteItem", isLogged, cartController.deleteCartItem)
-router.post("/changeQuantity", isLogged, cartController.changeQuantity)
+router.get("/cart", isLogged , isBlocked, cartController.renderCart)
+router.post("/cart", isLogged, isBlocked, cartController.addToCart)
+router.get("/deleteItem", isLogged, isBlocked, cartController.deleteCartItem)
+router.post("/changeQuantity", isLogged, isBlocked, cartController.changeQuantity)
 
 
 
 
 // Profile routes
-router.get('/profile', isLogged, profileController.renderProfile)
-router.post('/editUserDetails', isLogged, profileController.editUser)
-router.get("/addAddress", isLogged, profileController.renderAddAddress)
-router.post("/addAddress", isLogged, profileController.addAddress)
-router.get("/editAddress", isLogged, profileController.getEditAddress)
-router.post("/editAddress", isLogged, profileController.editAddress)
-router.get("/deleteAddress", isLogged, profileController.deleteAddress)
-router.post("/changepassword", isLogged, profileController.changePass)
+router.get('/profile', isLogged, isBlocked, profileController.renderProfile)
+router.post('/editUserDetails', isLogged, isBlocked, profileController.editUser)
+router.get("/addAddress", isLogged, isBlocked, profileController.renderAddAddress)
+router.post("/addAddress", isLogged, isBlocked, profileController.addAddress)
+router.get("/editAddress", isLogged, isBlocked, profileController.getEditAddress)
+router.post("/editAddress", isLogged, isBlocked, profileController.editAddress)
+router.get("/deleteAddress", isLogged, isBlocked, profileController.deleteAddress)
+router.post("/changepassword", isLogged, isBlocked, profileController.changePass)
 
 
 
 // Order controll
-router.get('/checkout', isLogged, orderController.checkout)
-router.post('/orderPlaced', isLogged, orderController.placeOrder)
-router.get('/orderDetails', isLogged, orderController.orderDetails)
-router.get("/cancelOrder", isLogged, orderController.cancelOrder)
+router.get('/checkout', isLogged, isBlocked, orderController.checkout)
+router.post('/orderPlaced', isLogged, isBlocked, orderController.placeOrder)
+router.get('/orderDetails', isLogged, isBlocked, orderController.orderDetails)
+router.get("/cancelOrder", isLogged, isBlocked, orderController.cancelOrder)
 
 
 

@@ -15,9 +15,9 @@
                                     <form method="post" action="/userVerification">
                                         <div class="form-group">
 
-                                            <% if (locals.login_err) { %>
+                                            <% if (locals.message) { %>
                                                 <div class="alert alert-danger text-center" id="err">
-                                                    <%= login_err %>
+                                                    <%= message %>
                                                 </div>
                                                 <% } %>
 
@@ -56,10 +56,10 @@
     </section>
 
     <script>
-        const login_err = document.getElementById("err");
-        if (login_err) {
+        const message = document.getElementById("err");
+        if (message) {
             setTimeout(() => {
-                login_err.style.display = "none";
+                message.style.display = "none";
             }, 3000);
         }
     </script>
