@@ -10,11 +10,17 @@ const renderProfile = async (req, res) => {
         const userId = req.session.user
         const user = await User.findOne({ _id: userId })
         const userAddress = await Address.findOne({ userId: userId })
-        // const orderDetails = await Order.find({ userId: userId }).sort(-1)
         const orderDetails = await Order.find({ userId: userId }).sort({ createdOn: -1 });
 
+        // let itemsPerPage = 5
+        // let currentPage = parseInt(req.query.page) || 1
+        // let startIndex = (currentPage - 1) * itemsPerPage
+        // let endIndex = startIndex + itemsPerPage
+        // let totalPages = Math.ceil(orderDetails.length / 5)
+        // const currentOrder = orderDetails.slice(startIndex, endIndex)
+        // res.render("user/profile", { user, userAddress, order: currentOrder, totalPages, currentPage })
+        
         res.render("user/profile", { user, userAddress, order: orderDetails })
-
     } catch (error) {
         console.log(error.message);
     }

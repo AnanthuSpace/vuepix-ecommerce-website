@@ -4,14 +4,7 @@ const Admin = require("../models/adminSchema")
 const isLogged = (req, res, next) => {
     if (req.session.user) {
         console.log(req.session.user);
-        // User.findById({ _id: req.session.user })
-        //     .then((data) => {
-        //         if (data.isBlocked == false) {
-                    next()
-            //     } else {
-            //         res.redirect("/login")
-            //     }
-            // })
+        next()
     } else {
         res.redirect("/login")
     }
@@ -38,12 +31,12 @@ const isAdmin = (req, res, next) => {
 };
 
 
-const isBlocked = async(req, res, next) => {
+const isBlocked = async (req, res, next) => {
     if (req.session.user) {
-        const userId = await User.findOne({_id:req.session.user})
-        if (userId.isBlocked===true) {
+        const userId = await User.findOne({ _id: req.session.user })
+        if (userId.isBlocked === true) {
             delete req.session.user
-            res.render("user/userLogin",{message:"Blocked by admin"})
+            res.render("user/userLogin", { message: "Blocked by admin" })
         } else {
             next()
         }

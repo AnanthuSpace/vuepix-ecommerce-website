@@ -44,7 +44,8 @@ const addProduct = async (req, res) => {
                 salesPrice: products.sale_price,
                 unit: products.units,
                 category: products.category,
-                images: images
+                images: images,
+                createdOn: new Date(),
             })
 
             await newProduct.save()
@@ -168,6 +169,10 @@ const unblockProduct = async (req, res) => {
     }
 }
 
+
+
+
+
 module.exports = {
     productList,
     addProduct,
@@ -175,5 +180,5 @@ module.exports = {
     showEdit,
     editProduct,
     blockProduct,
-    unblockProduct
+    unblockProduct,
 }

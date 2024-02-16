@@ -33,6 +33,7 @@ router.get("/pageNotFound", controller.pageNotFound)
 // Products actions
 router.get("/productDetails", productController.getProductDetails)
 router.get("/shop", productController.getShop)
+router.get("/search", productController.searchProducts)
 
 
 

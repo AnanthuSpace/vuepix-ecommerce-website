@@ -1,4 +1,161 @@
-<%- include("../partials/userHeader") %>
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-login-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <title>VuePix</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon"
+        href="https://blog.flamingtext.com/blog/2024/02/02/flamingtext_com_1706871147_110639469.png">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
+</head>
+
+<body>
+
+
+
+
+    <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
+        <div class="container">
+            <div class="header-wrap">
+                <div class="logo logo-width-1">
+                    <a href="VuePix"><img
+                            src="https://blog.flamingtext.com/blog/2024/02/02/flamingtext_com_1706870062_110639468.png"
+                            alt="VuePix Logo"></a>
+                </div>
+                <div class="col-lg-2 mx-auto text-center">
+                    <div
+                        class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
+                        <nav>
+                            <ul>
+                                <li><a class="" href="VuePix">Home</i></a>
+
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="header-right ">
+                    <div class="search-style-2 pl-80">
+                        <form action="/search">
+                            <input type="text" id="filterItem" name="search" class="form-control"
+                                placeholder="Search for items...">
+                        </form>
+                    </div>
+                    <div class="header-action-right">
+                        <div class="header-action-2">
+                            <div class="header-action-icon-2">
+                                <a href="/wishlist">
+                                    <img class="svgInject" alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
+                                    <!-- <span class="pro-count blue">4</span> -->
+                                </a>
+                            </div>
+                            <div class="header-action-icon-2">
+                                <a class="mini-cart-icon" href="/cart">
+                                    <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
+                                    <!-- <span class="pro-count blue">2</span> -->
+                                </a>
+                                <% if (locals.user) { %>
+                                    <!-- Displayed when the user is logged in -->
+                                    <li class="dropdown nav-item">
+                                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                            id="dropdownAccount" aria-expanded="false">
+                                            <!-- Uncomment the following line if you want to use an icon -->
+                                            <!-- <i class="fas fa-/user-circle"></i> -->
+                                            <img class="svgInject" alt="Evara" src="/assets/imgs/theme/user-profile.png"
+                                                style="height: 25px; width: 25px; margin-top: 2px;">
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                                            <a class="dropdown-item" href="/profile"><i
+                                                    class="material-icons md-perm_identity"></i> Profile</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-danger" href="/logout"><i
+                                                    class="material-icons md-exit_to_app"></i> Logout</a>
+                                        </div>
+                                    </li>
+                                    <% } else { %>
+                                        <!-- Displayed when the user is not logged in -->
+                                        <div class="single-mobile-header-info ml-25 pr-5">
+                                            <a href="/login">Sign Up</a>
+                                        </div>
+                                        <% } %>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn {
+            /* Add your button styling here */
+            margin: 0 5px;
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .active {
+            /* Add styles for the active page */
+
+            color: #fff;
+        }
+
+        .btn:hover {
+            /* Add styles for button hover state */
+            background-color: #ddd;
+        }
+
+
+        .price-filter-inner {
+            display: flex;
+            justify-content: space-between;
+            /* Adjust as needed */
+        }
+
+        .price-button {
+            flex: 1;
+            height: 40px;
+            /* Adjust the height as needed */
+            width: 100%;
+            /* Fill the container width */
+            margin-right: 5px;
+            /* Adjust the margin between buttons as needed */
+            border: 1px solid #ddd;
+        }
+    </style>
 
     <section class="mt-50 mb-50">
         <div class="container">
@@ -6,66 +163,55 @@
                 <div class="col-lg-9">
                     <div class="shop-product-fillter">
                         <div class="totall-product">
-                            <p> We found <strong class="text-brand"><%-count%></strong> items for you!</p>
+                            <% if (locals.count) { %>
+                                <p> We found <strong class="text-brand">
+                                        <%= locals.count %>
+                                    </strong> items for you!</p>
+                                <% } %>
                         </div>
                         <div class="sort-by-product-area">
-                            <div class="sort-by-cover mr-10">
-                                <div class="sort-by-product-wrap">
-                                    <div class="sort-by">
-                                        <span><i class="fi-rs-apps"></i>Show:</span>
-                                    </div>
-                                    <div class="sort-by-dropdown-wrap">
-                                        <span> 50 <i class="fi-rs-angle-small-down"></i></span>
-                                    </div>
+
+
+
+                            <div class="sort-by-product-wrap">
+                                <div class="sort-by">
+                                    <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
                                 </div>
-                                <!-- <div class="sort-by-dropdown">
-                                        <ul>
-                                            <li><a class="active" href="#">50</a></li>
-                                            <li><a href="#">100</a></li>
-                                            <li><a href="#">150</a></li>
-                                            <li><a href="#">200</a></li>
-                                            <li><a href="#">All</a></li>
-                                        </ul>
-                                    </div> -->
-                            </div>
-                            <div class="sort-by-cover">
-                                <div class="sort-by-product-wrap">
-                                    <div class="sort-by">
-                                        <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
-                                    </div>
-                                    <div class="sort-by-dropdown-wrap">
-                                        <span> Featured <i class="fi-rs-angle-small-down"></i></span>
-                                    </div>
-                                </div>
-                                <div class="sort-by-dropdown">
-                                    <ul>
-                                        <li><a class="active" href="#">Featured</a></li>
-                                        <li><a href="#">Price: Low to High</a></li>
-                                        <li><a href="#">Price: High to Low</a></li>
-                                        <li><a href="#">Release Date</a></li>
-                                        <li><a href="#">Avg. Rating</a></li>
-                                    </ul>
+                                <div class="sort-by-dropdown-wrap">
+                                    <select id="sortByDropdown"
+                                        onchange="handleSortChange(this.value, getCurrentPageFromURL(this))">
+                                        <option value="featured" selected>Featured</option>
+                                        <option value="lowToHigh">Price: Low to High</option>
+                                        <option value="highToLow">Price: High to Low</option>
+                                        <option value="releaseDate">Release Date</option>
+                                    </select>
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
                     <div class="row product-grid-3">
-                        <% for (let i=0; i < products.length; i++) { %>
+
+
+
+                        <% for (let i=0; i < product.length; i++) { %>
                             <div class="col-lg-4 col-md-4 col-12 col-sm-6">
                                 <div class="product-cart-wrap mb-30">
                                     <div class="product-img-action-wrap">
                                         <div class="product-img product-img-zoom">
-                                            <a href="/productDetails?id=<%=products[i].id %>">
+                                            <a href="/productDetails?id=<%=product[i].id%>">
                                                 <img class="default-img"
-                                                    src="/uploads/products/<%=products[i].images[0]%>" alt="">
+                                                    src="/uploads/products/<%=product[i].images[0]%>" alt="">
+                                                <!-- <img class="hover-img"assest/imgs/shop/product-2-2.jpg" alt=""> -->
                                             </a>
                                         </div>
                                         <div class="product-action-1">
-                                            <a aria-label="Quick view" class="action-btn hover-up"
-                                                data-bs-toggle="modal" data-bs-target="#quickViewModal">
-                                                <i class="fi-rs-search"></i></a>
+
                                             <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                href="javascript:void(0);"
+                                                onclick="addToWishlist('<%= product[i]._id %>')"><i
+                                                    class="fi-rs-heart"></i></a>
 
                                         </div>
                                         <div class="product-badges product-badges-position product-badges-mrg">
@@ -74,18 +220,22 @@
                                     </div>
                                     <div class="product-content-wrap">
                                         <div class="product-category">
-                                            <a href="shop-grid-right.html"><%-products[i].category%></a>
+                                            <a href="shop-grid-right.html">
+                                                <%= product[i].category %>
+                                            </a>
                                         </div>
-                                        <h2><a href="products-product-right.html"><%-products[i].name%></a></h2>
+                                        <h2><a href="shop-product-right.html">
+                                                <%= product[i].name %>
+                                            </a></h2>
                                         <!-- <div class="rating-result" title="90%">
-                                            <span>
-                                                <span>90%</span>
-                                            </span>
-                                        </div> -->
+                                        <span>
+                                            <span>90%</span>
+                                        </span>
+                                    </div> -->
                                         <div class="product-price">
-                                            <span>₹<%-products[i].salesPrice.toLocaleString('en-IN')%> </span>
-                                            <span
-                                                class="old-price">₹<%-products[i].regularPrice.toLocaleString('en-IN')%></span>
+                                            <span>₹<%= product[i].salesPrice.toLocaleString('en-IN') %></span>
+                                            <span class="old-price">₹<%= product[i].regularPrice.toLocaleString('en-IN')
+                                                    %></span>
                                         </div>
                                         <div class="product-action-1 show">
                                             <a aria-label="Add To Cart" class="action-btn hover-up"
@@ -94,36 +244,55 @@
                                     </div>
                                 </div>
                             </div>
+
                             <% } %>
+
+
                     </div>
-                    <!--pagination-->
-                    <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-start">
-                                <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                                <li class="page-item"><a class="page-link" href="#">02</a></li>
-                                <li class="page-item"><a class="page-link" href="#">03</a></li>
-                                <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                                <li class="page-item"><a class="page-link" href="#">16</a></li>
-                                <li class="page-item"><a class="page-link" href="#"><i
-                                            class="fi-rs-angle-double-small-right"></i></a></li>
-                            </ul>
-                        </nav>
-                    </div>
+
+
+
+
+
+                    <% if (totalPages) { %>
+                        <div class="pagination">
+                            <% if (currentPage> 1) { %>
+                                <button class="btn btn-sm"><a
+                                        href="/shop?page=<%= currentPage - 1 %>">Previous</a></button>
+                                <% } %>
+
+                                    <% for (let i=1; i <=totalPages; i++) { %>
+                                        <button class="btn btn-sm <%= i === currentPage ? 'active' : '' %>">
+                                            <a href="/shop?page=<%= i %>">
+                                                <%= i %>
+                                            </a>
+                                        </button>
+                                        <% } %>
+
+                                            <% if (currentPage < totalPages) { %>
+                                                <button class="btn btn-sm"><a
+                                                        href="/shop?page=<%= currentPage + 1 %>">Next</a></button>
+                                                <% } %>
+                        </div>
+                        <% } %>
+
                 </div>
                 <div class="col-lg-3 primary-sidebar sticky-sidebar">
                     <div class="widget-category mb-30">
                         <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
-
                         <ul class="categories">
-                            <% for(let i=0; i < cat.length; i++) { %>
-                                <li><a href="shop">
-                                        <%= cat[i].name %>
+
+                            <% for (let i=0; i < category.length; i++) { %>
+                                <li><a href="/filter?category=<%= category[i]._id %>">
+                                        <%= category[i].name %>
                                     </a></li>
                                 <% } %>
-                        </ul>
 
+
+                        </ul>
                     </div>
+
+
                     <!-- Fillter By Price -->
                     <div class="sidebar-widget price_range range mb-30">
                         <div class="widget-header position-relative mb-20 pb-10">
@@ -132,39 +301,160 @@
                         </div>
                         <div class="price-filter">
                             <div class="price-filter-inner">
-                                <div id="slider-range"></div>
-                                <div class="price_slider_amount">
-                                    <div class="label-input">
-                                        <span>Range:</span><input type="text" id="amount" name="price"
-                                            placeholder="Add Your Price" />
+                                <form id="price-filter-form">
+                                    <div class="price-options">
+                                        <a href="/filterPrice?gt=0&lt=50000"><button type="button" class="price-button"
+                                                data-value="under-50000">Under $50,000</button></a>
+                                        <a href="/filterPrice?gt=50000&lt=100000"><button type="button"
+                                                class="price-button" data-value="50k-to-100k">$50,000 -
+                                                $100,000</button></a>
+                                        <a href="/filterPrice?gt=100000&lt=150000"><button type="button"
+                                                class="price-button" data-value="100k-to-150k">$100,000 -
+                                                $150,000</button></a>
+                                        <a href="/filterPrice?gt=150000&lt=1000000"><button type="button"
+                                                class="price-button" data-value="above-150k">Above $150,000</button></a>
+                                        <input type="hidden" id="selected-price" name="selected-price" value="">
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="list-group">
-                            <div class="list-group-item mb-10 mt-10">
-                                <label class="fw-900">Size</label>
-                                <div class="custome-checkbox">
-                                    <input class="form-check-input" type="checkbox" name="checkbox"
-                                        id="exampleCheckbox1" value="">
-                                    <label class="form-check-label" for="exampleCheckbox1"><span>Small</span></label>
-                                    <br>
-                                    <input class="form-check-input" type="checkbox" name="checkbox"
-                                        id="exampleCheckbox2" value="">
-                                    <label class="form-check-label" for="exampleCheckbox2"><span>Medium</span></label>
-                                    <br>
-                                    <input class="form-check-input" type="checkbox" name="checkbox"
-                                        id="exampleCheckbox3" value="">
-                                    <label class="form-check-label" for="exampleCheckbox3"><span>Large</span></label>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="shop-grid-right.html" class="btn btn-sm btn-default"><i class="fi-rs-filter mr-5"></i>
-                            Fillter</a>
                     </div>
+
+
+
 
                 </div>
             </div>
         </div>
+
     </section>
+
+
+
+
+
+    <script>
+
+        function addToWishlist(productId) {
+            $.ajax({
+                url: "/addToWishlist",
+                method: "post",
+                data: {
+                    productId: productId
+                },
+                success: (response) => {
+                    if (response.status == true) {
+                        Swal.fire({
+                            title: 'Added to Wishlist!',
+                            text: 'Continue Shopping',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        })
+                    } else if (response.status == false) {
+                        Swal.fire({
+                            title: 'You need to Login first',
+                            text: 'Continue Shopping',
+                            icon: 'warning',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => { window.location.href = '/login' });
+                    }
+                }
+            })
+            return false;
+        }
+
+
+        function getCurrentPageFromURL(element) {
+
+            const url = window.location.href;
+            const match = url.match(/page=(\d+)/);
+
+            if (match && match[1]) {
+                return parseInt(match[1], 10);
+            }
+
+            return 1;
+        }
+
+
+        function handleSortChange(selectedOption) {
+            // console.log(selectedOption);
+            let option = selectedOption;
+            $.ajax({
+                url: "/sortProducts",
+                method: "POST",
+                data: {
+                    option: option,
+                    // page: page
+                },
+                success: (response) => {
+                    if (response.status === true) {
+                        // Assuming the server returns an array of products in response.data
+                        const sortedProducts = response.data;
+                        console.log(sortedProducts);
+                        // Clear existing product grid content
+                        $(".product-grid-3").empty();
+                        // $(".pagination").empty();
+
+                        // Render each product in the container
+                        sortedProducts.currentProduct.forEach((product) => {
+                            const productDiv = $("<div class='col-lg-4 col-md-4 col-12 col-sm-6'>" +
+                                "<div class='product-cart-wrap mb-30'>" +
+                                "<div class='product-img-action-wrap'>" +
+                                "<div class='product-img product-img-zoom'>" +
+                                "<a href='/productDetails?id=" + product.id + "'>" +
+                                "<img class='default-img' src='/uploads/product-images/" + product.productImage[0] + "' alt=''>" +
+                                "</a>" +
+                                "</div>" +
+                                "<div class='product-action-1'>" +
+                                "<a aria-label='Add To Wishlist' class='action-btn hover-up' href='javascript:void(0);' onclick='addToWishlist(\"" + product._id + "\")'>" +
+                                "<i class='fi-rs-heart'></i>" +
+                                "</a>" +
+                                "</div>" +
+                                "<div class='product-badges product-badges-position product-badges-mrg'>" +
+                                "<span class='hot'>Hot</span>" +
+                                "</div>" +
+                                "</div>" +
+                                "<div class='product-content-wrap'>" +
+                                "<div class='product-category'>" +
+                                "<a href='shop-grid-right.html'>" + product.brand + "</a>" +
+                                "</div>" +
+                                "<h2><a href='shop-product-right.html'>" + product.productName + "</a></h2>" +
+                                "<div class='product-price'>" +
+                                "<span>₹" + product.salePrice.toLocaleString('en-IN') + "</span>" +
+                                "<span class='old-price'>₹" + product.regularPrice.toLocaleString('en-IN') + "</span>" +
+                                "</div>" +
+                                "<div class='product-action-1 show'>" +
+                                "<a aria-label='Add To Cart' class='action-btn hover-up' href='shop-cart.html'>" +
+                                "<i class='fi-rs-shopping-bag-add'></i>" +
+                                "</a>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>");
+
+                            // Append the productDiv to the product grid
+                            $(".product-grid-3").append(productDiv);
+                            // $("#pagination").html(response.data.totalPages);
+                        });
+                    } else {
+                        console.error("Error in sorting products:", response);
+                    }
+                }
+            });
+        }
+
+
+
+
+
+
+
+    </script>
+
+
+
+
     <%- include("../partials/userFooter") %>

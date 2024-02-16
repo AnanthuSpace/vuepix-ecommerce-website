@@ -37,7 +37,11 @@ let productSchema = new mongoose.Schema({
     isBlocked: {
         type: Boolean,
         default: false,
-    }
+    },
+    createdOn : {
+        type : String,
+        required : true,
+    },
 });
 
 
