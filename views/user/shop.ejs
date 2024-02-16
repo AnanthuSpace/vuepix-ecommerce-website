@@ -281,7 +281,9 @@
                     <div class="widget-category mb-30">
                         <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
                         <ul class="categories">
-
+                            <li><a href="/shop">
+                                All
+                            </a></li>
                             <% for (let i=0; i < category.length; i++) { %>
                                 <li><a href="/filter?category=<%= category[i]._id %>">
                                         <%= category[i].name %>
@@ -294,7 +296,7 @@
 
 
                     <!-- Fillter By Price -->
-                    <div class="sidebar-widget price_range range mb-30">
+                    <!-- <div class="sidebar-widget price_range range mb-30">
                         <div class="widget-header position-relative mb-20 pb-10">
                             <h5 class="widget-title mb-10">Fill by price</h5>
                             <div class="bt-1 border-color-1"></div>
@@ -318,7 +320,7 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
 
 
@@ -380,7 +382,7 @@
 
 
         function handleSortChange(selectedOption) {
-            // console.log(selectedOption);
+           
             let option = selectedOption;
             $.ajax({
                 url: "/sortProducts",
@@ -404,8 +406,8 @@
                                 "<div class='product-cart-wrap mb-30'>" +
                                 "<div class='product-img-action-wrap'>" +
                                 "<div class='product-img product-img-zoom'>" +
-                                "<a href='/productDetails?id=" + product.id + "'>" +
-                                "<img class='default-img' src='/uploads/product-images/" + product.productImage[0] + "' alt=''>" +
+                                    "<a href='/productDetails?id=" + product._id + "'>" + 
+                                "<img class='default-img' src='/uploads/products/" + product.images[0] + "' alt=''>" +
                                 "</a>" +
                                 "</div>" +
                                 "<div class='product-action-1'>" +
@@ -419,11 +421,11 @@
                                 "</div>" +
                                 "<div class='product-content-wrap'>" +
                                 "<div class='product-category'>" +
-                                "<a href='shop-grid-right.html'>" + product.brand + "</a>" +
-                                "</div>" +
-                                "<h2><a href='shop-product-right.html'>" + product.productName + "</a></h2>" +
+                                // "<a href='shop-grid-right.html'>" + product.brand + "</a>" +
+                                // "</div>" +
+                                "<h2><a href='shop-product-right.html'>" + product.name + "</a></h2>" + 
                                 "<div class='product-price'>" +
-                                "<span>₹" + product.salePrice.toLocaleString('en-IN') + "</span>" +
+                                "<span>₹" + product.salesPrice.toLocaleString('en-IN') + "</span>" +
                                 "<span class='old-price'>₹" + product.regularPrice.toLocaleString('en-IN') + "</span>" +
                                 "</div>" +
                                 "<div class='product-action-1 show'>" +
@@ -443,7 +445,7 @@
                         console.error("Error in sorting products:", response);
                     }
                 }
-            });
+            }); 
         }
 
 

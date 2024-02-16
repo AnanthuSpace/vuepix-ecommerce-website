@@ -82,10 +82,88 @@ const searchProducts = async (req, res) => {
         console.log(error.message);
     }
 }
+
+const filterProduct = async (req, res) => {
+    try {
+        const user = req.session.user;
+        const category = req.query.category;
+        const findCategory = category ? await Category.findOne({ _id: category }) : null;
+
+        const query = {
+            isBlocked: false,
+        };
+
+        if (findCategory) {
+            query.category = findCategory.name;
+        }
+
+        const findProducts = await Product.find(query);
+        const categories = await Category.find({ isListed: true });
+
+        let itemsPerPage = 6;
+        let currentPage = parseInt(req.query.page) || 1;
+        let startIndex = (currentPage - 1) * itemsPerPage;
+        let endIndex = startIndex + itemsPerPage;
+        let totalPages = Math.ceil(findProducts.length / 6);
+        const currentProduct = findProducts.slice(startIndex, endIndex);
+
+        res.render("user/shop", {
+            user: user,
+            product: currentProduct,
+            category: categories,
+            totalPages,
+            currentPage,
+            selectedCategory: category || null,
+        });
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("Internal Server Error");
+    }
+};
   
+
+
+
+const getSortProducts = async (req, res) => {
+    try {
+        let option = req.body.option;
+        let itemsPerPage = 6;
+        let currentPage = parseInt(req.body.page) || 1;
+        let startIndex = (currentPage - 1) * itemsPerPage;
+        let endIndex = startIndex + itemsPerPage;
+        let data;
+
+        if (option == "highToLow") {
+            data = await Product.find({ isBlocked: false }).sort({ salesPrice: -1 });
+        } else if (option == "lowToHigh") {
+            data = await Product.find({ isBlocked: false }).sort({ salesPrice: 1 });
+        } else if (option == "releaseDate") {
+            data = await Product.find({ isBlocked: false }).sort({ createdOn: 1 });
+        }
+        res.json({
+            status: true,
+            data: {
+                currentProduct: data,
+                count: data.length,
+                totalPages: Math.ceil(data.length / itemsPerPage),
+                currentPage
+            }
+        });
+
+    } catch (error) {
+        console.log(error.message);
+        res.json({ status: false, error: error.message });
+    }
+};
+
+
+
 
 module.exports = {
     getProductDetails,
     getShop,
-    searchProducts
+    searchProducts,
+    filterProduct,
+    getSortProducts
 }

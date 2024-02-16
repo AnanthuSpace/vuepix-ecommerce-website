@@ -20,7 +20,7 @@ const addProduct = async (req, res) => {
 
         req.body.units = parseInt(req.body.units);
         req.body.regular_price = parseInt(req.body.regular_price)
-        req.body.regular_price = parseInt(req.body.sale_price)
+        req.body.sale_price = parseInt(req.body.sale_price)
 
 
 
@@ -101,10 +101,11 @@ const editProduct = async (req, res) => {
 
         req.body.unit = parseInt(req.body.unit);
         req.body.regular_price = parseInt(req.body.regular_price)
-        req.body.regular_price = parseInt(req.body.sale_price)
+        req.body.sale_price = parseInt(req.body.sale_price)
 
         const id = req.params.id
         const products = req.body
+        console.log(products);
         const productImage = []
         if (req.files && req.files.length > 0) {
             for (let i = 0; i < req.files.length; i++) {
@@ -115,10 +116,10 @@ const editProduct = async (req, res) => {
         if (req.files.length > 0) {
 
             await Product.findByIdAndUpdate(id, {
-                name: products.name,
+                name: products.product_name,
                 description: products.description,
-                regularPrice: products.regularPrice,
-                salesPrice: products.salesPrice,
+                regularPrice: products.regular_price,
+                salesPrice: products.sale_price,
                 unit: products.unit,
                 category: products.category,
                 images: productImage,
@@ -129,10 +130,10 @@ const editProduct = async (req, res) => {
         } else {
             console.log("no change in image")
             await Product.findByIdAndUpdate(id, {
-                name: products.name,
+                name: products.product_name,
                 description: products.description,
-                regularPrice: products.regularPrice,
-                salesPrice: products.salesPrice,
+                regularPrice: products.regular_price,
+                salesPrice: products.sale_price,
                 unit: products.unit,
                 category: products.category
             }, { new: true })

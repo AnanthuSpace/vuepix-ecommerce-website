@@ -34,6 +34,8 @@ router.get("/pageNotFound", controller.pageNotFound)
 router.get("/productDetails", productController.getProductDetails)
 router.get("/shop", productController.getShop)
 router.get("/search", productController.searchProducts)
+router.get("/filter", productController.filterProduct)
+router.post("/sortProducts", productController.getSortProducts)
 
 
 

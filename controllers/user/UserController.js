@@ -108,20 +108,20 @@ const userVerification = async (req, res) => {
                     res.redirect("/VuePix")
                 } else {
                     console.log("Password is not matching");
-                    res.render("user/userLogin", { login_err: "Invalid User id and password" });
+                    res.render("user/userLogin", { message: "Invalid User id and password" });
                 }
             } else {
                 console.log("User is blocked by admin");
-                res.render("user/userLogin", { login_err: "User is blocked by admin" })
+                res.render("user/userLogin", { message: "User is blocked by admin" })
             }
         } else {
             console.log("User is not found");
-            res.render("user/userLogin", { login_err: "User is not found" })
+            res.render("user/userLogin", { message: "User is not found" })
         }
 
     } catch (error) {
         console.log(error.message);
-        res.render("user/userLogin", { login_err: "Login failed" })
+        res.render("user/userLogin", { message: "Login failed" })
     }
 }
 
