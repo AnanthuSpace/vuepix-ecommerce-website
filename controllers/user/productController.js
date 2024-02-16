@@ -128,10 +128,6 @@ const filterProduct = async (req, res) => {
 const getSortProducts = async (req, res) => {
     try {
         let option = req.body.option;
-        let itemsPerPage = 6;
-        let currentPage = parseInt(req.body.page) || 1;
-        let startIndex = (currentPage - 1) * itemsPerPage;
-        let endIndex = startIndex + itemsPerPage;
         let data;
 
         if (option == "highToLow") {
@@ -141,13 +137,11 @@ const getSortProducts = async (req, res) => {
         } else if (option == "releaseDate") {
             data = await Product.find({ isBlocked: false }).sort({ createdOn: 1 });
         }
+
         res.json({
             status: true,
             data: {
                 currentProduct: data,
-                count: data.length,
-                totalPages: Math.ceil(data.length / itemsPerPage),
-                currentPage
             }
         });
 

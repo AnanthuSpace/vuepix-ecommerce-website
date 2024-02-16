@@ -19,11 +19,11 @@ let productSchema = new mongoose.Schema({
         require: true,
     },
     regularPrice: {
-        type: String,
+        type: Number,
         requrie: true
     },
     salesPrice: {
-        type: String,
+        type: Number,
         require: true
     },
     unit: {
