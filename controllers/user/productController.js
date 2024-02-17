@@ -135,7 +135,7 @@ const getSortProducts = async (req, res) => {
         } else if (option == "lowToHigh") {
             data = await Product.find({ isBlocked: false }).sort({ salesPrice: 1 });
         } else if (option == "releaseDate") {
-            data = await Product.find({ isBlocked: false }).sort({ createdOn: 1 });
+            data = await Product.find({ isBlocked: false }).sort({ createdOn: -1 });
         }
 
         res.json({

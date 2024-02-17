@@ -120,8 +120,8 @@
 
         function validatemobile() {
             const mobileNumber = phone.value;
-            if (mobileNumber.length < 10 || mobileNumber.length >= 14) {
-                phone_err.innerHTML = "Enter a valid mobile number (between 10 and 14 digits)";
+            if (mobileNumber.length < 10 ) {
+                phone_err.innerHTML = "Enter a valid mobile number (10 digits)";
                 phone_err.style.display = "block";
                 return false;
             } else {
