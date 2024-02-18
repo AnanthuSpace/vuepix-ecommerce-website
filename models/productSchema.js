@@ -14,10 +14,6 @@ let productSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    category: {
-        type: String,
-        require: true,
-    },
     regularPrice: {
         type: Number,
         requrie: true
@@ -33,6 +29,10 @@ let productSchema = new mongoose.Schema({
     images: {
         type: Array,
         require: true
+    },
+    category: {
+        type: String,
+        require: true,
     },
     isBlocked: {
         type: Boolean,

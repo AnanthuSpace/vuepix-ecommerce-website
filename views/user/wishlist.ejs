@@ -1,0 +1,88 @@
+<%- include("../partials/userHeader") %>
+
+
+
+
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html" rel="nofollow">Home</a>
+                    <span></span> Shop
+                    <span></span> Wishlist
+                </div>
+            </div>
+        </div>
+        <section class="mt-50 mb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table shopping-summery text-center">
+                                <thead>
+                                    <tr class="main-heading">
+                                        <th scope="col" colspan="2">Product</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Stock Status</th>
+                                        <th scope="col">Action</th>
+                                        <th scope="col">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    <% for (let i=0; i < data.length; i++) { %>
+
+                                        <tr>
+                                            <td class="image product-thumbnail"><img
+                                                    src="/uploads/products/<%= data[i].image %>" alt="#"></td>
+                                            <td class="product-des product-name">
+                                                <h5 class="product-name"><a href="shop-product-right.html">
+                                                        <%= data[i].productName %>
+                                                    </a></h5>
+                                                <p class="font-xs">
+                                                    <%= data[i].category %><br>
+                                                        <%= data[i].brand %>
+                                                </p>
+                                            </td>
+                                            <td class="price" data-title="Price"><span>₹<%= data[i].salePrice %></span>
+                                            </td>
+                                            <td class="text-center" data-title="Stock">
+                                                <span class="color3 font-weight-bold">
+                                                    <% if (data[i].units> 0) { %>
+                                                        <p>In Stock</p>
+                                                        <% }else{ %>
+                                                            Out Of Stock
+                                                            <% } %>
+
+                                                </span>
+                                            </td>
+                                            <td class="text-right" data-title="Cart">
+                                                <button class="btn btn-success" onclick="addToCart('<%=data[i].productId%>')">Add to
+                                                    Cart</button>
+                                            </td>
+                                            <td class="action" data-title="Remove"><a href="/deleteWishlist?id=<%= data[i].productId %>"><i
+                                                        class="fi-rs-trash"></i></a></td>
+                                        </tr>
+
+                                        <% } %>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <script>
+        
+    </script>
+
+
+
+
+<%- include("../partials/userFooter") %>

@@ -12,8 +12,8 @@ const renderCart = async (req, res) => {
         const id = req.session.user
         const user = await User.findOne({ _id: id })
         console.log(user);
-        const productId = user.cart.map(item => item.ProductId)
-
+        // const productId = user.cart.map(item => item.ProductId)
+        // console.log(productId);
         const oid = new mongodb.ObjectId(id);
 
         let data = await User.aggregate([

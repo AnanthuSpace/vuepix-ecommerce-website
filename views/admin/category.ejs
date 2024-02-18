@@ -46,6 +46,11 @@
                     <div class="col-md-3">
                         <form action="/admin/addcategory" method="post">
                             <div class="mb-4">
+                                <% if (locals.message) { %>
+                                    <div class="alert alert-danger text-center" id="err">
+                                        <%= message %>
+                                    </div>
+                                    <% } %>
                                 <label for="product_name" class="form-label">Name</label>
                                 <input name="name" pattern="^[^\s]+$" type="text" placeholder="Type here"
                                     class="form-control" id="name" required="true" maxlength="40" />

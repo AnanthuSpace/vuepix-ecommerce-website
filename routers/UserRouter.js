@@ -7,6 +7,7 @@ const productController = require("../controllers/user/productController")
 const cartController = require("../controllers/user/cartController")
 const profileController = require("../controllers/user/userProfile")
 const orderController = require("../controllers/user/orderController")
+const wishlistController =  require("../controllers/user/wishlistController")
 
 
 
@@ -67,5 +68,9 @@ router.get('/orderDetails', isLogged, isBlocked, orderController.orderDetails)
 router.get("/cancelOrder", isLogged, isBlocked, orderController.cancelOrder)
 
 
+
+// wishlist
+router.get("/wishlist", isLogged, isBlocked, wishlistController.getWishlistPage)
+router.post("/addToWishlist", isLogged,isBlocked, wishlistController.addToWishlist)
 
 module.exports = router

@@ -24,6 +24,9 @@ const userSchema = mongoose.Schema({
     },
     cart:{
         type:Array,
+    },
+    wishlist: {
+        type: Array
     }
 })
 

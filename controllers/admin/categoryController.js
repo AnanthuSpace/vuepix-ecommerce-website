@@ -88,18 +88,28 @@ const editCategory = async (req, res) => {
         const { categoryName, description } = req.body;
         const findCategory = await Category.findById(id);
 
-        if (findCategory) {
-            await Category.updateOne(
-                { _id: id },
-                {
-                    name: categoryName,
-                    description: description
-                }
-            );
+        const categoryExists = await Category.findOne({ name:categoryName });
+
+        if (!categoryExists) {
+            if (findCategory) {
+            
+                await Category.updateOne(
+                    { _id: id },
+                    {
+                        name: categoryName,
+                        description: description
+                    }
+                );
+                res.redirect("/admin/category");
+            } else {
+                console.log("Category not found");
+                res.redirect("/admin/category");
+            } 
+        }else{
+            console.log("Existed Category");
             res.redirect("/admin/category");
-        } else {
-            console.log("Category not found");
         }
+        
     } catch (error) {
         console.log(error.message);
     }
