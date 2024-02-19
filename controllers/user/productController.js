@@ -15,7 +15,15 @@ const getProductDetails = async (req, res) => {
         if (user) {
             const findUser = await User.findOne({ _id: user })
             const cartCount = findUser.cart.length;
-            res.render("user/productDetails", { data: findProduct, user: user, products, cartCount })
+            const wishlistCount = findUser.wishlist.length
+            res.render("user/productDetails",
+                {
+                    data: findProduct,
+                    user: user,
+                    products,
+                    cartCount,
+                    wishlistCount
+                })
         } else {
             res.render("user/productDetails", { data: findProduct, products })
         }
@@ -44,10 +52,26 @@ const getShop = async (req, res) => {
         if (user) {
             const findUser = await User.findOne({ _id: user })
             var cartCount = findUser.cart.length;
-            res.render("user/shop", { product: currentProduct, user, count, category, totalPages, currentPage, cartCount })
+            const wishlistCount = findUser.wishlist.length
+            res.render("user/shop",
+                {
+                    product: currentProduct,
+                    user,
+                    count, category,
+                    totalPages,
+                    currentPage,
+                    cartCount,
+                    wishlistCount
+                })
         }
         else {
-            res.render("user/shop", { product: currentProduct,  count, category, totalPages, currentPage })
+            res.render("user/shop",
+                {
+                    product: currentProduct,
+                    count, category,
+                    totalPages,
+                    currentPage
+                })
         }
     } catch (error) {
         console.log(error.message);
@@ -77,29 +101,30 @@ const searchProducts = async (req, res) => {
         let endIndex = startIndex + itemsPerPage
         let totalPages = Math.ceil(searchResult.length / 6)
         const currentProduct = searchResult.slice(startIndex, endIndex)
-        if(user){
-        const findUser = await User.findOne({ _id: user })
-        const cartCount = findUser.cart.length;
+        if (user) {
+            const findUser = await User.findOne({ _id: user })
+            const cartCount = findUser.cart.length;
+            const wishlistCount = findUser.wishlist.length
 
-        res.render("user/shop",
-            {
-                user: user,
-                product: currentProduct,
-                category: categories,
-                cartCount,
-                totalPages,
-                currentPage,
-
-            })
-        }else{
             res.render("user/shop",
-            {
-                product: currentProduct,
-                category: categories,
-                totalPages,
-                currentPage,
+                {
+                    user: user,
+                    product: currentProduct,
+                    category: categories,
+                    cartCount,
+                    totalPages,
+                    currentPage,
+                    wishlistCount
+                })
+        } else {
+            res.render("user/shop",
+                {
+                    product: currentProduct,
+                    category: categories,
+                    totalPages,
+                    currentPage,
 
-            })
+                })
         }
 
     } catch (error) {
@@ -131,28 +156,30 @@ const filterProduct = async (req, res) => {
         let totalPages = Math.ceil(findProducts.length / 6);
         const currentProduct = findProducts.slice(startIndex, endIndex);
 
-        if(user){
-        const findUser = await User.findOne({ _id: user })
-        const cartCount = findUser.cart.length;
+        if (user) {
+            const findUser = await User.findOne({ _id: user })
+            const cartCount = findUser.cart.length;
+            const wishlistCount = findUser.wishlist.length
 
-        res.render("user/shop", {
-            user: user,
-            product: currentProduct,
-            category: categories,
-            totalPages,
-            currentPage,
-            selectedCategory: category || null,
-            cartCount
-        });
-    }else{
-        res.render("user/shop", {
-            product: currentProduct,
-            category: categories,
-            totalPages,
-            currentPage,
-            selectedCategory: category || null,
-        });
-    }
+            res.render("user/shop", {
+                user: user,
+                product: currentProduct,
+                category: categories,
+                totalPages,
+                currentPage,
+                selectedCategory: category || null,
+                cartCount,
+                wishlistCount
+            });
+        } else {
+            res.render("user/shop", {
+                product: currentProduct,
+                category: categories,
+                totalPages,
+                currentPage,
+                selectedCategory: category || null,
+            });
+        }
 
     } catch (error) {
         console.log(error.message);

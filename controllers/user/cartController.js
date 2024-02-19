@@ -51,13 +51,14 @@ const renderCart = async (req, res) => {
         }
         req.session.grandTotal = grandTotal;
         const cartCount = data.length
-
+        const wishlistCount = user.wishlist.length
         res.render("user/cart", {
             user,
             unit,
             data,
             grandTotal,
-            cartCount
+            cartCount,
+            wishlistCount
         })
 
     } catch (err) {

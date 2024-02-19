@@ -8,9 +8,17 @@ const getWishlistPage = async (req, res) => {
         console.log(userId);
         const findUser = await User.findOne({ _id: userId })
         console.log(findUser.wishlist, "user");
+        const wishlistCount = findUser.wishlist.length
+        const cartCount = findUser.cart.length
         
         
-        res.render("user/wishlist", {data : findUser.wishlist, user : userId})
+        res.render("user/wishlist", 
+        {
+            data : findUser.wishlist,
+             user : userId,
+            wishlistCount,
+            cartCount
+        })
     } catch (error) {
         console.log(error.message);
     }

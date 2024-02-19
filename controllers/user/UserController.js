@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt")
 
 
 
-const renderGuest = async (req,res)=>{
+const renderGuest = async (req, res) => {
     try {
         const products = await Product.find({ isBlocked: false })
         console.log(products);
@@ -74,11 +74,18 @@ const renderHome = async (req, res) => {
         const products = await Product.find({ isBlocked: false })
         const findUser = await User.findOne({ _id: user })
         const cartCount = findUser.cart.length;
+        const wishlistCount = findUser.wishlist.length
         if (!user) {
             res.redirect("/")
         }
         else {
-            res.render("user/userHome", { user: user, products: products, cartCount })
+            res.render("user/userHome",
+                {
+                    user: user,
+                    products: products,
+                    cartCount,
+                    wishlistCount
+                })
         }
     } catch (error) {
         res.redirect("/login")

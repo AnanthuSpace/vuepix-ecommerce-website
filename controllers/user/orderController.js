@@ -13,6 +13,7 @@ const checkout = async (req, res) => {
         const oid = new mongodb.ObjectId(userId)
 
         const cartCount = findUser.cart.length;
+        const wishlistCount = findUser.wishlist.length
 
         const data = await User.aggregate([
             { $match: { _id: oid } },
@@ -38,7 +39,17 @@ const checkout = async (req, res) => {
         const grandTotal = req.session.grandTotal
 
 
-        res.render("user/checkout", { data: data, user: findUser, isCart: true, userAddress: userAddress, isSingle: false, grandTotal, cartCount })
+        res.render("user/checkout",
+            {
+                data: data,
+                user: findUser,
+                isCart: true,
+                userAddress: userAddress,
+                isSingle: false,
+                grandTotal,
+                cartCount,
+                wishlistCount
+            })
 
     } catch (error) {
         console.log(error.message);
@@ -60,6 +71,8 @@ const placeOrder = async (req, res) => {
         const findProduct = await Product.find({ _id: { $in: productId } })
 
         const cartCount = findUser.cart.length;
+        const wishlistCount = findUser.wishlist.length
+
         const cartItemUnit = findUser.cart.map((item) => ({
             productId: item.ProductId,
             unit: item.unit
@@ -109,7 +122,16 @@ const placeOrder = async (req, res) => {
         if (newOrder.payment == 'cod') {
             console.log('order placed by cod');
             orderDone = await newOrder.save();
-            res.json({ payment: true, method: "cod", order: orderDone, quantity: cartItemUnit, orderId: findUser, cartCount });
+            res.json(
+                {
+                    payment: true,
+                    method: "cod",
+                    order: orderDone,
+                    quantity: cartItemUnit,
+                    orderId: findUser,
+                    cartCount,
+                    wishlistCount
+                });
         }
 
 
@@ -127,8 +149,16 @@ const orderDetails = async (req, res) => {
         const findOrder = await Order.findOne({ _id: orderId })
         const findUser = await User.findOne({ _id: userId })
         const cartCount = findUser.cart.length;
+        const wishlistCount = findUser.wishlist.length
         console.log(findOrder, findUser);
-        res.render("user/orderDetails", { orders: findOrder, orderId, user: findUser, cartCount })
+        res.render("user/orderDetails",
+            {
+                orders: findOrder,
+                orderId,
+                user: findUser,
+                cartCount,
+                wishlistCount
+            })
     } catch (error) {
         console.log(error.message);
     }

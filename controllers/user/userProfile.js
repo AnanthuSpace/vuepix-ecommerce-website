@@ -13,8 +13,16 @@ const renderProfile = async (req, res) => {
         const orderDetails = await Order.find({ userId: userId }).sort({ createdOn: -1 });
         const findUser = await User.findOne({ _id: userId })
         const cartCount = findUser.cart.length;
-        
-        res.render("user/profile", { user, userAddress, order: orderDetails, cartCount })
+        const wishlistCount = findUser.wishlist.length
+
+        res.render("user/profile",
+            {
+                user,
+                userAddress,
+                order: orderDetails,
+                cartCount,
+                wishlistCount
+            })
     } catch (error) {
         console.log(error.message);
     }
@@ -47,7 +55,13 @@ const renderAddAddress = async (req, res) => {
         const userId = req.session.user
         const findUser = await User.findOne({ _id: userId })
         const cartCount = findUser.cart.length;
-        res.render("user/addAddress", { user: userId, cartCount })
+        const wishlistCount = findUser.wishlist.length
+        res.render("user/addAddress",
+            {
+                user: userId,
+                cartCount,
+                wishlistCount
+            })
     } catch (error) {
         console.log(error.message);
     }
@@ -115,6 +129,7 @@ const getEditAddress = async (req, res) => {
         const addressId = req.query.id;
         const findUser = await User.findOne({ _id: user })
         const cartCount = findUser.cart.length;
+        const wishlistCount = findUser.wishlist.length
         console.log("AddressDI:", addressId);
         const currAddress = await Address.findOne({
             "address._id": addressId,
@@ -123,7 +138,13 @@ const getEditAddress = async (req, res) => {
             return item._id.toString() == addressId.toString()
         })
 
-        res.render('user/editAddress', { address: addressData, user, cartCount });
+        res.render('user/editAddress',
+            {
+                address: addressData,
+                user,
+                cartCount,
+                wishlistCount
+            });
     } catch (error) {
         console.log(error.message);
     }
