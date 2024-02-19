@@ -50,12 +50,14 @@ const renderCart = async (req, res) => {
             }
         }
         req.session.grandTotal = grandTotal;
+        const cartCount = data.length
 
         res.render("user/cart", {
             user,
             unit,
             data,
-            grandTotal
+            grandTotal,
+            cartCount
         })
 
     } catch (err) {

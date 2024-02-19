@@ -1,5 +1,6 @@
 const Product = require("../../models/productSchema")
 const Category = require("../../models/categorySchema")
+const { User } = require("../../models/userSchema")
 
 
 
@@ -9,10 +10,14 @@ const getProductDetails = async (req, res) => {
         const productId = req.query.id
         const findProduct = await Product.findOne({ _id: productId });
         const products = await Product.find({})
+
+
         if (user) {
-            res.render("user/productDetails", { data: findProduct, user: user, products })
+            const findUser = await User.findOne({ _id: user })
+            const cartCount = findUser.cart.length;
+            res.render("user/productDetails", { data: findProduct, user: user, products, cartCount })
         } else {
-            res.render("user/productDetails", { data: findProduct ,products})
+            res.render("user/productDetails", { data: findProduct, products })
         }
     } catch (error) {
         console.log(error.message);
@@ -29,7 +34,6 @@ const getShop = async (req, res) => {
         const category = await Category.find({ isListed: true })
         console.log(products);
 
-
         let itemsPerPage = 6
         let currentPage = parseInt(req.query.page) || 1
         let startIndex = (currentPage - 1) * itemsPerPage
@@ -37,8 +41,14 @@ const getShop = async (req, res) => {
         let totalPages = Math.ceil(products.length / 6)
         const currentProduct = products.slice(startIndex, endIndex)
 
-        res.render("user/shop", { product:currentProduct , user, count,  category, totalPages, currentPage})
-
+        if (user) {
+            const findUser = await User.findOne({ _id: user })
+            var cartCount = findUser.cart.length;
+            res.render("user/shop", { product: currentProduct, user, count, category, totalPages, currentPage, cartCount })
+        }
+        else {
+            res.render("user/shop", { product: currentProduct,  count, category, totalPages, currentPage })
+        }
     } catch (error) {
         console.log(error.message);
     }
@@ -67,16 +77,30 @@ const searchProducts = async (req, res) => {
         let endIndex = startIndex + itemsPerPage
         let totalPages = Math.ceil(searchResult.length / 6)
         const currentProduct = searchResult.slice(startIndex, endIndex)
-
+        if(user){
+        const findUser = await User.findOne({ _id: user })
+        const cartCount = findUser.cart.length;
 
         res.render("user/shop",
             {
                 user: user,
                 product: currentProduct,
                 category: categories,
+                cartCount,
                 totalPages,
-                currentPage
+                currentPage,
+
             })
+        }else{
+            res.render("user/shop",
+            {
+                product: currentProduct,
+                category: categories,
+                totalPages,
+                currentPage,
+
+            })
+        }
 
     } catch (error) {
         console.log(error.message);
@@ -107,6 +131,10 @@ const filterProduct = async (req, res) => {
         let totalPages = Math.ceil(findProducts.length / 6);
         const currentProduct = findProducts.slice(startIndex, endIndex);
 
+        if(user){
+        const findUser = await User.findOne({ _id: user })
+        const cartCount = findUser.cart.length;
+
         res.render("user/shop", {
             user: user,
             product: currentProduct,
@@ -114,14 +142,24 @@ const filterProduct = async (req, res) => {
             totalPages,
             currentPage,
             selectedCategory: category || null,
+            cartCount
         });
+    }else{
+        res.render("user/shop", {
+            product: currentProduct,
+            category: categories,
+            totalPages,
+            currentPage,
+            selectedCategory: category || null,
+        });
+    }
 
     } catch (error) {
         console.log(error.message);
         res.status(500).send("Internal Server Error");
     }
 };
-  
+
 
 
 

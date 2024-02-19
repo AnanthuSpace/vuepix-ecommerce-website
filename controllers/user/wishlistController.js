@@ -9,6 +9,7 @@ const getWishlistPage = async (req, res) => {
         const findUser = await User.findOne({ _id: userId })
         console.log(findUser.wishlist, "user");
         
+        
         res.render("user/wishlist", {data : findUser.wishlist, user : userId})
     } catch (error) {
         console.log(error.message);

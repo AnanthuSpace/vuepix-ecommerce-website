@@ -72,13 +72,13 @@ const renderHome = async (req, res) => {
     try {
         const user = req.session.user
         const products = await Product.find({ isBlocked: false })
-
+        const findUser = await User.findOne({ _id: user })
+        const cartCount = findUser.cart.length;
         if (!user) {
-            // res.render("user/userHome")
             res.redirect("/")
         }
         else {
-            res.render("user/userHome", { user: user, products: products })
+            res.render("user/userHome", { user: user, products: products, cartCount })
         }
     } catch (error) {
         res.redirect("/login")

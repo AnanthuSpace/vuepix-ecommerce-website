@@ -64,15 +64,30 @@
                             <div class="header-action-icon-2">
                                 <a href="wishlist">
                                     <img class="svgInject" alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
-
+                                    <span class="pro-count blue">3</span>
                                 </a>
                             </div>
+
+
+                            <% if(locals.cartCount) {%>
                             <div class="header-action-icon-2">
                                 <a class="mini-cart-icon" href="cart">
                                     <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
-
+                                    <span class="pro-count blue"><%= cartCount %></span>
                                 </a>
                             </div>
+
+
+                            <% }else{ %>
+
+                                <div class="header-action-icon-2">
+                                    <a class="mini-cart-icon" href="cart">
+                                        <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
+                                    </a>
+                                </div>
+
+                                <% } %>
+
                             <div class="header-action-icon d-block d-lg-none">
                                 <div class="burger-icon">
                                     <span class="burger-icon-top"></span>

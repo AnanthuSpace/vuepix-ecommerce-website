@@ -63,10 +63,24 @@
                                 </a>
                             </div>
                             <div class="header-action-icon-2">
-                                <a class="mini-cart-icon" href="/cart">
-                                    <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
-                                    <!-- <span class="pro-count blue">2</span> -->
-                                </a>
+                                <% if(locals.cartCount) {%>
+                                    <div class="header-action-icon-2">
+                                        <a class="mini-cart-icon" href="cart">
+                                            <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
+                                            <span class="pro-count blue"><%= cartCount %></span>
+                                        </a>
+                                    </div>
+        
+        
+                                    <% }else{ %>
+        
+                                        <div class="header-action-icon-2">
+                                            <a class="mini-cart-icon" href="cart">
+                                                <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
+                                            </a>
+                                        </div>
+        
+                                        <% } %>
                                 <% if (locals.user) { %>
                                     <!-- Displayed when the user is logged in -->
                                     <li class="dropdown nav-item">

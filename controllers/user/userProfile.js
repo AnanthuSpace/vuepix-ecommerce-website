@@ -11,9 +11,10 @@ const renderProfile = async (req, res) => {
         const user = await User.findOne({ _id: userId })
         const userAddress = await Address.findOne({ userId: userId })
         const orderDetails = await Order.find({ userId: userId }).sort({ createdOn: -1 });
-
+        const findUser = await User.findOne({ _id: userId })
+        const cartCount = findUser.cart.length;
         
-        res.render("user/profile", { user, userAddress, order: orderDetails })
+        res.render("user/profile", { user, userAddress, order: orderDetails, cartCount })
     } catch (error) {
         console.log(error.message);
     }
@@ -44,7 +45,9 @@ const editUser = async (req, res) => {
 const renderAddAddress = async (req, res) => {
     try {
         const userId = req.session.user
-        res.render("user/addAddress", { user: userId })
+        const findUser = await User.findOne({ _id: userId })
+        const cartCount = findUser.cart.length;
+        res.render("user/addAddress", { user: userId, cartCount })
     } catch (error) {
         console.log(error.message);
     }
@@ -110,6 +113,8 @@ const getEditAddress = async (req, res) => {
     try {
         const user = req.session.user
         const addressId = req.query.id;
+        const findUser = await User.findOne({ _id: user })
+        const cartCount = findUser.cart.length;
         console.log("AddressDI:", addressId);
         const currAddress = await Address.findOne({
             "address._id": addressId,
@@ -118,7 +123,7 @@ const getEditAddress = async (req, res) => {
             return item._id.toString() == addressId.toString()
         })
 
-        res.render('user/editAddress', { address: addressData, user });
+        res.render('user/editAddress', { address: addressData, user, cartCount });
     } catch (error) {
         console.log(error.message);
     }
