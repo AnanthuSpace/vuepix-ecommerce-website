@@ -1,4 +1,4 @@
-const { User }  = require("../../models/userSchema")
+const { User } = require("../../models/userSchema")
 const Product = require("../../models/productSchema");
 
 
@@ -10,15 +10,15 @@ const getWishlistPage = async (req, res) => {
         console.log(findUser.wishlist, "user");
         const wishlistCount = findUser.wishlist.length
         const cartCount = findUser.cart.length
-        
-        
-        res.render("user/wishlist", 
-        {
-            data : findUser.wishlist,
-             user : userId,
-            wishlistCount,
-            cartCount
-        })
+
+
+        res.render("user/wishlist",
+            {
+                data: findUser.wishlist,
+                user: userId,
+                wishlistCount,
+                cartCount
+            })
     } catch (error) {
         console.log(error.message);
     }
@@ -31,9 +31,9 @@ const addToWishlist = async (req, res) => {
             console.log("User not found")
             res.json({ error: "User not found", status: false })
         }
-       
+
         const productId = req.body.productId
-        
+
         const findProduct = await Product.findOne({ _id: productId })
         console.log(findProduct);
         await User.updateOne(
@@ -41,19 +41,19 @@ const addToWishlist = async (req, res) => {
                 _id: req.session.user,
             },
             {
-                $addToSet: { 
+                $addToSet: {
                     wishlist: {
                         productId: productId,
                         image: findProduct.images[0],
                         productName: findProduct.name,
                         category: findProduct.category,
                         salePrice: findProduct.salesPrice,
-                        units : findProduct.unit 
+                        units: findProduct.unit
                     }
                 }
             }
         )
-        .then(data => console.log(data))
+            .then(data => console.log(data))
 
         res.json({ status: true })
 
@@ -64,9 +64,9 @@ const addToWishlist = async (req, res) => {
 }
 
 
-const deleteItemWishlist = async (req, res)=>{
+const deleteItemWishlist = async (req, res) => {
     try {
-        // console.log(req.query);
+
         const id = req.query.id
         await User.updateOne(
             { _id: req.session.user },
@@ -76,7 +76,7 @@ const deleteItemWishlist = async (req, res)=>{
                 }
             }
         )
-        .then((data)=>console.log(data))
+            .then((data) => console.log(data))
         res.redirect("/wishlist")
     } catch (error) {
         console.log(error.message);

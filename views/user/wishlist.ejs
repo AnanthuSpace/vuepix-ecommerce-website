@@ -90,7 +90,7 @@
                     unit: unit
                 },
                 success: (res) => {
-                    if (res.status === true) {
+                    if (res.added === true) {
 
                         Swal.fire({
                             title: 'Added to Cart!',
@@ -99,7 +99,7 @@
                             timer: 2000,
                             showConfirmButton: false
                         })
-                    } else if (res.status === "Out of stock") {
+                    } else if (res.added === false) {
                         Swal.fire({
                             title: 'Stock!!',
                             text: "The product is out of stock",

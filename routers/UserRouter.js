@@ -7,7 +7,7 @@ const productController = require("../controllers/user/productController")
 const cartController = require("../controllers/user/cartController")
 const profileController = require("../controllers/user/userProfile")
 const orderController = require("../controllers/user/orderController")
-const wishlistController =  require("../controllers/user/wishlistController")
+const wishlistController = require("../controllers/user/wishlistController")
 
 
 
@@ -41,7 +41,7 @@ router.post("/sortProducts", productController.getSortProducts)
 
 
 // Cart controll
-router.get("/cart", isLogged , isBlocked, cartController.renderCart)
+router.get("/cart", isLogged, isBlocked, cartController.renderCart)
 router.post("/cart", isLogged, isBlocked, cartController.addToCart)
 router.get("/deleteItem", isLogged, isBlocked, cartController.deleteCartItem)
 router.post("/changeQuantity", isLogged, isBlocked, cartController.changeQuantity)
@@ -71,6 +71,7 @@ router.get("/cancelOrder", isLogged, isBlocked, orderController.cancelOrder)
 
 // wishlist
 router.get("/wishlist", isLogged, isBlocked, wishlistController.getWishlistPage)
-router.post("/addToWishlist", isLogged,isBlocked, wishlistController.addToWishlist)
+router.post("/addToWishlist", isLogged, isBlocked, wishlistController.addToWishlist)
+router.get("/deleteWishlist", isLogged, isBlocked, wishlistController.deleteItemWishlist)
 
 module.exports = router
