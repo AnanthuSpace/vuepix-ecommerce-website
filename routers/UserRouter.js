@@ -74,4 +74,8 @@ router.get("/wishlist", isLogged, isBlocked, wishlistController.getWishlistPage)
 router.post("/addToWishlist", isLogged, isBlocked, wishlistController.addToWishlist)
 router.get("/deleteWishlist", isLogged, isBlocked, wishlistController.deleteItemWishlist)
 
+
+
+
+
 module.exports = router
