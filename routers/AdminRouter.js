@@ -53,7 +53,7 @@ router.get("/changeStatus", isAdmin, orderController.changeOrderStatus)
 
 
 router.get("/coupon", isAdmin, couponController.getCouponPageAdmin)
-// router.post("/createCoupon", isAdmin, couponController.createCoupon)
+router.post("/createCoupon", isAdmin, couponController.createCoupon)
 
 
 
