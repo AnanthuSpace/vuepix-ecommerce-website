@@ -7,7 +7,7 @@ const viewUser = (req, res) => {
     User.find({})
         .then((data) => {
             console.log(data);
-            res.render("admin/userManagement", { data });
+            res.render("admin/userManagement", { data , userActive:true });
         })
         .catch((error) => {
             console.error("Finding error:", error);

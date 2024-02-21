@@ -58,7 +58,7 @@ const adminLogout = async (req, res) => {
 
 const renderAdminHome = async (req, res) => {
     try {
-        res.render("admin/adminHome")
+        res.render("admin/adminHome", { dashboard: true })
     } catch (error) {
         console.log(error.message);
     }
@@ -66,9 +66,6 @@ const renderAdminHome = async (req, res) => {
 
 
 
-const renderProductList = async (req, res) => {
-    res.render("admin/productList")
-}
 
 
 
@@ -76,6 +73,5 @@ module.exports = {
     renderAdminLogin,
     adminHome,
     renderAdminHome,
-    renderProductList,
     adminLogout
 }

@@ -17,7 +17,7 @@ const orderListing = async (req,res)=>{
 
 
 
-        res.render("admin/order", { orders: currentOrder, totalPages, currentPage })
+        res.render("admin/order", { orders: currentOrder, totalPages, currentPage, orderActive:true })
     } catch (error) {
         console.log(error.message);
     }
@@ -32,7 +32,7 @@ const getOrderDetails = async (req, res) => {
         console.log(findOrder);
 
 
-        res.render("admin/orderDetails", { orders: findOrder, orderId })
+        res.render("admin/orderDetails", { orders: findOrder, orderId , orderActive:true})
     } catch (error) {
         console.log(error.message);
     }

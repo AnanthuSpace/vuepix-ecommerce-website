@@ -12,7 +12,7 @@ const renderCategory = async (req, res) => {
         let totalPages = Math.ceil(cat.length / 4 )
         const currentCategory = cat.slice(startIndex, endIndex)
 
-        res.render("admin/category", { cat: currentCategory, totalPages, currentPage })
+        res.render("admin/category", { cat: currentCategory, totalPages, currentPage, categoryActive:true })
     } catch (error) {
         console.log(error.message);
     }
@@ -74,7 +74,7 @@ const renderEditCategory = async (req, res) => {
     try {
         const id = req.query.id;
         const category = await Category.findOne({ _id: id });
-        res.render("admin/editCategory", { category: category });
+        res.render("admin/editCategory", { category: category ,categoryActive:true });
     } catch (error) {
         console.log(error.message);
     }

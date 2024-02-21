@@ -4,6 +4,18 @@ const Address = require("../../models/addressSchema")
 const Order = require("../../models/orderShema")
 const mongodb = require('mongodb');
 const mongoose = require('mongoose');
+const Razorpay = require("razorpay")
+
+
+
+const razorpay = new Razorpay({
+    key_id: "rzp_test_gtvC4n8fF1EQsF",
+    key_secret: "G1Ii4vTbZ2Q2g2ijgpuuqDEc"
+})
+
+
+
+  
 
 const checkout = async (req, res) => {
     try {
@@ -73,6 +85,9 @@ const placeOrder = async (req, res) => {
 
         const cartCount = findUser.cart.length;
         const wishlistCount = findUser.wishlist.length
+
+
+
 
         const cartItemUnit = findUser.cart.map((item) => ({
             productId: item.ProductId,
@@ -179,29 +194,25 @@ const cancelOrder = async (req, res) => {
         console.log(productId);
 
 
+        
+
+        await Order.findOneAndUpdate({ _id: orderId, 'product._id': productId }, { $set: { 'product.$.status': "Canceled" } })
+
         await Product.findByIdAndUpdate(productId, { $inc: { unit: quantity } })
         console.log(`Increasing quantity for product ${productId} by ${quantity}`);
-
-        const updating = await Order.findOneAndUpdate({ _id: orderId, 'product._id': productId }, { $set: { 'product.$.status': "Canceled" } })
 
         const product = await Order.findOne(
             { _id: orderId, 'product._id': productId },
             { 'product.$': 1 }
         );
 
-
         const currentPrice = product.product[0].price;
 
-        console.log(currentPrice);
-
-        const newTotalPrice = await Order.findByIdAndUpdate(
+        await Order.findByIdAndUpdate(
             orderId,
             { $inc: { totalPrice: -currentPrice } }
         );
 
-        console.log(newTotalPrice);
-
-        console.log("Sheriyayi");
 
         res.redirect('/profile');
     } catch (error) {

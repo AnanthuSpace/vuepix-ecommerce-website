@@ -37,27 +37,27 @@
         </div>
         <nav>
             <ul class="menu-aside">
-                <li class="menu-item">
+                <li class="menu-item <%= locals.dashboard ? 'active': 'inactive '%>">
                     <a class="menu-link" href="home"> <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item ">
+                <li class="menu-item <%= locals.userActive ? 'active': 'inactive '%>">
                     <a class="menu-link" href="usermanagement"> <i class="icon material-icons md-comment"></i>
                         <span class="text">User Management</span>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item <%= locals.productActive ? 'active': 'inactive '%>">
                     <a class="menu-link" href="productList"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Product Management</span>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item <%= locals.categoryActive ? 'active': 'inactive '%>">
                     <a class="menu-link" href="category"> <i class="icon material-icons md-map"></i>
                         <span class="text">Category Management</span>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item <%= locals.orderActive ? 'active': 'inactive '%>">
                     <a class="menu-link" href="orders"> <i class="icon material-icons md-map"></i>
                         <span class="text">Order Management</span>
                     </a>

@@ -6,7 +6,7 @@ const Category = require("../../models/categorySchema")
 const renderAddProduct = async (req, res) => {
     try {
         const cat = await Category.find({})
-        res.render("admin/addProduct", { cat: cat })
+        res.render("admin/addProduct", { cat: cat , productActive:true})
     } catch (error) {
         console.log(error.message);
     }
@@ -73,7 +73,7 @@ const productList = async (req, res) => {
         let totalPages = Math.ceil(pro.length / 3)
         const currentProduct = pro.slice(startIndex, endIndex)
 
-        res.render("admin/productList", { data: currentProduct, totalPages, currentPage })
+        res.render("admin/productList", { data: currentProduct, totalPages, currentPage, productActive:true })
     } catch (error) {
         console.log(error.message);
     }
@@ -89,7 +89,7 @@ const showEdit = async (req, res) => {
         const id = req.query.id
         const findProduct = await Product.findOne({ _id: id })
         const category = await Category.find({ isListed: true })
-        res.render("admin/editProduct", { product: findProduct, cat: category })
+        res.render("admin/editProduct", { product: findProduct, cat: category , productActive:true})
     } catch (error) {
         console.log(error.message);
     }
