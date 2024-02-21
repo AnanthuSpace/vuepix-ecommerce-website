@@ -6,6 +6,7 @@ const userViewController = require("../controllers/admin/userController")
 const productController = require("../controllers/admin/productController")
 const categoryController = require("../controllers/admin/categoryController")
 const orderController = require("../controllers/admin/orderController")
+const couponController = require("../controllers/admin/couponController")
 
 
 const { isAdmin } = require("../Authentication/Auth")
@@ -48,6 +49,11 @@ router.post("/editCategory/:id", isAdmin, categoryController.editCategory)
 router.get("/orders", isAdmin, orderController.orderListing)
 router.get("/orderDetailsAdmin", isAdmin, orderController.getOrderDetails)
 router.get("/changeStatus", isAdmin, orderController.changeOrderStatus)
+
+
+
+router.get("/coupon", isAdmin, couponController.getCouponPageAdmin)
+// router.post("/createCoupon", isAdmin, couponController.createCoupon)
 
 
 
