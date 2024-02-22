@@ -63,9 +63,11 @@ router.post("/changepassword", isLogged, isBlocked, profileController.changePass
 
 // Order controll
 router.get('/checkout', isLogged, isBlocked, orderController.checkout)
+router.post('/applyCoupon', isLogged, isBlocked, orderController.applyCoupon)
 router.post('/orderPlaced', isLogged, isBlocked, orderController.placeOrder)
 router.get('/orderDetails', isLogged, isBlocked, orderController.orderDetails)
 router.get("/cancelOrder", isLogged, isBlocked, orderController.cancelOrder)
+router.post('/verifyPayment', isLogged, isBlocked, orderController.verify)
 
 
 

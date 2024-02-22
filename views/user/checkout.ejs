@@ -161,6 +161,36 @@
                                     data-target="#Razorpay" aria-controls="paypal">Razorpay</label>
                             </div>
 
+
+
+
+
+                            <div class="col-6 mt-50 ml-150">
+                                <div class="toggle_info">
+                                    <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a
+                                            coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed"
+                                            aria-expanded="false">Click here to enter your
+                                            code</a></span>
+                                </div>
+                                <div class="panel-collapse collapse coupon_form" id="coupon">
+                                    <div class="panel-body">
+                                        <p class="mb-30 font-sm">If you have a coupon code, please apply it below.
+                                        </p>
+
+                                        <div class="form-group">
+                                            <input type="text" id="couponCode" placeholder="Enter Coupon Code...">
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-md" onclick="applyCoupon()">Apply Coupon</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
                         </div>
 
                     </div>
@@ -189,6 +219,15 @@
                                                                 <tr>
                                                                     <th>Shipping</th>
                                                                     <td colspan="2"><em>Free Shipping</em></td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <h5>Discount</h5>
+                                                                    </th>
+                                                                    <td id="discountCell">
+                                                                        <h5>0</h5>
+                                                                    </td>
                                                                 </tr>
 
                                                                 <tr>
@@ -313,7 +352,9 @@
             let address = $("input[name='selectedAddress']:checked").val();
             let payment = $("input[name='payment_option']:checked").val();
 
-
+            const sum = document.getElementById("totalValue").textContent;
+            const numericValue = parseInt(sum.replace(/[^\d.]/g, ''));
+        
             if (!payment) {
                 Swal.fire({
                     title: 'NO PAYMENT FOUND!',
@@ -349,11 +390,156 @@
                             setTimeout(() => {
                                 window.location.href = "/profile";
                             }, 700);
+                        } else if (response.method === "online") {
+
+                            let orderAmount = Math.round(numericValue * 100);
+                            console.log(response, "res");
+
+                            var options = {
+                                "key": "rzp_test_kkytoEMYHJ1dn3",
+                                "amount": orderAmount,
+                                "currency": "INR",
+                                "name": "VuePix",
+                                "description": "Test Transaction",
+                                "image": "https://example.com/your_logo.jpg",
+                                "order_id": response.razorpayOrder.id, 
+                                "handler": function (status) {
+                                    verifyPayment(response.razorpayOrder, status, response.razorpayOrder.id);
+                                },
+                                "prefill": {
+                                    "name": "Customer Name",
+                                    "email": "customer@example.com",
+                                    "contact": "9000090000"
+                                },
+                                "theme": {
+                                    "color": "#3399cc"
+                                }
+                            };
+
+                            // Initialize Razorpay
+                            var rzp1 = new Razorpay(options);
+                            rzp1.open();
+
+                            // Handle errors
+                            rzp1.on('payment.failed', function (response) {
+                                console.error('Payment failed:', response.error.code, response.error.description);
+                                // Handle payment failure here
+                            });
+                        }
+
+                        else if (response.method === "wallet") {
+
+                            if (response.payment === true) {
+                                Swal.fire({
+                                    title: "Order success",
+                                    text: "Order placed successfully",
+                                    icon: "success",
+                                    showConfirmButton: false,
+                                    timer: 2000,
+                                });
+
+                            } else {
+                                // Handle the case when the response status is not successful
+                                Swal.fire({
+                                    title: "Order failed",
+                                    text: "Wallet amount is not enough",
+                                    icon: "error",
+                                    showConfirmButton: true,
+                                });
+                            }
                         }
                     }
                 })
             }
 
+        }
+
+
+        function verifyPayment(order, payment, id) {
+            console.log(order)
+            console.log(payment);
+            console.log(id);
+            $.ajax({
+                url: '/verifyPayment',
+                method: 'post',
+                data: {
+                    order,
+                    payment
+                }, success: (response) => {
+                    if (response.status) {
+                        Swal.fire({
+                            title: "Order success",
+                            text: "order placed successfully",
+                            icon: "success",
+                            showCancelButton: true,
+                            confirmButtonText: "view orders",
+                            cancelButtonText: "continue shopping",
+                            reverseButtons: true
+                        }).then(function (result) {
+                            if (result.value) {
+                                location.href = '/profile';
+
+                            } else if (result.dismiss === "cancel") {
+                                location.href = '/'
+                            }
+                        });
+                    }
+
+                }
+            })
+        }
+
+
+
+
+        function applyCoupon() {
+            let couponCode = document.getElementById("couponCode").value
+            if (!couponCode) {
+                Swal.fire({
+                    title: 'NO COUPON FOUND!',
+                    text: 'Please enter the coupon code.',
+                    icon: 'error',
+                    timer: 3000,
+                })
+            } else {
+                $.ajax({
+                    url: '/applyCoupon',
+                    method: "post",
+                    data: {
+                        code: couponCode
+                    },
+                    success: function (response) {
+                        if (response.status === true) {
+                            Swal.fire({
+                                title: "COUPEN ADDED",
+                                text: "Coupon added",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 2000,
+                            })
+                            totalAmount = response.total;
+                            alert(totalAmount)
+                            document.getElementById("discountCell").innerHTML = `<h5>${response.discount}</h5>`;
+                            document.getElementById("totalValue").innerHTML = `<span  id="total"  class="font-xl text-brand fw-900">${totalAmount}</span>`
+
+                        } else if (response.used === true) {
+                            Swal.fire({
+                                title: 'COUPON ERROR!',
+                                text: 'Coupon already used.',
+                                icon: 'error',
+                                timer: 3000,
+                            })
+                        } else if (response.status === false) {
+                            Swal.fire({
+                                title: 'COUPON ERROR!',
+                                text: 'Coupon is not available',
+                                icon: 'error',
+                                timer: 3000,
+                            })
+                        }
+                    }
+                })
+            }
         }
     </script>
 
