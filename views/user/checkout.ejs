@@ -353,8 +353,8 @@
             let payment = $("input[name='payment_option']:checked").val();
 
             const sum = document.getElementById("totalValue").textContent;
-            const numericValue = parseInt(sum.replace(/[^\d.]/g, ''));
-        
+            const numericValue = parseInt(sum);
+            console.log(numericValue);  
             if (!payment) {
                 Swal.fire({
                     title: 'NO PAYMENT FOUND!',
@@ -393,17 +393,19 @@
                         } else if (response.method === "online") {
 
                             let orderAmount = Math.round(numericValue * 100);
-                            console.log(response, "res");
-
+                            console.log("Responds : ",response.razorpayOrder.id, orderAmount);
+                            console.log("Responds full : ",response);
                             var options = {
-                                "key": "rzp_test_kkytoEMYHJ1dn3",
+                                "key": "rzp_test_PQuoSyT1cgKHjg",
                                 "amount": orderAmount,
                                 "currency": "INR",
                                 "name": "VuePix",
                                 "description": "Test Transaction",
                                 "image": "https://example.com/your_logo.jpg",
                                 "order_id": response.razorpayOrder.id, 
+                                
                                 "handler": function (status) {
+                                    console.log(response.razorpayOrder, status);
                                     verifyPayment(response.razorpayOrder, status, response.razorpayOrder.id);
                                 },
                                 "prefill": {
@@ -415,7 +417,7 @@
                                     "color": "#3399cc"
                                 }
                             };
-
+                          
                             // Initialize Razorpay
                             var rzp1 = new Razorpay(options);
                             rzp1.open();
@@ -457,8 +459,8 @@
 
         function verifyPayment(order, payment, id) {
             console.log(order)
-            console.log(payment);
-            console.log(id);
+            console.log("Payement : ",payment);
+            
             $.ajax({
                 url: '/verifyPayment',
                 method: 'post',

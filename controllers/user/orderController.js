@@ -6,6 +6,7 @@ const Coupon = require("../../models/couponSchema")
 const mongodb = require('mongodb');
 const mongoose = require('mongoose');
 const Razorpay = require("razorpay")
+const crypto = require("crypto")
 const dotenv = require("dotenv")
 
 dotenv.config()
@@ -167,7 +168,7 @@ const placeOrder = async (req, res) => {
             console.log('order placed by Razorpay');
 
             orderDone = await newOrder.save();
-
+            console.log(orderDone._id,"id");
             const generatedOrder = await generateOrderRazorpay(orderDone._id, orderDone.totalPrice);
             console.log(generatedOrder, "order generated");
 
@@ -189,43 +190,44 @@ const placeOrder = async (req, res) => {
                     wishlistCount
                 })
 
-        } else if (newOrder.payment == "wallet") {
-            if (newOrder.totalPrice <= findUser.wallet) {
-                console.log("order placed with Wallet");
-                const data = findUser.wallet -= newOrder.totalPrice;
-                const newHistory = {
-                    amount: data,
-                    status: "debit",
-                    date: Date.now()
-                };
-                findUser.history.push(newHistory);
-                await findUser.save();
-                await findProduct.save()
-                orderDone = await newOrder.save();
+        } 
+        // else if (newOrder.payment == "wallet") {
+        //     if (newOrder.totalPrice <= findUser.wallet) {
+        //         console.log("order placed with Wallet");
+        //         const data = findUser.wallet -= newOrder.totalPrice;
+        //         const newHistory = {
+        //             amount: data,
+        //             status: "debit",
+        //             date: Date.now()
+        //         };
+        //         findUser.history.push(newHistory);
+        //         await findUser.save();
+        //         await findProduct.save()
+        //         orderDone = await newOrder.save();
 
 
-                await User.updateOne(
-                    { _id: userId },
-                    { $set: { cart: [] } }
-                );
+        //         await User.updateOne(
+        //             { _id: userId },
+        //             { $set: { cart: [] } }
+        //         );
 
-                res.json(
-                    {
-                        payment: true,
-                        method: "wallet",
-                        order: orderDone,
-                        orderId: orderDone._id,
-                        quantity: 1,
-                        success: true
-                    });
-                return;
-            } else {
-                console.log("wallet amount is lesser than total amount");
-                res.json({ payment: false, method: "wallet", success: false });
-                return;
-            }
+        //         res.json(
+        //             {
+        //                 payment: true,
+        //                 method: "wallet",
+        //                 order: orderDone,
+        //                 orderId: orderDone._id,
+        //                 quantity: 1,
+        //                 success: true
+        //             });
+        //         return;
+        //     } else {
+        //         console.log("wallet amount is lesser than total amount");
+        //         res.json({ payment: false, method: "wallet", success: false });
+        //         return;
+        //     }
 
-        }
+        // }
 
     } catch (error) {
         console.log(error.message);
@@ -252,6 +254,32 @@ const generateOrderRazorpay = (orderId, total) => {
         });
     })
 }
+
+
+
+
+
+
+
+const verify = (req, res) => {
+    console.log(req.body, "end");
+    let hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
+    hmac.update(
+        `${req.body.payment.razorpay_order_id}|${req.body.payment.razorpay_payment_id}`
+    );
+    hmac = hmac.digest("hex");
+    console.log(hmac,"HMAC");
+    console.log(req.body.payment.razorpay_signature,"signature");
+    if (hmac === req.body.payment.razorpay_signature) {
+        console.log("true");
+        res.json({ status: true });
+    } else {
+        console.log("false");
+        res.json({ status: false });
+    }
+};
+
+
 
 
 
@@ -357,27 +385,6 @@ const applyCoupon = async (req, res) => {
         console.log(error.message);
     }
 }
-
-
-
-
-const verify = (req, res) => {
-    console.log(req.body, "end");
-    let hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
-    hmac.update(
-        `${req.body.payment.razorpay_order_id}|${req.body.payment.razorpay_payment_id}`
-    );
-    hmac = hmac.digest("hex");
-    // console.log(hmac,"HMAC");
-    // console.log(req.body.payment.razorpay_signature,"signature");
-    if (hmac === req.body.payment.razorpay_signature) {
-        console.log("true");
-        res.json({ status: true });
-    } else {
-        console.log("false");
-        res.json({ status: false });
-    }
-};
 
 
 
