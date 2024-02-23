@@ -249,6 +249,63 @@ const changePass = async (req, res) => {
 }
 
 
+
+
+
+
+const verifyReferelCode = async(req,res)=>{
+    try {
+        const referalCode  = req.body.referalCode
+        const currentUser = await User.findOne({_id:req.session.user})
+        const Owner = await User.findOne({ referalCode: referalCode })
+        // console.log(Owner);
+
+        if (currentUser.redeemed === true) {
+            console.log("You have already redeemed a referral code before!");
+            res.json({ message: "You have already redeemed a referral code before!" })
+            return
+        }
+
+        if (!Owner || Owner._id.equals(currentUser._id)) {
+            console.log("Invalid referral code!");
+            res.json({ message: "Invalid referral code!" })
+            return
+        }
+
+        const alreadyRedeemed = Owner.redeemedUsers.includes(currentUser._id)
+
+        if (alreadyRedeemed) {
+            console.log("You have already used this referral code!");
+            res.json({ message: "You have already used this referral code!" })
+            return
+        } else {
+            await User.updateOne(
+                { _id: Owner._id },
+                { $set: { referalCode: "" } }
+            )
+
+            await User.updateOne(
+                { _id: req.session.user },
+                { $set: { redeemed: true } }
+            )
+
+            await User.updateOne(
+                { _id: Owner._id },
+                { $push: { redeemedUsers: currentUser._id } }
+            )
+
+            console.log("Referral code redeemed successfully!");
+
+            res.json({ message: "Referral code verified successfully!" })
+            return
+        }
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
 module.exports = {
     renderProfile,
     editUser,
@@ -257,5 +314,6 @@ module.exports = {
     getEditAddress,
     editAddress,
     deleteAddress,
-    changePass
+    changePass,
+    verifyReferelCode
 }

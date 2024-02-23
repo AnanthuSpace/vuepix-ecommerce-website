@@ -58,6 +58,7 @@ router.get("/editAddress", isLogged, isBlocked, profileController.getEditAddress
 router.post("/editAddress", isLogged, isBlocked, profileController.editAddress)
 router.get("/deleteAddress", isLogged, isBlocked, profileController.deleteAddress)
 router.post("/changepassword", isLogged, isBlocked, profileController.changePass)
+router.post('/verifyReferalCode', isLogged, isBlocked, profileController.verifyReferelCode)
 
 
 

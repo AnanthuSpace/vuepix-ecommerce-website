@@ -2,7 +2,7 @@ const mailer = require("nodemailer")
 const { User } = require("../../models/userSchema")
 const Product = require("../../models/productSchema")
 const bcrypt = require("bcrypt")
-
+const { v4: uuidv4 } = require("uuid");
 
 
 const renderGuest = async (req, res) => {
@@ -180,7 +180,16 @@ const createUser = async (req, res) => {
             from: process.env.EMAIL_ID,
             to: email,
             subject: "OTP Verification",
-            text: `Your OTP for Verification is ${otp}`
+            html: `
+            <div style="font-family: Helvetica, Arial, sans-serif; min-width: 100px; overflow: auto; line-height: 2">
+                <div style="margin: 50px auto; width: 70%; padding: 20px 0">
+                    <p style="font-size: 1.1em">Hi,</p>
+                    <p>Thank you for choosing MobileX. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
+                    <h2 style="background: #00466a; margin: 0 auto; width: max-content; padding: 0 10px; color: #fff; border-radius: 4px;">${otp}</h2>
+                    <p style="font-size: 0.9em;">Regards,<br />MobileX</p>
+                    <hr style="border: none; border-top: 1px solid #eee" />
+                </div>
+            </div>`
         }
 
         // Sending email
@@ -212,11 +221,16 @@ const verifyOtp = async (req, res) => {
         console.log(otp, otpfromAjax);
         if (otpfromAjax == otp) {
             console.log("otp matched");
+
+            const referalCode = uuidv4()
+            console.log("RefferelCode : ", referalCode);
+
             const newUser = new User({
                 username,
                 email,
                 phone,
-                password
+                password,
+                referalCode:referalCode
             })
 
             await newUser.save();

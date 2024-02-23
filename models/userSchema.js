@@ -27,7 +27,22 @@ const userSchema = mongoose.Schema({
     },
     wishlist: {
         type: Array
-    }
+    },
+    referalCode: {
+        type: String,
+        required: true,
+    },
+    redeemed: {
+        type: Boolean,
+        default: false,
+    },
+    redeemedUsers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user",
+            required: true,
+        }
+    ],
 })
 
 
