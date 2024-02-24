@@ -8,6 +8,7 @@ const cartController = require("../controllers/user/cartController")
 const profileController = require("../controllers/user/userProfile")
 const orderController = require("../controllers/user/orderController")
 const wishlistController = require("../controllers/user/wishlistController")
+const walletController = require("../controllers/user/walletController")
 
 
 
@@ -78,6 +79,9 @@ router.post("/addToWishlist", isLogged, isBlocked, wishlistController.addToWishl
 router.get("/deleteWishlist", isLogged, isBlocked, wishlistController.deleteItemWishlist)
 
 
+
+// Wallet
+router.post("/addMoney", isLogged, isBlocked, walletController.addMoneyToWallet)
 
 
 

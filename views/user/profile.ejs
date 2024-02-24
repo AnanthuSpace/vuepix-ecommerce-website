@@ -28,7 +28,16 @@
                                                 class="fi-rs-shopping-bag mr-10"></i>Orders</a>
                                     </li>
                                     <li class="nav-item">
-                                        <!-- <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab" href="#track-orders" role="tab" aria-controls="track-orders" aria-selected="false"><i class="fi-rs-shopping-cart-check mr-10"></i>Track Your Order</a> -->
+                                        <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab"
+                                            href="#track-orders" role="tab" aria-controls="track-orders"
+                                            aria-selected="false"><i
+                                                class="fi-rs-shopping-cart-check mr-10"></i>Wallet</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab"
+                                            href="#wallet-history" role="tab" aria-controls="track-orders"
+                                            aria-selected="false"><i class="fi-rs-shopping-cart-check mr-10"></i>Wallet
+                                            History</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address"
@@ -140,6 +149,93 @@
                                         </div>
                                     </div>
                                 </div>
+
+
+
+                                <div class="tab-pane fade" id="track-orders" role="tabpanel"
+                                    aria-labelledby="track-orders-tab">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Wallet</h5>
+                                        </div>
+                                        <div class="card-body contact-from-area">
+
+                                            <div class="row">
+                                                <div class="col-lg-8 mx-auto text-center mt-90">
+                                                    <form>
+                                                        <div class="form-group">
+                                                            <label for="walletAmount" class="h4">Amount</label>
+                                                            <div class="h3">₹<%= user.wallet %>
+                                                            </div>
+                                                        </div>
+
+                                                        <button type="button" class="btn btn-success"
+                                                            onclick="addMoney()">Add Money</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="tab-pane fade" id="wallet-history" role="tabpanel"
+                                    aria-labelledby="orders-tab">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Wallet History</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Date</th>
+                                                            <th>Status</th>
+                                                            <th>Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        <% if (user.history) { %>
+
+                                                            <% for (let i=0; i < user.history.length; i++) { %>
+                                                                <tr>
+                                                                    <td>
+                                                                        <% const dateObject=(user.history[i].date
+                                                                            instanceof Date) ? user.history[i].date :
+                                                                            new Date(user.history[i].date); %>
+                                                                            <%= dateObject.toLocaleDateString() %>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <%= user.history[i].status %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <% if (user.history[i].status==="debit" ) { %>
+                                                                            -<%= user.history[i].amount %>
+                                                                                <% }else{ %>
+                                                                                    <%= user.history[i].amount %>
+                                                                                        <% } %>
+                                                                    </td>
+                                                                </tr>
+                                                                <% } %>
+
+                                                                    <% }else{ %>
+
+                                                                        <td>No Orders found</td>
+
+                                                                        <% } %>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
 
 
                                 <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
@@ -469,27 +565,73 @@
                             title: 'Oops',
                             text: 'You have already used this referral code!',
                         })
-                    }else if(response.message == "Invalid referral code!"){
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'Oops',
-                                text: 'Invalid referral code!',
-                            }) 
-                        }else if(response.message == "You have already redeemed a referral code before!"){
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'Oops',
-                                text: 'You have already redeemed a referral code before!',
-                            }) 
-                        }else{
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: '',
-                            })
-                        }
+                    } else if (response.message == "Invalid referral code!") {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Oops',
+                            text: 'Invalid referral code!',
+                        })
+                    } else if (response.message == "You have already redeemed a referral code before!") {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Oops',
+                            text: 'You have already redeemed a referral code before!',
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: '',
+                        })
+                    }
                 }
             })
+        }
+
+
+        async function addMoney() {
+
+            const { value: amount } = await Swal.fire({
+                title: 'Enter the Amount',
+                input: 'number',
+                inputLabel: 'Amount',
+                inputPlaceholder: '₹'
+            })
+            $.ajax({
+                url: "/addMoney",
+                method: "post",
+                data: {
+                    total: amount
+                },
+                success: (data) => {
+                    if (data.razorpay) {
+                        var options = {
+                            "key": "rzp_test_PQuoSyT1cgKHjg",
+                            "amount": data.order.amount,
+                            "currency": "INR",
+                            "name": "VuePix",
+                            "description": "Test Transaction",
+                            "image": "https://example.com/your_logo",
+                            "order_id": data.order.id,
+                            "handler": function (response) {
+                                verifyPayment(response, data);
+                            },
+                            "prefill": {
+                                "name": "Customer Name",
+                                "email": "customer@example.com",
+                                "contact": "9000090000"
+                            },
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+                        }
+                        console.log(options);
+                        var rzp1 = new Razorpay(options);
+                        rzp1.open();
+                    }
+                }
+            })
+
         }
 
 

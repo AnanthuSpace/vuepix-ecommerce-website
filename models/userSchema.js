@@ -43,6 +43,13 @@ const userSchema = mongoose.Schema({
             required: true,
         }
     ],
+    wallet:{
+        type:Number,
+        default: 0
+    },
+    history: {
+        type: Array
+    }
 })
 
 

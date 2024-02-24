@@ -191,43 +191,43 @@ const placeOrder = async (req, res) => {
                 })
 
         } 
-        // else if (newOrder.payment == "wallet") {
-        //     if (newOrder.totalPrice <= findUser.wallet) {
-        //         console.log("order placed with Wallet");
-        //         const data = findUser.wallet -= newOrder.totalPrice;
-        //         const newHistory = {
-        //             amount: data,
-        //             status: "debit",
-        //             date: Date.now()
-        //         };
-        //         findUser.history.push(newHistory);
-        //         await findUser.save();
-        //         await findProduct.save()
-        //         orderDone = await newOrder.save();
+        else if (newOrder.payment == "wallet") {
+            if (newOrder.totalPrice <= findUser.wallet) {
+                console.log("order placed with Wallet");
+                const data = findUser.wallet -= newOrder.totalPrice;
+                const newHistory = {
+                    amount: data,
+                    status: "debit",
+                    date: Date.now()
+                };
+                findUser.history.push(newHistory);
+                await findUser.save();
+                await findProduct.save()
+                orderDone = await newOrder.save();
 
 
-        //         await User.updateOne(
-        //             { _id: userId },
-        //             { $set: { cart: [] } }
-        //         );
+                await User.updateOne(
+                    { _id: userId },
+                    { $set: { cart: [] } }
+                );
 
-        //         res.json(
-        //             {
-        //                 payment: true,
-        //                 method: "wallet",
-        //                 order: orderDone,
-        //                 orderId: orderDone._id,
-        //                 quantity: 1,
-        //                 success: true
-        //             });
-        //         return;
-        //     } else {
-        //         console.log("wallet amount is lesser than total amount");
-        //         res.json({ payment: false, method: "wallet", success: false });
-        //         return;
-        //     }
+                res.json(
+                    {
+                        payment: true,
+                        method: "wallet",
+                        order: orderDone,
+                        orderId: orderDone._id,
+                        quantity: 1,
+                        success: true
+                    });
+                return;
+            } else {
+                console.log("wallet amount is lesser than total amount");
+                res.json({ payment: false, method: "wallet", success: false });
+                return;
+            }
 
-        // }
+        }
 
     } catch (error) {
         console.log(error.message);
