@@ -49,6 +49,7 @@ const addMoneyToWallet = async (req, res) => {
 const verify_payment = async (req, res) => {
     try {
         let details = req.body
+        console.log(details);
         let amount = parseInt(details.order.order.amount) / 100
         console.log(amount);
         await User.updateOne(

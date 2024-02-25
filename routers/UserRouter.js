@@ -82,6 +82,7 @@ router.get("/deleteWishlist", isLogged, isBlocked, wishlistController.deleteItem
 
 // Wallet
 router.post("/addMoney", isLogged, isBlocked, walletController.addMoneyToWallet)
+router.post('/verify-payment', isLogged, isBlocked, walletController.verify_payment)
 
 
 

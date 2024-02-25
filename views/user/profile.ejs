@@ -430,8 +430,8 @@
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-
-
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
     <script>
         const oldpass_err = document.getElementById("oldpass_err");
         const newpass_err = document.getElementById("newpass_err");
@@ -625,13 +625,50 @@
                                 "color": "#3399cc"
                             }
                         }
-                        console.log(options);
+                        console.log("Option ======>>>>>>> ", options);
                         var rzp1 = new Razorpay(options);
                         rzp1.open();
+
+                        // Handle errors
+                        rzp1.on('payment.failed', function (response) {
+                            console.error('Payment failed:', response.error.code, response.error.description);
+                            // Handle payment failure here
+                        });
                     }
                 }
             })
 
+        }
+
+
+
+
+        function verifyPayment(response, order) {
+
+            $.ajax({
+                url: '/verify-payment',
+                method: 'post',
+                data: {
+                    order,
+                    response,
+                    from: "wallet"
+                }, success: (response) => {
+                    if (response) {
+                        Swal.fire({
+                            title: "Success",
+                            text: "Payment has been succeed",
+                            icon: "success",
+
+                        }).then(function () {
+                            location.reload()
+                        });
+                    } else {
+                        Swal.fire("PAYMENT ERROR!", "Something wrong occured while processing the payment.", "error");
+                        location.reload()
+                    }
+
+                }
+            })
         }
 
 
