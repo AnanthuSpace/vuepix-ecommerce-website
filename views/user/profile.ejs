@@ -106,7 +106,7 @@
                                                         <tr>
                                                             <th>Order</th>
                                                             <th>Date</th>
-                                                            <!-- <th>Status</th> -->
+                                                            <th>Status</th>
                                                             <th>Total</th>
                                                             <th>Actions</th>
                                                         </tr>
@@ -119,7 +119,9 @@
                                                                     <td>
                                                                         <%= order[i]._id %>
                                                                     </td>
-
+                                                                    <td>
+                                                                        <%= order[i].status %>
+                                                                    </td>
                                                                     <td>
                                                                         <%= order[i].createdOn %>
                                                                     </td>

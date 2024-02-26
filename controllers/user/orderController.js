@@ -125,7 +125,7 @@ const placeOrder = async (req, res) => {
             address: desiredAddress,
             payment: payment,
             userId: userId,
-            // status: "Confirmed",
+            status: "Confirmed",
             createdOn: Date.now()
         })
 
@@ -168,7 +168,7 @@ const placeOrder = async (req, res) => {
             console.log('order placed by Razorpay');
 
             orderDone = await newOrder.save();
-            console.log(orderDone._id,"id");
+            console.log(orderDone._id, "id");
             const generatedOrder = await generateOrderRazorpay(orderDone._id, orderDone.totalPrice);
             console.log(generatedOrder, "order generated");
 
@@ -190,26 +190,34 @@ const placeOrder = async (req, res) => {
                     wishlistCount
                 })
 
-        } 
+        }
         else if (newOrder.payment == "wallet") {
             if (newOrder.totalPrice <= findUser.wallet) {
                 console.log("order placed with Wallet");
-                const data = findUser.wallet -= newOrder.totalPrice;
+                const data = findUser.wallet - newOrder.totalPrice;
+
                 const newHistory = {
                     amount: data,
                     status: "debit",
                     date: Date.now()
                 };
+                console.log(newHistory);
                 findUser.history.push(newHistory);
                 await findUser.save();
-                await findProduct.save()
-                orderDone = await newOrder.save();
 
+                // Iterate over each product and update its status
+                for (let i = 0; i < findProduct.length; i++) {
+                    findProduct[i].status = "Confirmed";
+                    await findProduct[i].save();
+                }
+
+                orderDone = await newOrder.save();
 
                 await User.updateOne(
                     { _id: userId },
-                    { $set: { cart: [] } }
+                    { $set: { cart: [], wallet: data } }
                 );
+
 
                 res.json(
                     {
@@ -219,15 +227,16 @@ const placeOrder = async (req, res) => {
                         orderId: orderDone._id,
                         quantity: 1,
                         success: true
-                    });
+                    }
+                );
                 return;
             } else {
                 console.log("wallet amount is lesser than total amount");
                 res.json({ payment: false, method: "wallet", success: false });
                 return;
             }
-
         }
+
 
     } catch (error) {
         console.log(error.message);
@@ -268,8 +277,8 @@ const verify = (req, res) => {
         `${req.body.payment.razorpay_order_id}|${req.body.payment.razorpay_payment_id}`
     );
     hmac = hmac.digest("hex");
-    console.log(hmac,"HMAC");
-    console.log(req.body.payment.razorpay_signature,"signature");
+    console.log(hmac, "HMAC");
+    console.log(req.body.payment.razorpay_signature, "signature");
     if (hmac === req.body.payment.razorpay_signature) {
         console.log("true");
         res.json({ status: true });

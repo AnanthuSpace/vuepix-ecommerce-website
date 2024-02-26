@@ -62,8 +62,21 @@
                                 <h6 class="mb-1">Order info</h6>
                                 <p class="mb-1">
                                     <%if(locals.orders){%>
-                                        Pay method: <%=orders.payment%>
-                                            <%}%>
+                                        Pay method: <%=orders.payment%> <br> Status:
+                                            <%if(orders.status=="Pending"){%>
+                                                Pending
+                                                <%}else if(orders.status=="Delivered" ){%>
+                                                    Delivered
+                                                    <%}else if(orders.status=="Confirmed" ){%>
+                                                        Confirmed
+                                                        <%}else if(orders.status=="Returned" ){%>
+                                                            Returned
+                                                            <%}else if(orders.status=="Canceled" ){%>
+                                                                Cancelled
+                                                                <%}else if(orders.status=="Shipped" ){%>
+                                                                    Shipped
+                                                                    <%}%>
+                                                                        <%}%>
 
                                 </p>
 
