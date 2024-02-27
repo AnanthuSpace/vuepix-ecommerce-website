@@ -342,7 +342,7 @@
                             icon: 'success',
                             timer: 2000,
                             showConfirmButton: false
-                        })
+                        }).then(() => { window.location.href = '/shop' });
                     } else if (response.status == false) {
                         Swal.fire({
                             title: 'You need to Login first',

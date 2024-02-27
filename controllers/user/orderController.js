@@ -130,6 +130,17 @@ const placeOrder = async (req, res) => {
         })
 
 
+        const newOrderFromRazorpay = new Order({
+            product: orderedProducts,
+            totalPrice: grand,
+            address: desiredAddress,
+            payment: payment,
+            userId: userId,
+            status: "Pending",
+            createdOn: Date.now()
+        });
+
+
 
         for (let i = 0; i < orderedProducts.length; i++) {
 
@@ -167,7 +178,7 @@ const placeOrder = async (req, res) => {
 
             console.log('order placed by Razorpay');
 
-            orderDone = await newOrder.save();
+            orderDone = await newOrderFromRazorpay.save();
             console.log(orderDone._id, "id");
             const generatedOrder = await generateOrderRazorpay(orderDone._id, orderDone.totalPrice);
             console.log(generatedOrder, "order generated");
@@ -281,6 +292,7 @@ const verify = (req, res) => {
     console.log(req.body.payment.razorpay_signature, "signature");
     if (hmac === req.body.payment.razorpay_signature) {
         console.log("true");
+        changeOrderStatusToConfirmed(req.body.orderId)
         res.json({ status: true });
     } else {
         console.log("false");
@@ -289,6 +301,13 @@ const verify = (req, res) => {
 };
 
 
+const changeOrderStatusToConfirmed = async (orderId) => {
+    await Order.updateOne(
+        { _id: orderId },
+        { status: "Confirmed" }
+    )
+        .then(res => console.log(res))
+}
 
 
 
@@ -329,6 +348,7 @@ const cancelOrder = async (req, res) => {
 
 
 
+        const findOrder = await Order.findOne({ _id: orderId })
 
         await Order.findOneAndUpdate({ _id: orderId, 'product._id': productId }, { $set: { 'product.$.status': "Canceled" } })
 
@@ -342,6 +362,30 @@ const cancelOrder = async (req, res) => {
 
         const currentPrice = product.product[0].price;
 
+        if(findOrder.payment!=="cod"){
+            await User.updateOne(
+                {
+                    _id: req.session.user
+                }, {
+                $push: {
+                    history: {
+                        amount: currentPrice, status: "credit", date: Date.now()
+                    }
+                }
+            }
+            )
+
+            await User.updateOne(
+                {
+                    _id: req.session.user
+                }, {
+                $set: {
+                    wallet: currentPrice
+                }
+            }
+            )
+        }
+       
         await Order.findByIdAndUpdate(
             orderId,
             { $inc: { totalPrice: -currentPrice } }
@@ -406,5 +450,5 @@ module.exports = {
     orderDetails,
     cancelOrder,
     applyCoupon,
-    verify
+    verify,
 }

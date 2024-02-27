@@ -117,16 +117,21 @@
                                                             <% for (let i=0; i < order.length; i++) { %>
                                                                 <tr>
                                                                     <td>
-                                                                        <%= order[i]._id %>
+                                                                        <%= Math.random().toString(36).substring(2, 15) %>
                                                                     </td>
+
+                                                                    <td>
+                                                                        <% const dateOptions={ day: '2-digit' ,
+                                                                            month: 'short' , year: 'numeric' }; %>
+                                                                            <%= new
+                                                                                Date(order[i].createdOn).toLocaleDateString('en-US',
+                                                                                dateOptions) %>
+                                                                                
+                                                                    </td>
+
                                                                     <td>
                                                                         <%= order[i].status %>
                                                                     </td>
-                                                                    <td>
-                                                                        <%= order[i].createdOn %>
-                                                                    </td>
-
-
 
 
                                                                     <td>
@@ -433,7 +438,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    
+
     <script>
         const oldpass_err = document.getElementById("oldpass_err");
         const newpass_err = document.getElementById("newpass_err");

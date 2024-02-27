@@ -406,7 +406,7 @@
                                 
                                 "handler": function (status) {
                                     console.log(response.razorpayOrder, status);
-                                    verifyPayment(response.razorpayOrder, status, response.razorpayOrder.id);
+                                    verifyPayment(response.razorpayOrder, status, response.razorpayOrder.id, response.orderId);
                                 },
                                 "prefill": {
                                     "name": "Customer Name",
@@ -457,7 +457,7 @@
         }
 
 
-        function verifyPayment(order, payment, id) {
+        function verifyPayment(order, payment, id, orderId) {
             console.log(order)
             console.log("Payement : ",payment);
             
@@ -466,7 +466,8 @@
                 method: 'post',
                 data: {
                     order,
-                    payment
+                    payment,
+                    orderId
                 }, success: (response) => {
                     if (response.status) {
                         Swal.fire({

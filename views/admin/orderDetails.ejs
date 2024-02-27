@@ -6,10 +6,10 @@
             <div class="content-header">
                 <div class="mt-20">
                     <h2 class="content-title card-title">Order detail</h2>
-                    <p>Details for Order ID: <span id="orderId">
-                            <%=orders._id%>
-                        </span></p>
+                    <p>Details for Order ID : &nbsp <%= Math.random().toString(36).substring(2, 15) %>
+                    </p>
                 </div>
+                <input type="hidden" value="<%=orders._id%>" id="orderId">
             </div>
             <div class="card mt-60">
 
@@ -25,7 +25,7 @@
                                         <%= new Date(orders.createdOn).toLocaleDateString('en-US', dateOptions) %>
                                 </b>
                             </span> <br>
-                            <small class="text-muted">Order ID: <%=orders._id%></small>
+
                         </div>
                         <div class="col-lg-4 col-md-4 ms-auto text-md-end">
                             <% if (orders.status !=="Canceled" ) { %>
@@ -268,7 +268,7 @@
 
         function handleDropdownChange(selectElement) {
             const selectedValue = document.querySelector('.form-select').value;
-            const orderId = document.getElementById("orderId").innerHTML
+            const orderId = document.getElementById("orderId").value
 
 
             if (selectedValue == "Shipped") {

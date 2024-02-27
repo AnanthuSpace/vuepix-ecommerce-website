@@ -7,9 +7,11 @@ const productController = require("../controllers/admin/productController")
 const categoryController = require("../controllers/admin/categoryController")
 const orderController = require("../controllers/admin/orderController")
 const couponController = require("../controllers/admin/couponController")
+const salesReportController = require("../controllers/admin/salesReport")
 
 
 const { isAdmin } = require("../Authentication/Auth")
+
 
 
 router.get("/", controller.renderAdminLogin)
@@ -54,6 +56,10 @@ router.get("/changeStatus", isAdmin, orderController.changeOrderStatus)
 
 router.get("/coupon", isAdmin, couponController.getCouponPageAdmin)
 router.post("/createCoupon", isAdmin, couponController.createCoupon)
+
+
+
+router.get("/salesReport", isAdmin, salesReportController.getSalesReportPage)
 
 
 

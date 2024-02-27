@@ -12,6 +12,7 @@ const walletController = require("../controllers/user/walletController")
 
 
 
+
 router.get("/", controller.renderGuest)
 router.get("/login", controller.renderLogin)
 router.get("/signup", controller.renderSignUp)

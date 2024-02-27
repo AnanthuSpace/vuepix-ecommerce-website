@@ -32,8 +32,8 @@ app.use(nocache())
 
 app.use("/admin", adminRoute)
 app.use("/", userRoute)
-app.get('*', function (req, res) {
-    res.redirect("/pageNotFound");
-});
+// app.get('*', function (req, res) {
+//     res.redirect("/pageNotFound");
+// });
 
 app.listen(PORT, () => console.log(`Server Running on http://localhost:${PORT}`))

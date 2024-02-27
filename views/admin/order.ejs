@@ -1,11 +1,11 @@
 <%- include("../partials/adminHeader") %>
 
-<style>
+  <style>
     .pagination {
       display: flex;
       justify-content: center;
     }
-    
+
     .btn-n {
       /* Add your button styling here */
       margin: 0 5px;
@@ -15,120 +15,146 @@
       text-decoration: none;
       color: #333;
     }
-    
+
     .active {
       /* Add styles for the active page */
-     
+
       color: #fff;
     }
-    
+
     .btn:hover {
       /* Add styles for button hover state */
       background-color: #ddd;
     }
-    
-    
-    </style>
+  </style>
 
 
-<section class="content-main">
+  <section class="content-main">
     <div class="content-header">
-        <div>
-            <h2 class="content-title card-title">Order List </h2>
-            <!-- <p>Lorem ipsum dolor sit amet.</p> -->
-        </div>
-    
+      <div>
+        <h2 class="content-title card-title">Order List </h2>
+        <!-- <p>Lorem ipsum dolor sit amet.</p> -->
+      </div>
+
     </div>
-   
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>#ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Date</th>
-                            <th scope="col" class="text-end"> Action </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                     
 
-                        <% for (let i = 0; i < orders.length; i++) { %>
-                            
-                            <tr>
-                            <td><%= orders[i]._id %></td>
-                            <td><b><%= orders[i].address[0].name %></b></td>
-                            <td><%= orders[i].address[0].phone %></td>
-                            <td><%= orders[i].totalPrice.toLocaleString() %></td>
-                            <td>
-                                <% if (orders[i].status == "Canceled") { %>
-                                    <span class="badge rounded-pill alert-danger"><%= orders[i].status %></span>
-                                <% } else if (orders[i].status == "Confirmed") { %>
-                                    <span class="badge rounded-pill alert-warning"><%= orders[i].status %></span>
-                                <% } else if (orders[i].status == "Shipped") { %>
-                                    <span class="badge rounded-pill alert-primary"><%= orders[i].status %></span>
-                                <% }else if (orders[i].status == "Delivered") { %>
-                                    <span class="badge rounded-pill alert-success"><%= orders[i].status %></span>
-                                <% }else if (orders[i].status == "Returned") { %>
-                                    <span class="badge rounded-pill alert-warning"><%= orders[i].status %></span>
-                                <% } %> 
-                            </td>
-                            
-                            <td> <% const dateOptions = { day: '2-digit', month: 'short', year: 'numeric' }; %>
-                                <%= new Date(orders[0].createdOn).toLocaleDateString('en-US', dateOptions) %></td>
-                            <td class="text-end">
-                                <a href="/admin/orderDetailsAdmin?id=<%= orders[i]._id %>" class="btn btn-md rounded font-sm">Detail</a>
-                               
-                            </td>
-                        </tr>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>#ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Total</th>
+              <th scope="col">Status</th>
+              <th scope="col">Date</th>
+              <th scope="col" class="text-end"> Action </th>
+            </tr>
+          </thead>
+          <tbody>
 
 
-                       
-                            
-                      <%  } %>
+            <% for (let i=0; i < orders.length; i++) { %>
+
+              <tr>
+                <td>
+                  <%= Math.random().toString(36).substring(2, 15) %> 
+                </td>
+                <td><b>
+                    <%= orders[i].address[0].name %>
+                  </b></td>
+                <td>
+                  <%= orders[i].address[0].phone %>
+                </td>
+                <td>
+                  <%= orders[i].totalPrice.toLocaleString() %>
+                </td>
+                <td>
+                  <% if (orders[i].status=="Canceled" ) { %>
+                    <span class="badge rounded-pill alert-danger">
+                      <%= orders[i].status %>
+                    </span>
+                    <% } else if (orders[i].status=="Confirmed" ) { %>
+                      <span class="badge rounded-pill alert-warning">
+                        <%= orders[i].status %>
+                      </span>
+                      <% } else if (orders[i].status=="Shipped" ) { %>
+                        <span class="badge rounded-pill alert-primary">
+                          <%= orders[i].status %>
+                        </span>
+                        <% }else if (orders[i].status=="Delivered" ) { %>
+                          <span class="badge rounded-pill alert-success">
+                            <%= orders[i].status %>
+                          </span>
+                          <% }else if (orders[i].status=="Returned" ) { %>
+                            <span class="badge rounded-pill alert-warning">
+                              <%= orders[i].status %>
+                            </span>
+                            <% } else if(orders[i].status=="Pending" ){ %>
+                              <span class="badge bg-secondary text-white">
+                                <%= orders[i].status %>
+                              </span>
+
+                              <% } %>
+                </td>
+
+                <td>
+                  <% const dateOptions={ day: '2-digit' , month: 'short' , year: 'numeric' }; %>
+                    <%= new Date(orders[0].createdOn).toLocaleDateString('en-US', dateOptions) %>
+                </td>
+                <td class="text-end">
+                  <a href="/admin/orderDetailsAdmin?id=<%= orders[i]._id %>"
+                    class="btn btn-md rounded font-sm">Detail</a>
+
+                </td>
+              </tr>
 
 
 
 
-                       
-                       
-                    </tbody>
-                </table>
+              <% } %>
 
-               
-                   
-                    
-       
-                
-                
-            </div> <!-- table-responsive //end -->
-            
 
-            <% if (totalPages) { %>
-              <div class="pagination">
-                <% if (currentPage > 1) { %>
-                  <button class="btn btn-sm"><a href="/admin/orders?page=<%= currentPage - 1 %>">Previous</a></button>
-                <% } %>
-            
-                <% for (let i = 1; i <= totalPages; i++) { %> 
-                  <button class="btn btn-sm <%= i === currentPage ? 'active' : '' %>">
-                    <a href="/admin/orders?page=<%= i %>"><%= i %></a>
-                  </button>
-                <% } %>
-            
-                <% if (currentPage < totalPages) { %>
-                  <button class="btn btn-sm"><a href="/admin/orders?page=<%= currentPage + 1 %>">Next</a></button>
-                <% } %>
-              </div>
+
+
+
+
+          </tbody>
+        </table>
+
+
+
+
+
+
+
+      </div> <!-- table-responsive //end -->
+
+
+      <% if (totalPages) { %>
+        <div class="pagination">
+          <% if (currentPage> 1) { %>
+            <button class="btn btn-sm"><a href="/admin/orders?page=<%= currentPage - 1 %>">Previous</a></button>
             <% } %>
-        </div> <!-- card-body end// -->
+
+              <% for (let i=1; i <=totalPages; i++) { %>
+                <button class="btn btn-sm <%= i === currentPage ? 'active' : '' %>">
+                  <a href="/admin/orders?page=<%= i %>">
+                    <%= i %>
+                  </a>
+                </button>
+                <% } %>
+
+                  <% if (currentPage < totalPages) { %>
+                    <button class="btn btn-sm"><a href="/admin/orders?page=<%= currentPage + 1 %>">Next</a></button>
+                    <% } %>
+        </div>
+        <% } %>
+    </div> <!-- card-body end// -->
     </div> <!-- card end// -->
-   
-</section>
+
+  </section>
 
 
-<%- include("../partials/adminFooter") %>
+  <%- include("../partials/adminFooter") %>
