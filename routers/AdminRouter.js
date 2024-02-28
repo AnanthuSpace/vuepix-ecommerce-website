@@ -13,7 +13,7 @@ const salesReportController = require("../controllers/admin/salesReport")
 const { isAdmin } = require("../Authentication/Auth")
 
 
-
+// Admin basic actions
 router.get("/", controller.renderAdminLogin)
 router.post("/getHome", controller.adminHome)
 router.get("/home", isAdmin, controller.renderAdminHome)
@@ -21,13 +21,13 @@ router.get("/logout", isAdmin, controller.adminLogout)
 
 
 
-
+// User Management
 router.get("/usermanagement", isAdmin, userViewController.viewUser)
 router.get('/blockuser/:id', isAdmin, userViewController.blockUser)
 router.get("/unblockuser/:id", isAdmin, userViewController.unBlockUser)
 
 
-
+// Product management
 router.get("/addproduct", isAdmin, productController.renderAddProduct)
 router.post("/add-product", isAdmin, productMulter.array('image', 4), productController.addProduct)
 router.get("/productList", isAdmin, productController.productList)
@@ -35,9 +35,12 @@ router.get("/editProduct", isAdmin, productController.showEdit)
 router.post("/editProduct/:id", isAdmin, productMulter.array('image', 4), productController.editProduct)
 router.get('/blockProduct', isAdmin, productController.blockProduct)
 router.get('/unBlockProduct', isAdmin, productController.unblockProduct)
+router.post("/addProductOffer", isAdmin, productController.addProductOffer)
+router.post("/removeProductOffer", isAdmin, productController.removeProductOffer)
 
 
 
+// Category Management
 router.get("/category", isAdmin, categoryController.renderCategory)
 router.post("/addcategory", isAdmin, categoryController.addCategory)
 router.get("/listcategory", isAdmin, categoryController.listCategory)
@@ -47,19 +50,23 @@ router.post("/editCategory/:id", isAdmin, categoryController.editCategory)
 
 
 
-
+// Order Management
 router.get("/orders", isAdmin, orderController.orderListing)
 router.get("/orderDetailsAdmin", isAdmin, orderController.getOrderDetails)
 router.get("/changeStatus", isAdmin, orderController.changeOrderStatus)
 
 
-
+// Coupen Management
 router.get("/coupon", isAdmin, couponController.getCouponPageAdmin)
 router.post("/createCoupon", isAdmin, couponController.createCoupon)
 
 
-
+// SalesReport Managment
 router.get("/salesReport", isAdmin, salesReportController.getSalesReportPage)
+
+
+
+
 
 
 

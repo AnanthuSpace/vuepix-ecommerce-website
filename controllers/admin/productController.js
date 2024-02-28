@@ -41,7 +41,7 @@ const addProduct = async (req, res) => {
                 name: products.product_name,
                 description: products.description,
                 regularPrice: products.regular_price,
-                salesPrice: products.sale_price,
+                salesPrice: products.regular_price,
                 unit: products.units,
                 category: products.category,
                 images: images,
@@ -116,13 +116,16 @@ const editProduct = async (req, res) => {
         if (req.files.length > 0) {
 
             await Product.findByIdAndUpdate(id, {
+
                 name: products.product_name,
                 description: products.description,
                 regularPrice: products.regular_price,
-                salesPrice: products.sale_price,
+                salesPrice: products.regular_price,
                 unit: products.unit,
                 category: products.category,
+                createdOn: new Date(),
                 images: productImage,
+
             }, { new: true })
             console.log("product updated");
             console.log(products.unit);
@@ -133,9 +136,10 @@ const editProduct = async (req, res) => {
                 name: products.product_name,
                 description: products.description,
                 regularPrice: products.regular_price,
-                salesPrice: products.sale_price,
+                salesPrice: products.regular_price,
                 unit: products.unit,
-                category: products.category
+                category: products.category,
+                createdOn: new Date(),
             }, { new: true })
             console.log("product updated");
             console.log(products.unit);
@@ -173,6 +177,46 @@ const unblockProduct = async (req, res) => {
 
 
 
+const addProductOffer = async (req, res) => {
+    try {
+        // console.log(req.body);
+        const { productId, percentage } = req.body
+        const findProduct = await Product.findOne({ _id: productId })
+        // console.log(findProduct);
+
+        findProduct.salesPrice = findProduct.salesPrice - Math.floor(findProduct.regularPrice * (percentage / 100))
+        findProduct.productOffer = parseInt(percentage)
+        await findProduct.save()
+
+        res.json({ status: true })
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+const removeProductOffer = async (req, res) => {
+    try {
+        // console.log(req.body);
+        const {productId} = req.body
+        const findProduct = await Product.findOne({_id : productId})
+        // console.log(findProduct);
+        const percentage = findProduct.productOffer
+        findProduct.salesPrice = findProduct.salesPrice + Math.floor(findProduct.regularPrice * (percentage / 100))
+        findProduct.productOffer = 0
+        await findProduct.save()
+        res.json({status : true})
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+
+
 
 module.exports = {
     productList,
@@ -182,4 +226,6 @@ module.exports = {
     editProduct,
     blockProduct,
     unblockProduct,
+    addProductOffer,
+    removeProductOffer,
 }
