@@ -47,6 +47,8 @@ router.get("/listcategory", isAdmin, categoryController.listCategory)
 router.get("/unlistcategory", isAdmin, categoryController.unListCategory)
 router.get("/editCategory", isAdmin, categoryController.renderEditCategory)
 router.post("/editCategory/:id", isAdmin, categoryController.editCategory)
+router.post("/addCategoryOffer", isAdmin, categoryController.addCategoryOffer)
+router.post("/removeCategoryOffer", isAdmin, categoryController.removerCategoryOffer)
 
 
 

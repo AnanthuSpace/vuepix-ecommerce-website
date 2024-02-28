@@ -163,10 +163,10 @@ const editAddress = async (req, res) => {
             phone,
             altPhone
         } = req.body
+
         const addressId = req.query.id
         const findAddress = await Address.findOne({ "address._id": addressId });
-        // const correctAddress = await findAddress.address.find(item => item._id == addressId)
-        // console.log(correctAddress);
+        
         await Address.updateOne(
             {
                 "address._id": addressId,

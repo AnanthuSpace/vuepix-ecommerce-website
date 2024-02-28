@@ -13,6 +13,10 @@ let categoryModel = new mongoose.Schema({
     isListed: {
         type: Boolean,
         default: true
+    },
+    categoryOffer : {
+        type : Number,
+        default : 0
     }
 });
 

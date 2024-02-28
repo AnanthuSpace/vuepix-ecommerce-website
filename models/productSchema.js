@@ -45,6 +45,10 @@ let productSchema = new mongoose.Schema({
     productOffer : {
         type : Number,
         default : 0
+    },
+    categoryOffer : {
+        type : Number,
+        default : 0
     }
 });
 

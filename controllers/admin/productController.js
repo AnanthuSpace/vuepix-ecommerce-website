@@ -65,6 +65,7 @@ const addProduct = async (req, res) => {
 const productList = async (req, res) => {
     try {
         const pro = await Product.find({})
+        console.log(pro);
 
         let itemsPerPage = 3
         let currentPage = parseInt(req.query.page) || 1
@@ -125,6 +126,7 @@ const editProduct = async (req, res) => {
                 category: products.category,
                 createdOn: new Date(),
                 images: productImage,
+                categoryOffer : 0
 
             }, { new: true })
             console.log("product updated");
@@ -184,10 +186,13 @@ const addProductOffer = async (req, res) => {
         const findProduct = await Product.findOne({ _id: productId })
         // console.log(findProduct);
 
+        if(findProduct.categoryOffer==0){
         findProduct.salesPrice = findProduct.salesPrice - Math.floor(findProduct.regularPrice * (percentage / 100))
         findProduct.productOffer = parseInt(percentage)
         await findProduct.save()
-
+        }else{
+            res.json({status: false})
+        }
         res.json({ status: true })
 
     } catch (error) {
