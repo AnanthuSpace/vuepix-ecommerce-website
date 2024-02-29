@@ -1,4 +1,8 @@
 const Order = require("../../models/orderShema")
+const moment = require("moment")
+const PDFDocument = require('pdfkit')
+const ExcelJS = require("exceljs")
+
 
 
 const getSalesReportPage = async (req, res) => {
@@ -199,11 +203,157 @@ const salesYearly = async (req, res) => {
 
 
 
+const generatePdf = async (req, res) => {
+    try {
+        const doc = new PDFDocument();
+        const filename = 'sales-report.pdf';
+        const orders = req.body;
+        // console.log(orders);
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+        doc.pipe(res);
+        doc.fontSize(12);
+        doc.text('Sales Report', { align: 'center', fontSize: 16 });
+        const margin = 5;
+        doc
+            .moveTo(margin, margin)
+            .lineTo(600 - margin, margin)
+            .lineTo(600 - margin, 842 - margin)
+            .lineTo(margin, 842 - margin)
+            .lineTo(margin, margin)
+            .lineTo(600 - margin, margin)
+            .lineWidth(3)
+            .strokeColor('#000000')
+            .stroke();
+
+        doc.moveDown();
+
+
+
+        //   console.log("nothing");
+
+        const headers = ['Order ID', 'Name', 'Date', 'Total'];
+
+        let headerX = 20;
+        const headerY = doc.y + 10;
+
+        doc.text(headers[0], headerX, headerY);
+        headerX += 200;
+
+        headers.slice(1).forEach(header => {
+            doc.text(header, headerX, headerY);
+            headerX += 130;
+        });
+
+        let dataY = headerY + 25;
+
+        orders.forEach(order => {
+            const cleanedDataId = order.dataId.trim();
+            const cleanedName = order.name.trim();
+
+            doc.text(cleanedDataId, 20, dataY, { width: 200 });
+            doc.text(cleanedName, 230, dataY);
+            doc.text(order.date, 350, dataY, { width: 120 });
+            doc.text(order.totalAmount, 490, dataY);
+
+            dataY += 30;
+        });
+
+
+
+        doc.end();
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const downloadExcel = async (req, res) => {
+    try {
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Sales Report');
+
+        worksheet.columns = [
+            { header: 'Order ID', key: 'orderId', width: 50 },
+            { header: 'Customer', key: 'customer', width: 30 },
+            { header: 'Date', key: 'date', width: 30 },
+            { header: 'Total', key: 'totalAmount', width: 15 },
+            { header: 'Payment', key: 'payment', width: 15 },
+        ];
+
+        const orders = req.body;
+
+        orders.forEach(order => {
+            worksheet.addRow({
+                orderId: order.orderId,
+                customer: order.name,
+                date: order.date,
+                totalAmount: order.totalAmount,
+                payment: order.payment,
+                products: order.products,
+            });
+        });
+
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', `attachment; filename=salesReport.xlsx`);
+
+        await workbook.xlsx.write(res);
+        res.end();
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+const dateWiseFilter = async (req, res) => {
+    try {
+        console.log(req.query);
+        const date = moment(req.query.date).startOf('day').toDate();
+
+        const orders = await Order.aggregate([
+            {
+                $match: {
+                    createdOn: {
+                        $gte: moment(date).startOf('day').toDate(),
+                        $lt: moment(date).endOf('day').toDate(),
+                    },
+                    status: "Delivered"
+                }
+            }
+        ]);
+
+        console.log(orders);
+
+        let itemsPerPage = 5
+        let currentPage = parseInt(req.query.page) || 1
+        let startIndex = (currentPage - 1) * itemsPerPage
+        let endIndex = startIndex + itemsPerPage
+        let totalPages = Math.ceil(orders.length / 3)
+        const currentOrder = orders.slice(startIndex, endIndex)
+
+        res.render("salesReport", { data: currentOrder, totalPages, currentPage, salesMonthly: true, date })
+
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+
+
 
 module.exports = {
     getSalesReportPage,
     salesToday,
     salesWeekly,
     salesMonthly,
-    salesYearly
+    salesYearly,
+    generatePdf,
+    downloadExcel,
+    dateWiseFilter
 }

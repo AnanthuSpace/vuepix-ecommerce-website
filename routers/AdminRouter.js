@@ -69,7 +69,9 @@ router.get("/salesToday", isAdmin, salesReportController.salesToday)
 router.get("/salesWeekly", isAdmin, salesReportController.salesWeekly)
 router.get("/salesMonthly", isAdmin, salesReportController.salesMonthly)
 router.get("/salesYearly", isAdmin, salesReportController.salesYearly)
-
+router.get("/dateWiseFilter", isAdmin, salesReportController.dateWiseFilter)
+router.post("/generatePdf", isAdmin, salesReportController.generatePdf)
+router.post("/downloadExcel", isAdmin, salesReportController.downloadExcel)
 
 
 
