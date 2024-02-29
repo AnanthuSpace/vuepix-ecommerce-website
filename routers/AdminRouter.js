@@ -65,7 +65,10 @@ router.post("/createCoupon", isAdmin, couponController.createCoupon)
 
 // SalesReport Managment
 router.get("/salesReport", isAdmin, salesReportController.getSalesReportPage)
-
+router.get("/salesToday", isAdmin, salesReportController.salesToday)
+router.get("/salesWeekly", isAdmin, salesReportController.salesWeekly)
+router.get("/salesMonthly", isAdmin, salesReportController.salesMonthly)
+router.get("/salesYearly", isAdmin, salesReportController.salesYearly)
 
 
 
