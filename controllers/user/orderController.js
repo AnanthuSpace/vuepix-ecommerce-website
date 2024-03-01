@@ -51,6 +51,8 @@ const checkout = async (req, res) => {
 
 
         const grandTotal = req.session.grandTotal
+        const subOffers = req.session.subOffers
+        console.log("Offer : ", subOffers );
 
         const today = new Date().toISOString()
 
@@ -71,6 +73,7 @@ const checkout = async (req, res) => {
                 userAddress: userAddress,
                 isSingle: false,
                 grandTotal,
+                subOffers,
                 cartCount,
                 wishlistCount,
                 coupons: findCoupon
@@ -89,6 +92,7 @@ const placeOrder = async (req, res) => {
         const { addressId, payment, productId } = req.body
         const userId = req.session.user
         const grand = req.session.grandTotal
+        const subOffers = req.session.subOffers
         const findUser = await User.findOne({ _id: userId })
         // const findProductId = await findUser.cart.map(item => item.productId)
         const findAddress = await Address.findOne({ 'address._id': addressId })
@@ -122,6 +126,7 @@ const placeOrder = async (req, res) => {
         const newOrder = new Order({
             product: orderedProducts,
             totalPrice: grand,
+            offer : subOffers,
             address: desiredAddress,
             payment: payment,
             userId: userId,
@@ -133,6 +138,7 @@ const placeOrder = async (req, res) => {
         const newOrderFromRazorpay = new Order({
             product: orderedProducts,
             totalPrice: grand,
+            offer : subOffers,
             address: desiredAddress,
             payment: payment,
             userId: userId,

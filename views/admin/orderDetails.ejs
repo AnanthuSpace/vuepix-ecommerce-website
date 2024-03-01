@@ -138,6 +138,7 @@
                                         <th>Name</th>
                                         <th>Unit Price</th>
                                         <th>Quantity</th>
+                                        <th>Discount</th>
                                         <th class="text-center" width="20%">Total</th>
                                     </tr>
                                 </thead>
@@ -163,6 +164,10 @@
                                                     <td class="align-middle text-center">
                                                         <!-- Added align-middle for vertical centering -->
                                                         <%= orders.product[i].unit %>
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <!-- Added align-middle for vertical centering -->
+                                                        <%= orders.offer %>
                                                     </td>
                                                     <td class="align-middle text-center">
                                                         <!-- Added align-middle for vertical centering -->

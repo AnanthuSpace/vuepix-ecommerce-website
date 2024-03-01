@@ -49,6 +49,26 @@ const renderCart = async (req, res) => {
                 grandTotal += data[i].productDetails[0].salesPrice * data[i].unit
             }
         }
+
+        let Offers = 0
+
+        for (let i = 0; i < data.length; i++) {
+            if(data[i].productOffer!==0){
+
+                if (data[i].productDetails && data[i].productDetails.length > 0) {
+                    unit += data[i].unit
+                    Offers += data[i].productDetails[0].productOffer * data[i].unit
+                }
+
+            } else if(data[i].categoryOffer!==0){
+                if (data[i].productDetails && data[i].productDetails.length > 0) {
+                    unit += data[i].unit
+                    Offers += data[i].productDetails[0].categoryOffer * data[i].unit
+                }
+            }
+        }
+        req.session.subOffers = Offers
+
         req.session.grandTotal = grandTotal;
         const cartCount = data.length
         const wishlistCount = user.wishlist.length
@@ -57,6 +77,7 @@ const renderCart = async (req, res) => {
             unit,
             data,
             grandTotal,
+            Offers,
             cartCount,
             wishlistCount
         })
