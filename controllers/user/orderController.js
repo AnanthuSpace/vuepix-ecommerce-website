@@ -110,10 +110,10 @@ const placeOrder = async (req, res) => {
             unit: item.unit
         }))
 
-
         const orderedProducts = findProduct.map((item) => ({
             _id: item._id,
             price: item.salesPrice,
+            offer: item.productOffer + item.categoryOffer,
             name: item.name,
             images: item.images[0],
             status: "Confirmed",
@@ -126,7 +126,6 @@ const placeOrder = async (req, res) => {
         const newOrder = new Order({
             product: orderedProducts,
             totalPrice: grand,
-            offer : subOffers,
             address: desiredAddress,
             payment: payment,
             userId: userId,
@@ -284,9 +283,6 @@ const generateOrderRazorpay = (orderId, total) => {
 
 
 
-
-
-
 const verify = (req, res) => {
     console.log(req.body, "end");
     let hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
@@ -408,6 +404,61 @@ const cancelOrder = async (req, res) => {
 
 
 
+const returnOrder = async (req, res) => {
+    try {
+
+        const userId = req.session.user
+        const findUser = await User.findOne({ _id: userId })
+
+        if (!findUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const id = req.query.id
+        await Order.updateOne({ _id: id },
+            { status: "Returned" }
+        ).then((data) => console.log(data))
+
+        const findOrder = await Order.findOne({ _id: id })
+
+
+        if (findOrder.payment === "wallet" || findOrder.payment === "online") {
+            findUser.wallet += findOrder.totalPrice;
+
+            const newHistory = {
+                amount: findOrder.totalPrice,
+                status: "credit",
+                date: Date.now()
+            }
+            findUser.history.push(newHistory)
+            await findUser.save();
+        }
+
+        for (const productData of findOrder.product) {
+            const productId = productData.ProductId;
+            const unit = productData.unit;
+
+            const product = await Product.findById(productId);
+
+            console.log(product,"=>>>>>>>>>");
+
+            if (product) {
+                product.unit += unit;
+                await product.save();
+            }
+        }
+
+        res.redirect('/profile');
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+
+
 
 const applyCoupon = async (req, res) => {
     try {
@@ -457,4 +508,5 @@ module.exports = {
     cancelOrder,
     applyCoupon,
     verify,
+    returnOrder
 }

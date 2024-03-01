@@ -26,7 +26,7 @@
             <div class="content-header">
                 <div class="mt-50">
                     <h2 class="content-title card-title">Order detail</h2>
-                    <p>Details for Order ID:  &nbsp <%= Math.random().toString(36).substring(2, 15) %>
+                    <p>Details for Order ID: &nbsp <%= Math.random().toString(36).substring(2, 15) %>
                     </p>
                 </div>
             </div>
@@ -152,8 +152,8 @@
                                         <th width="20%">Name</th>
                                         <th width="20%">Unit Price</th>
                                         <th width="10%">Quantity</th>
+                                        <th width="20%">Ofer</th>
                                         <th class="text-center" width="10%">Amount</th>
-                                        <th width="20%">Discount</th>
                                         <th class="text-center" width="30%" class="text-end">Total</th>
 
                                     </tr>
@@ -174,7 +174,7 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <div class="info">
-                                                            <%= orders.product[i].name  %>
+                                                            <%= orders.product[i].name %>
                                                         </div>
                                                     </td>
                                                     <td class="text-center">
@@ -182,6 +182,9 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <%= orders.product[i].unit %>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <%= orders.product[i].offer.toLocaleString() %>%
                                                     </td>
                                                     <td class="text-center">
                                                         ₹<%= (parseInt(orders.product[i].price) *
@@ -200,11 +203,6 @@
 
                                                                         <% let discount=totalProductPrice -
                                                                             orders.totalPrice; %>
-
-                                                                            <!-- Display discount and total price for the order -->
-                                                                            <td class="text-center">
-                                                                                <%= orders.offer.toLocaleString() %>%
-                                                                            </td>
 
                                                                             <td class="text-center">
                                                                                 ₹<%= orders.totalPrice.toLocaleString()
@@ -288,6 +286,12 @@
 
 
     <script>
+
+        function printInvoice(event) {
+            window.print()
+        }
+        document.getElementById("print-button").addEventListener('click', printInvoice);
+
         function handleDropdownChange(selectElement) {
 
             var selectedValue = selectElement.value;

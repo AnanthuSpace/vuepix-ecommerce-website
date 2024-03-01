@@ -25,10 +25,6 @@ const orderSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    offer: {
-        type : Number,
-        required : true
-    },
     createdOn: {
         type: Date,
         required: true,
