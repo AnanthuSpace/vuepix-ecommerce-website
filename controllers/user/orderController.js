@@ -126,6 +126,7 @@ const placeOrder = async (req, res) => {
         const newOrder = new Order({
             product: orderedProducts,
             totalPrice: grand,
+            overAllOffer : subOffers,
             address: desiredAddress,
             payment: payment,
             userId: userId,
@@ -137,7 +138,7 @@ const placeOrder = async (req, res) => {
         const newOrderFromRazorpay = new Order({
             product: orderedProducts,
             totalPrice: grand,
-            offer : subOffers,
+            overAllOffer : subOffers,
             address: desiredAddress,
             payment: payment,
             userId: userId,
@@ -285,7 +286,7 @@ const generateOrderRazorpay = (orderId, total) => {
 
 const verify = (req, res) => {
     console.log(req.body, "end");
-    let hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
+    let hmac = crypto.createHmac("sha256", process.env.KEY_SECRET);
     hmac.update(
         `${req.body.payment.razorpay_order_id}|${req.body.payment.razorpay_payment_id}`
     );

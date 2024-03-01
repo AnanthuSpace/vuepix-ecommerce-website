@@ -67,7 +67,7 @@ const salesToday = async (req, res) => {
 
         console.log(currentOrder, "currOrder");
 
-        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesToday: true })
+        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesToday: true, salesActive:true })
 
     } catch (error) {
         console.log(error.message);
@@ -113,7 +113,7 @@ const salesWeekly = async (req, res) => {
         let totalPages = Math.ceil(orders.length / 3)
         const currentOrder = orders.slice(startIndex, endIndex)
 
-        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesWeekly: true })
+        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesWeekly: true, salesActive:true })
 
     } catch (error) {
         console.log(error.message);
@@ -158,7 +158,7 @@ const salesMonthly = async (req, res) => {
         let totalPages = Math.ceil(orders.length / 3)
         const currentOrder = orders.slice(startIndex, endIndex)
 
-        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesMonthly: true })
+        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesMonthly: true, salesActive:true })
 
 
     } catch (error) {
@@ -193,7 +193,7 @@ const salesYearly = async (req, res) => {
         let totalPages = Math.ceil(orders.length / 3)
         const currentOrder = orders.slice(startIndex, endIndex)
 
-        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesYearly: true })
+        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesYearly: true, salesActive:true })
 
     } catch (error) {
         console.log(error.message);
@@ -228,9 +228,6 @@ const generatePdf = async (req, res) => {
 
         doc.moveDown();
 
-
-
-        //   console.log("nothing");
 
         const headers = ['Order ID', 'Name', 'Date', 'Total'];
 
@@ -334,7 +331,7 @@ const dateWiseFilter = async (req, res) => {
         let totalPages = Math.ceil(orders.length / 3)
         const currentOrder = orders.slice(startIndex, endIndex)
 
-        res.render("salesReport", { data: currentOrder, totalPages, currentPage, salesMonthly: true, date })
+        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesMonthly: true, date, salesActive:true })
 
 
     } catch (error) {

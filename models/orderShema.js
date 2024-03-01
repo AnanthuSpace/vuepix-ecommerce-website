@@ -29,6 +29,14 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    overAllOffer: {
+        type: Number,
+        required: true
+    },
+    discount: {
+        type: Number,
+        require: true
+    },
     date: {
         type: String,
     }

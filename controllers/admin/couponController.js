@@ -8,7 +8,7 @@ const Coupon = require("../../models/couponSchema")
 const getCouponPageAdmin = async (req, res) => {
     try {
         const findCoupons = await Coupon.find({})
-        res.render("admin/coupon", { coupons: findCoupons })
+        res.render("admin/coupon", { coupons: findCoupons, couponActive:true })
     } catch (error) {
         console.log(error.message);
     }
