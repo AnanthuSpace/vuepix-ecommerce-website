@@ -139,6 +139,7 @@
                                         <th>Unit Price</th>
                                         <th>Quantity</th>
                                         <th>Offer</th>
+                                        <th>Coupon Discount</th>
                                         <th class="text-center" width="20%">Total</th>
                                     </tr>
                                 </thead>
@@ -168,6 +169,10 @@
                                                     <td class="align-middle text-center">
                                                         <!-- Added align-middle for vertical centering -->
                                                         <%= orders.product[i].offer %>%
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <!-- Added align-middle for vertical centering -->
+                                                        <%= orders.discount.toLocaleString() %>
                                                     </td>
                                                     <td class="align-middle text-center">
                                                         <!-- Added align-middle for vertical centering -->

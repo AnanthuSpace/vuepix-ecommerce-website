@@ -5,6 +5,40 @@ const ExcelJS = require("exceljs")
 
 
 
+const calculateOverallSalesSummary = async (startDate, endDate) => {
+    try {
+        const salesCount = await Order.countDocuments({
+            status: "Delivered",
+            createdOn: {
+                $gte: startDate,
+                $lt: endDate
+            }
+        });
+        const orders = await Order.find({
+            status: "Delivered",
+            createdOn: {
+                $gte: startDate,
+                $lt: endDate
+            }
+        });
+        let totalAmount = 0;
+        let totalDiscount = 0;
+        orders.forEach(order => {
+            totalAmount += order.totalPrice;
+            totalDiscount += order.discount;
+            totalDiscount += order.couponDeduction;
+        });
+        return { salesCount, totalAmount, totalDiscount };
+    } catch (error) {
+        console.log(error.message);
+        return { salesCount: 0, totalAmount: 0, totalDiscount: 0 };
+    }
+}
+
+
+
+
+
 const getSalesReportPage = async (req, res) => {
     try {
 
@@ -66,8 +100,18 @@ const salesToday = async (req, res) => {
         const currentOrder = orders.slice(startIndex, endIndex)
 
         console.log(currentOrder, "currOrder");
+        const { salesCount, totalAmount, totalDiscount } = await calculateOverallSalesSummary(startOfTheDay, endOfTheDay);
 
-        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesToday: true, salesActive:true })
+        res.render("admin/salesReport", {
+            data: currentOrder,
+            totalPages,
+            currentPage,
+            salesToday: true,
+            salesActive: true,
+            overallSalesCount: salesCount,
+            overallOrderAmount: totalAmount,
+            discount: totalDiscount
+        })
 
     } catch (error) {
         console.log(error.message);
@@ -94,6 +138,9 @@ const salesWeekly = async (req, res) => {
             999
         )
 
+        const startOfTheDay = startOfTheWeek;
+        const endOfTheDay = endOfTheWeek;
+
         const orders = await Order.aggregate([
             {
                 $match: {
@@ -112,8 +159,18 @@ const salesWeekly = async (req, res) => {
         let endIndex = startIndex + itemsPerPage
         let totalPages = Math.ceil(orders.length / 3)
         const currentOrder = orders.slice(startIndex, endIndex)
+        const { salesCount, totalAmount, totalDiscount } = await calculateOverallSalesSummary(startOfTheDay, endOfTheDay);
 
-        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesWeekly: true, salesActive:true })
+        res.render("admin/salesReport", {
+            data: currentOrder,
+            totalPages,
+            currentPage,
+            salesWeekly: true,
+            salesActive: true,
+            overallSalesCount: salesCount,
+            overallOrderAmount: totalAmount,
+            discount: totalDiscount
+        })
 
     } catch (error) {
         console.log(error.message);
@@ -136,6 +193,8 @@ const salesMonthly = async (req, res) => {
         )
         console.log(startOfTheMonth);
         console.log(endOfTheMonth);
+        const startOfTheDay = startOfTheMonth;
+        const endOfTheDay =endOfTheMonth;
         const orders = await Order.aggregate([
             {
                 $match: {
@@ -157,8 +216,18 @@ const salesMonthly = async (req, res) => {
         let endIndex = startIndex + itemsPerPage
         let totalPages = Math.ceil(orders.length / 3)
         const currentOrder = orders.slice(startIndex, endIndex)
+        const { salesCount, totalAmount, totalDiscount } = await calculateOverallSalesSummary(startOfTheDay, endOfTheDay);
 
-        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesMonthly: true, salesActive:true })
+        res.render("admin/salesReport", {
+            data: currentOrder,
+            totalPages,
+            currentPage,
+            salesMonthly: true,
+            salesActive: true,
+            overallSalesCount: salesCount,
+            overallOrderAmount: totalAmount,
+            discount: totalDiscount
+        })
 
 
     } catch (error) {
@@ -192,8 +261,18 @@ const salesYearly = async (req, res) => {
         let endIndex = startIndex + itemsPerPage
         let totalPages = Math.ceil(orders.length / 3)
         const currentOrder = orders.slice(startIndex, endIndex)
+        const { salesCount, totalAmount, totalDiscount } = await calculateOverallSalesSummary(startOfTheDay, endOfTheDay);
 
-        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesYearly: true, salesActive:true })
+        res.render("admin/salesReport", {
+            data: currentOrder,
+            totalPages,
+            currentPage,
+            salesYearly: true,
+            salesActive: true,
+            overallSalesCount: salesCount,
+            overallOrderAmount: totalAmount,
+            discount: totalDiscount
+        })
 
     } catch (error) {
         console.log(error.message);
@@ -309,6 +388,8 @@ const dateWiseFilter = async (req, res) => {
     try {
         console.log(req.query);
         const date = moment(req.query.date).startOf('day').toDate();
+        const startOfTheDay = moment(date).startOf('day').toDate();
+        const endOfTheDay = moment(date).endOf('day').toDate()
 
         const orders = await Order.aggregate([
             {
@@ -319,9 +400,14 @@ const dateWiseFilter = async (req, res) => {
                     },
                     status: "Delivered"
                 }
+            },
+            {
+                $sort: {
+                    createdOn: -1 // Sort in ascending order of the createdOn date
+                }
             }
         ]);
-
+        
         console.log(orders);
 
         let itemsPerPage = 5
@@ -331,7 +417,19 @@ const dateWiseFilter = async (req, res) => {
         let totalPages = Math.ceil(orders.length / 3)
         const currentOrder = orders.slice(startIndex, endIndex)
 
-        res.render("admin/salesReport", { data: currentOrder, totalPages, currentPage, salesMonthly: true, date, salesActive:true })
+        const { salesCount, totalAmount, totalDiscount } = await calculateOverallSalesSummary(startOfTheDay, endOfTheDay);
+
+        res.render("admin/salesReport", {
+            data: currentOrder,
+            totalPages,
+            currentPage,
+            salesMonthly: true,
+            date,
+            salesActive: true,
+            overallSalesCount: salesCount,
+            overallOrderAmount: totalAmount,
+            discount: totalDiscount
+        })
 
 
     } catch (error) {

@@ -24,6 +24,13 @@
             padding-left: 80px;
             /* Adjust the value as needed for the desired spacing */
         }
+
+        th,
+        td,
+        tr,
+        thead {
+            border: 1px solid;
+        }
     </style>
     <section class="content-main">
         <div class="content-header row">
@@ -81,68 +88,90 @@
 
 
         <div class="right mt-5 container">
-            <table id="salesTable" class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th> data ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">payment</th>
-                        <th scope="col">Status</th>
-                        <th scope="col" class="text-end"> Total Price </th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="table-responsive">
+                <table id="salesTable" class="table table-hover border">
+                    <thead>
+                        <tr class="border">
+                            <th>#</th>
+                            <th> Data ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Product ID</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">payment</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="text-end"> Total Price </th>
+                            <th scope="col">Offers</th>
+                            <th scope="col">Coupon Deduction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let i=0; i < data.length; i++) { %>
+                            <tr>
+                                <td>
+                                    <%= i + 1 %>
+                                </td>
+                                <td>
+                                    <%= data[i]._id %>
+                                </td>
+                                <td><b>
+                                        <%= data[i].address[0].name %>
+                                    </b></td>
+                                <td><b>
+                                        <%= data[i].product[0]._id || data[i].product._id %>
+                                    </b></td>
+                                <td>
+                                    <%= data[i].createdOn.toLocaleString('en-IN') %>
+                                </td>
+                                <td>
+                                    <%= data[i].payment %>
+                                </td>
+                                <td>
+                                    <%= data[i].status %>
+                                </td>
+                                <td class="text-end">
+                                    <%= data[i].totalPrice %>
+                                </td>
+                                <td class="text-end">
+                                    <%= data[i].overAllOffer %>%
+                                </td>
+                                <td class="text-end">
+                                    <%= data[i].discount %>
+                                </td>
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
+            </div>
 
-
-                    <% for (let i=0; i < data.length; i++) { %>
-
+            <div class="table-responsive mt-5 col-4">
+                <table class="table table-bordered table-hover">
+                    <thead>
                         <tr>
+                            <th colspan="2" class="text-center">Overall Sales Summary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold">Total Sales Count</td>
                             <td>
-                                <%= i + 1 %>
-                            </td>
-                            <td>
-                                <%= data[i]._id %>
-                            </td>
-                            <td><b>
-                                    <%= data[i].address[0].name %>
-                                </b></td>
-
-                            <td><b>
-
-                                    <%= data[i].product[0]._id || data[i].product._id %>
-
-
-
-                                </b></td>
-
-                            <td>
-                                <%= data[i].createdOn.toLocaleString('en-IN') %>
-                            </td>
-                            <td>
-                                <%= data[i].payment %>
-                            </td>
-                            <td>
-                                <%= data[i].status %>
-                            </td>
-                            <td class="text-end">
-                                <%= data[i].totalPrice %>
+                                <%= overallSalesCount %>
                             </td>
                         </tr>
-
-                        <% } %>
-                </tbody>
-            </table>
-
-
+                        <tr>
+                            <td class="fw-bold">Total Price Count</td>
+                            <td>
+                                <%= overallOrderAmount %>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <% if (totalPages) { %>
                 <div class="pagination">
                     <% if (currentPage> 1) { %>
                         <button class="btn btn-sm"><a href="?page=<%= currentPage - 1 %>">Previous</a></button>
                         <% } %>
-
+    
                             <% for (let i=1; i <=totalPages; i++) { %>
                                 <button class="btn btn-sm <%= i === currentPage ? 'active' : '' %>">
                                     <a href="?page=<%= i %>">
@@ -150,13 +179,14 @@
                                     </a>
                                 </button>
                                 <% } %>
-
+    
                                     <% if (currentPage < totalPages) { %>
-                                        <button class="btn btn-sm"><a
-                                                href="?page=<%= currentPage + 1 %>">Next</a></button>
+                                        <button class="btn btn-sm"><a href="?page=<%= currentPage + 1 %>">Next</a></button>
                                         <% } %>
                 </div>
                 <% } %>
+
+       
 
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

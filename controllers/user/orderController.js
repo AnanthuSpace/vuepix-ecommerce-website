@@ -89,7 +89,7 @@ const checkout = async (req, res) => {
 
 const placeOrder = async (req, res) => {
     try {
-        const { addressId, payment, productId } = req.body
+        const { addressId, payment, productId, couponDiscount } = req.body
         const userId = req.session.user
         const grand = req.session.grandTotal
         const subOffers = req.session.subOffers
@@ -130,6 +130,7 @@ const placeOrder = async (req, res) => {
             address: desiredAddress,
             payment: payment,
             userId: userId,
+            discount: couponDiscount,
             status: "Confirmed",
             createdOn: Date.now()
         })
@@ -142,6 +143,7 @@ const placeOrder = async (req, res) => {
             address: desiredAddress,
             payment: payment,
             userId: userId,
+            discount: couponDiscount,
             status: "Pending",
             createdOn: Date.now()
         });
@@ -498,6 +500,36 @@ const applyCoupon = async (req, res) => {
 }
 
 
+const cancelCoupon = async (req, res) => {
+    try {
+        const userId = req.session.user;
+        const Code = req.body.code;
+        const grandTotal = req.session.grandTotal;
+
+        const selectedCoupon = await Coupon.findOne({ name: Code });
+        console.log(selectedCoupon);
+
+        await Coupon.updateOne(
+            { name: Code },
+            {
+                $pull: {
+                    userId: userId
+                }
+            }
+        );
+
+        const gt = parseInt(grandTotal) + parseInt(selectedCoupon.offerPrice);
+        console.log(gt, "----");
+        req.session.grandTotal = gt;
+        res.json({ status: true, total: gt, discount: 0 });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ status: false, message: "Error cancelling coupon" });
+    }
+};
+
+
+
 
 
 
@@ -509,5 +541,6 @@ module.exports = {
     cancelOrder,
     applyCoupon,
     verify,
-    returnOrder
+    returnOrder,
+    cancelCoupon
 }

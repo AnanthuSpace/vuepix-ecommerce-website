@@ -161,32 +161,45 @@
                                     data-target="#Razorpay" aria-controls="paypal">Razorpay</label>
                             </div>
 
+                            <br><br><br>
 
 
 
-
-                            <div class="col-6 mt-50 ml-150">
-                                <div class="toggle_info">
-                                    <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a
-                                            coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed"
-                                            aria-expanded="false">Click here to enter your
-                                            code</a></span>
-                                </div>
-                                <div class="panel-collapse collapse coupon_form" id="coupon">
-                                    <div class="panel-body">
-                                        <p class="mb-30 font-sm">If you have a coupon code, please apply it below.
-                                        </p>
-
-                                        <div class="form-group">
-                                            <input type="text" id="couponCode" placeholder="Enter Coupon Code...">
-                                        </div>
-                                        <div class="form-group">
-                                            <button class="btn btn-md" onclick="applyCoupon()">Apply Coupon</button>
-                                        </div>
-
-                                    </div>
-                                </div>
+                            <div class="mb-25 ml-150 pt-40">
+                                <h5>Available Coupons</h5>
                             </div>
+
+                            <ul>
+                                <% if (locals.coupons) { %>
+                                    <% for (let i=0; i < coupons.length; i++) { %>
+                                        <li>
+                                            <div class="coupon-card col-4"
+                                                style="margin-left: 150px; margin-top: 20px;">
+                                                <div class="coupon-details">
+                                                    <span class="coupon-name">
+                                                        <%= coupons[i].name %>
+                                                    </span><br>
+                                                    <!-- Add other coupon details if needed -->
+                                                </div>
+                                                <input type="hidden" id="couponName" value="<%= coupons[i].name %>">
+                                                <button onclick="useCoupon('<%= coupons[i].name %>')"
+                                                    id="useButton_<%= coupons[i].name %>"
+                                                    class="use-button">Use</button>
+                                                <button onclick="cancelCoupon('<%= coupons[i].name %>')"
+                                                    id="cancelButton_<%= coupons[i].name %>"
+                                                    class="cancel-button btn-danger" style="display: none;"
+                                                    value="<%= coupons[i].name %>">Cancel</button>
+
+                                            </div>
+                                        </li>
+
+                                        <% } %>
+                                            <% }else{ %>
+
+                                                <h3>No coupons available</h3>
+
+                                                <% } %>
+                            </ul>
 
 
 
@@ -223,7 +236,7 @@
                                                                 <tr>
                                                                     <th>Offers for All Products</th>
                                                                     <td colspan="2" class="product-subtotal">
-                                                                        <span  id="subOffers">
+                                                                        <span id="subOffers">
                                                                             <%= subOffers %>%
                                                                         </span>
                                                                     </td>
@@ -265,6 +278,15 @@
 
                                                                     <% } %>
 
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-group mb-3 col-2"
+                                                        style="border: 1px solid #ced4da; border-radius: 5px; width: 300px; margin-left: 200px; margin-top: 60px;">
+                                                        <input type="text" class="form-control" id="couponCode"
+                                                            placeholder="Paste Coupon Name">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary" type="button"
+                                                                onclick="applyCoupon()">Apply</button>
                                                         </div>
                                                     </div>
 
@@ -357,12 +379,17 @@
     <script>
         async function placeOrder(userId, prodId, isSingle) {
             // alert(prodId)
+            const discountCell = document.getElementById("discountCell");
+            const h5Element = discountCell.querySelector("h5");
+            const couponDiscount = h5Element.textContent;
+
+
             let address = $("input[name='selectedAddress']:checked").val();
             let payment = $("input[name='payment_option']:checked").val();
 
             const sum = document.getElementById("totalValue").textContent;
             const numericValue = parseInt(sum);
-            console.log(numericValue);  
+            console.log(numericValue);
             if (!payment) {
                 Swal.fire({
                     title: 'NO PAYMENT FOUND!',
@@ -385,6 +412,7 @@
                         addressId: address,
                         payment: payment,
                         productId: prodId,
+                        couponDiscount: couponDiscount
                     },
                     success: function (response) {
                         if (response.method === "cod") {
@@ -401,8 +429,8 @@
                         } else if (response.method === "online") {
 
                             let orderAmount = Math.round(numericValue * 100);
-                            console.log("Responds : ",response.razorpayOrder.id, orderAmount);
-                            console.log("Responds full : ",response);
+                            console.log("Responds : ", response.razorpayOrder.id, orderAmount);
+                            console.log("Responds full : ", response);
                             var options = {
                                 "key": "rzp_test_PQuoSyT1cgKHjg",
                                 "amount": orderAmount,
@@ -410,8 +438,8 @@
                                 "name": "VuePix",
                                 "description": "Test Transaction",
                                 "image": "https://example.com/your_logo.jpg",
-                                "order_id": response.razorpayOrder.id, 
-                                
+                                "order_id": response.razorpayOrder.id,
+
                                 "handler": function (status) {
                                     console.log(response.razorpayOrder, status);
                                     verifyPayment(response.razorpayOrder, status, response.razorpayOrder.id, response.orderId);
@@ -425,7 +453,7 @@
                                     "color": "#3399cc"
                                 }
                             };
-                          
+
                             // Initialize Razorpay
                             var rzp1 = new Razorpay(options);
                             rzp1.open();
@@ -467,8 +495,8 @@
 
         function verifyPayment(order, payment, id, orderId) {
             console.log(order)
-            console.log("Payement : ",payment);
-            
+            console.log("Payement : ", payment);
+
             $.ajax({
                 url: '/verifyPayment',
                 method: 'post',
@@ -529,7 +557,7 @@
                                 timer: 2000,
                             })
                             totalAmount = response.total;
-                            alert(totalAmount)
+                            
                             document.getElementById("discountCell").innerHTML = `<h5>${response.discount}</h5>`;
                             document.getElementById("totalValue").innerHTML = `<span  id="total"  class="font-xl text-brand fw-900">${totalAmount}</span>`
 
@@ -552,6 +580,124 @@
                 })
             }
         }
+
+
+
+
+        function showCouponDetails(couponName) {
+            Swal.fire({
+                title: 'Coupon Details',
+                text: `${couponName}`,
+                icon: 'info',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    copyToClipboard(couponName);
+                }
+            });
+        }
+
+        function copyToClipboard(text) {
+            var tempInput = document.createElement('input');
+            document.body.appendChild(tempInput);
+            tempInput.value = text;
+
+            tempInput.select();
+            document.execCommand('copy');
+
+            document.body.removeChild(tempInput);
+
+            Swal.fire({
+                title: 'Copied!',
+                text: 'Coupon name has been copied to the clipboard.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        }
+
+
+
+        var usedCoupon = null;
+
+        function useCoupon(couponName) {
+            // Disable all other coupons
+            disableOtherCoupons(couponName);
+
+            // Show details for the used coupon
+            showCouponDetails(couponName);
+
+            // Show cancel button and hide use button for the used coupon
+            document.getElementById('useButton_' + couponName).style.display = 'none';
+            document.getElementById('cancelButton_' + couponName).style.display = 'block';
+
+            usedCoupon = couponName;
+        }
+
+
+
+        function cancelCoupon(couponName) {
+            // Enable all other coupons
+            enableAllCoupons();
+
+            // Hide cancel button and show use button for the canceled coupon
+            document.getElementById('useButton_' + couponName).style.display = 'block';
+            document.getElementById('cancelButton_' + couponName).style.display = 'none';
+
+            usedCoupon = null;
+
+            
+            let coupon = document.getElementById("couponName").value;
+            $.ajax({
+                    url: '/cancelCoupon',
+                    method: "post",
+                    data: {
+                        code: coupon
+                    },
+                    success: function (response) {
+                        if (response.status === true) {
+                            Swal.fire({
+                                title: "COUPEN REMOVE",
+                                text: "Coupon removed",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 2000,
+                            })
+                            totalAmount = response.total;
+                            alert(totalAmount)
+                            document.getElementById("discountCell").innerHTML = `<h5>${response.discount}</h5>`;
+                            document.getElementById("totalValue").innerHTML = `<span  id="total"  class="font-xl text-brand fw-900">${totalAmount}</span>`
+
+                        } else {
+                            Swal.fire({
+                                title: 'COUPON ERROR!',
+                                text: 'Something wrong when cancel the coupon',
+                                icon: 'error',
+                                timer: 3000,
+                            })
+                        }
+                    }
+                })
+        }
+
+
+
+        function disableOtherCoupons(excludeCoupon) {
+            var couponButtons = document.querySelectorAll('.use-button, .cancel-button');
+            couponButtons.forEach(function (button) {
+                var couponName = button.id.replace('useButton_', '').replace('cancelButton_', '');
+                if (couponName !== excludeCoupon) {
+                    button.disabled = true;
+                }
+            });
+        }
+
+        function enableAllCoupons() {
+            var couponButtons = document.querySelectorAll('.use-button, .cancel-button');
+            couponButtons.forEach(function (button) {
+                button.disabled = false;
+            });
+        }
+
     </script>
 
 
