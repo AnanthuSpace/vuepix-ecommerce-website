@@ -49,7 +49,7 @@
                                             <ins><span class="old-price font-md ml-15">₹<%=
                                                         data.regularPrice.toLocaleString('en-IN') %>
                                                 </span></ins>
-                                            <span class="save-price  font-md color3 ml-15">25% Off</span>
+                                            <span class="save-price  font-md color3 ml-15"><%-data.productOffer || data.categoryOffer %>%</span>
                                         </div>
                                     </div>
                                     <div class="bt-1 border-color-1 mt-15 mb-15"></div>
@@ -113,7 +113,7 @@
                                                 class="button button-add-to-cart">Add to cart</button>
 
                                             <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                onclick="addToWishlist('<%= data._id %>')"><i class="fi-rs-heart"></i></a>
 
                                             <!-- <a aria-label="Compare" class="action-btn hover-up"
                                                 href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> -->
@@ -249,6 +249,38 @@
                 }
             })
         }
+
+
+        function addToWishlist(productId) {
+            $.ajax({
+                url: "/addToWishlist",
+                method: "post",
+                data: {
+                    productId: productId
+                },
+                success: (response) => {
+                    if (response.status == true) {
+                        Swal.fire({
+                            title: 'Added to Wishlist!',
+                            text: 'Continue Shopping',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        })
+                    } else if (response.status == false) {
+                        Swal.fire({
+                            title: 'You need to Login first',
+                            text: 'Continue Shopping',
+                            icon: 'warning',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => { window.location.href = '/login' });
+                    }
+                }
+            })
+            return false;
+        }
+
     </script>
 
 

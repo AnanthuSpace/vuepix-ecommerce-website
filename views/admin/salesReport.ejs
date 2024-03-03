@@ -95,7 +95,7 @@
                             <th>#</th>
                             <th> Data ID</th>
                             <th scope="col">Name</th>
-                            <th scope="col">Product ID</th>
+                            <th scope="col">Product</th>
                             <th scope="col">Date</th>
                             <th scope="col">payment</th>
                             <th scope="col">Status</th>
@@ -117,7 +117,7 @@
                                         <%= data[i].address[0].name %>
                                     </b></td>
                                 <td><b>
-                                        <%= data[i].product[0]._id || data[i].product._id %>
+                                        <%= data[i].product[0].name || data[i].product.name %>
                                     </b></td>
                                 <td>
                                     <%= data[i].createdOn.toLocaleString('en-IN') %>

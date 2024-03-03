@@ -146,7 +146,6 @@ const addToCart = async (req, res) => {
 const deleteCartItem = async (req, res) => {
     try {
         const id = req.query.id
-        console.log(id, "id");
         const userId = req.session.user
         const user = await User.findById(userId)
         const cartIndex = user.cart.findIndex(item => item.productId == id)

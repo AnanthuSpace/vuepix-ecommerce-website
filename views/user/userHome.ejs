@@ -153,7 +153,7 @@
                                                 data-bs-toggle="modal" data-bs-target="#quickViewModal">
                                                 <i class="fi-rs-search"></i></a> -->
                                             <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                href="products-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                href="" onclick="addToWishlist('<%= products[i]._id %>')"><i class="fi-rs-heart"></i></a>
                                         </div>
                                         <div class="product-badges product-badges-position product-badges-mrg">
                                             <span class="hot">New</span>
@@ -173,10 +173,10 @@
                                                 class="old-price">₹<%-products[i].regularPrice.toLocaleString('en-IN')%></span>&nbsp;
                                                  
                                                 <span
-                                                class=""><%-products[i].productOffer%>%</span>
+                                                class="save-price  font-md color3 ml-15"><%-products[i].productOffer || products[i].categoryOffer %>%</span>
                                         </div>
                                         <div class="product-action-1 show">
-                                            <a aria-label="Add To Cart" class="action-btn hover-up" href="#"><i
+                                            <a aria-label="Add To Cart" class="action-btn hover-up" onclick="addToCart('<%=products[i].id%>', 1, '<%=products[i].unit%>')"><i
                                                     class="fi-rs-shopping-bag-add"></i></a>
                                         </div>
                                     </div>
@@ -236,6 +236,81 @@
                 }
             })
         }
+
+        function addToWishlist(productId) {
+            $.ajax({
+                url: "/addToWishlist",
+                method: "post",
+                data: {
+                    productId: productId
+                },
+                success: (response) => {
+                    if (response.status == true) {
+                        Swal.fire({
+                            title: 'Added to Wishlist!',
+                            text: 'Continue Shopping',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => { window.location.href = '/VuePix' });
+                    } else if (response.status == false) {
+                        Swal.fire({
+                            title: 'You need to Login first',
+                            text: 'Continue Shopping',
+                            icon: 'warning',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => { window.location.href = '/login' });
+                    }
+                }
+            })
+            return false;
+        }
+
+
+        function addToCart(proId, unit, stock) {
+            // console.log(proId, stock);
+            if (stock <= 0) {
+                Swal.fire({
+                    title: 'STOCK!',
+                    text: 'Quantity exceed the unit the in cart.',
+                    icon: 'error',
+                    timer: 5000
+                })
+                return;
+            }
+
+            // const quantity = 1
+
+            $.ajax({
+                url: `/cart`,
+                method: 'post',
+                data: {
+                    id: proId,
+                    unit: unit,
+                },
+                success(response) {
+                    if (response.added == true) {
+                        Swal.fire({
+                            title: 'CART',
+                            text: 'Product ADDED TO CART.',
+                            icon: 'success',
+                            timer: 5000
+                        }).then(() => { window.location.href = '/VuePix' });
+                    } else if (response.added == false) {
+                        Swal.fire({
+                            title: 'STOCK!',
+                            text: 'Product is out of stock.',
+                            icon: 'error',
+                            timer: 5000
+                        })
+                    } else {
+                        location.href = '/login'
+                    }
+                }
+            })
+        }
+
 
     </script>
 

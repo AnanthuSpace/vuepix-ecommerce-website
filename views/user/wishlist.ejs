@@ -98,7 +98,7 @@
                             icon: 'success',
                             timer: 2000,
                             showConfirmButton: false
-                        })
+                        }).then(() => { window.location.href = '/wishlist' });
                     } else if (res.added === false) {
                         Swal.fire({
                             title: 'Stock!!',

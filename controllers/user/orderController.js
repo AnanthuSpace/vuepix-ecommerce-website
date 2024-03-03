@@ -508,6 +508,7 @@ const cancelCoupon = async (req, res) => {
 
         const selectedCoupon = await Coupon.findOne({ name: Code });
         console.log(selectedCoupon);
+        console.log(userId);
 
         await Coupon.updateOne(
             { name: Code },

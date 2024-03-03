@@ -252,10 +252,12 @@
                                             <span>₹<%= product[i].salesPrice.toLocaleString('en-IN') %></span>
                                             <span class="old-price">₹<%= product[i].regularPrice.toLocaleString('en-IN')
                                                     %></span>
+                                                    <span
+                                                    class="save-price  font-md color3 ml-15"><%-product[i].productOffer || product[i].categoryOffer %>%</span>
                                         </div>
                                         <div class="product-action-1 show">
                                             <a aria-label="Add To Cart" class="action-btn hover-up"
-                                                href="shop-cart.html"><i class="fi-rs-shopping-bag-add"></i></a>
+                                            onclick="addToCart('<%=product[i].id%>', 1, '<%=product[i].unit%>')"><i class="fi-rs-shopping-bag-add"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -440,7 +442,48 @@
 
 
 
+        function addToCart(proId, unit, stock) {
+            // console.log(proId, stock);
+            if (stock <= 0) {
+                Swal.fire({
+                    title: 'STOCK!',
+                    text: 'Quantity exceed the unit the in cart.',
+                    icon: 'error',
+                    timer: 5000
+                })
+                return;
+            }
 
+            // const quantity = 1
+
+            $.ajax({
+                url: `/cart`,
+                method: 'post',
+                data: {
+                    id: proId,
+                    unit: unit,
+                },
+                success(response) {
+                    if (response.added == true) {
+                        Swal.fire({
+                            title: 'CART',
+                            text: 'Product ADDED TO CART.',
+                            icon: 'success',
+                            timer: 5000
+                        }).then(() => { window.location.href = '/shop' });
+                    } else if (response.added == false) {
+                        Swal.fire({
+                            title: 'STOCK!',
+                            text: 'Product is out of stock.',
+                            icon: 'error',
+                            timer: 5000
+                        })
+                    } else {
+                        location.href = '/login'
+                    }
+                }
+            })
+        }
 
 
 
