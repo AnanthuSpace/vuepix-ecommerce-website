@@ -403,7 +403,7 @@ const dateWiseFilter = async (req, res) => {
             },
             {
                 $sort: {
-                    createdOn: -1 // Sort in ascending order of the createdOn date
+                    createdOn: -1 
                 }
             }
         ]);

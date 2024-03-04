@@ -190,7 +190,7 @@
                                                     <td class="text-center">
                                                         <%= orders.discount.toLocaleString() %>
                                                     </td>
-                                                    
+
                                                     <td class="text-center">
                                                         ₹<%= (parseInt(orders.product[i].price) *
                                                             parseInt(orders.product[i].unit)).toLocaleString() %>
@@ -292,17 +292,10 @@
 
     <script>
 
-        function printInvoice(event) {
-            window.print()
-        }
-        document.getElementById("print-button").addEventListener('click', printInvoice);
+
 
         function handleDropdownChange(selectElement) {
-
             var selectedValue = selectElement.value;
-            const productId = document.getElementById("singleProId")
-            const quantity = document.getElementById("quantity")
-
             if (selectedValue == "cancel") {
                 Swal.fire({
                     title: 'Confirm cancellation',
@@ -314,13 +307,19 @@
                     confirmButtonText: 'Yes, cancel it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = `http://localhost:3000/cancelOrder?ProId=${productId.value}&orderId=${orderId.value}&quantity=${quantity.value}`;
+
+                        window.location.href = `http://localhost:3000/cancelOrder?orderId=${orderId.value}`;
                     } else {
                         location.reload();
                     }
                 })
             }
         }
+
+        function printInvoice(event) {
+            window.print()
+        }
+        document.getElementById("print-button").addEventListener('click', printInvoice);
 
     </script>
 

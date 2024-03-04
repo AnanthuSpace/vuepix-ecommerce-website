@@ -195,9 +195,9 @@
 
                                         <% } %>
                                             <% }else{ %>
-
-                                                <h3>No coupons available</h3>
-
+                                                <div style="margin-left: 150px; margin-top: 20px;">
+                                                    <h3>No coupons available</h3>
+                                                </div>
                                                 <% } %>
                             </ul>
 
@@ -358,10 +358,14 @@
                                                 </div>
                                             </div>
                                             <% } %>
-                                                <div class="col-lg-6 mb-3">
-                                                    <a href="/addAddress">
-                                                        <button class="btn btn-primary w-100">Add address</button>
-                                                    </a>
+                                                <div class="card mb-3 mb-lg-0" style="margin-top: 20px;">
+                                                    <button class="btn btn-sm btn-outline-secondary float-right"
+                                                        style="width: 100%;" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal">Add New
+                                                        Address</button>
+
+
+
                                                 </div>
                         </div>
                     </div>
@@ -374,6 +378,91 @@
                 </div>
             </div>
     </section>
+
+
+
+
+    <!-- Modals  -->
+
+
+
+    <div class="modal" id="exampleModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container  align-center">
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-25">
+                                    <h4>Add address</h4>
+                                </div>
+                                <form action="/addAddressCheout" method="post" onsubmit="return validateForm()">
+                                    <div class="form-group">
+                                        <input type="text" name="name" id="name" placeholder="First name *">
+                                        <span id="nameError" class="error"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="tel" name="phone" id="phone"
+                                            placeholder="10 digit mobile number *">
+                                        <span id="phoneError" class="error"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="pincode" id="pincode" placeholder="Pincode">
+                                        <span id="pincodeError" class="error"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <select name="addressType" id="addressType" class="form-control">
+                                            <option value="">Select Address Type</option>
+                                            <option value="work">work</option>
+                                            <option value="home">home</option>
+                                        </select>
+                                        <span id="addressTypeError" class="error"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="text" name="state" id="state" placeholder="State">
+                                        <span id="stateError" class="error"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="city" id="city" placeholder="City ">
+                                        <span id="cityError" class="error"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="landMark" id="landmark" placeholder="Landmark*">
+                                        <span id="landmarkError" class="error"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="tel" name="altPhone" id="alternatePhone"
+                                            placeholder="Alternate phone option*">
+                                        <span id="alternatePhoneError" class="error"></span>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save Address</button>
+                                    </div>
+                                    <!-- <button class="button" id="button" >Save Address</button> -->
+                                </form>
+
+                                <style>
+                                    .error {
+                                        color: #dc3545;
+                                        font-size: 0.875rem;
+                                    }
+                                </style>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
@@ -437,7 +526,7 @@
                                 "currency": "INR",
                                 "name": "VuePix",
                                 "description": "Test Transaction",
-                                "image": "https://example.com/your_logo.jpg",
+                                "image": "https://blog.flamingtext.com/blog/2024/02/02/flamingtext_com_1706871147_110639469.png",
                                 "order_id": response.razorpayOrder.id,
 
                                 "handler": function (status) {
@@ -461,7 +550,6 @@
                             // Handle errors
                             rzp1.on('payment.failed', function (response) {
                                 console.error('Payment failed:', response.error.code, response.error.description);
-                                // Handle payment failure here
                             });
                         }
 
@@ -470,14 +558,23 @@
                             if (response.payment === true) {
                                 Swal.fire({
                                     title: "Order success",
-                                    text: "Order placed successfully",
+                                    text: "order placed successfully",
                                     icon: "success",
-                                    showConfirmButton: false,
-                                    timer: 2000,
+                                    showCancelButton: true,
+                                    confirmButtonText: "view orders",
+                                    cancelButtonText: "continue shopping",
+                                    reverseButtons: true
+                                }).then(function (result) {
+                                    if (result.value) {
+                                        location.href = '/profile';
+
+                                    } else if (result.dismiss === "cancel") {
+                                        location.href = '/'
+                                    }
                                 });
 
                             } else {
-                                // Handle the case when the response status is not successful
+
                                 Swal.fire({
                                     title: "Order failed",
                                     text: "Wallet amount is not enough",
@@ -557,7 +654,7 @@
                                 timer: 2000,
                             })
                             totalAmount = response.total;
-                            
+
                             document.getElementById("discountCell").innerHTML = `<h5>${response.discount}</h5>`;
                             document.getElementById("totalValue").innerHTML = `<span  id="total"  class="font-xl text-brand fw-900">${totalAmount}</span>`
 
@@ -645,38 +742,38 @@
 
             usedCoupon = null;
 
-            
+
             let coupon = document.getElementById("couponName").value;
             $.ajax({
-                    url: '/cancelCoupon',
-                    method: "post",
-                    data: {
-                        code: coupon
-                    },
-                    success: function (response) {
-                        if (response.status === true) {
-                            Swal.fire({
-                                title: "COUPEN REMOVE",
-                                text: "Coupon removed",
-                                icon: "success",
-                                showConfirmButton: false,
-                                timer: 2000,
-                            })
-                            totalAmount = response.total;
-                            alert(totalAmount)
-                            document.getElementById("discountCell").innerHTML = `<h5>${response.discount}</h5>`;
-                            document.getElementById("totalValue").innerHTML = `<span  id="total"  class="font-xl text-brand fw-900">${totalAmount}</span>`
+                url: '/cancelCoupon',
+                method: "post",
+                data: {
+                    code: coupon
+                },
+                success: function (response) {
+                    if (response.status === true) {
+                        Swal.fire({
+                            title: "COUPEN REMOVE",
+                            text: "Coupon removed",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 2000,
+                        })
+                        totalAmount = response.total;
+                        alert(totalAmount)
+                        document.getElementById("discountCell").innerHTML = `<h5>${response.discount}</h5>`;
+                        document.getElementById("totalValue").innerHTML = `<span  id="total"  class="font-xl text-brand fw-900">${totalAmount}</span>`
 
-                        } else {
-                            Swal.fire({
-                                title: 'COUPON ERROR!',
-                                text: 'Something wrong when cancel the coupon',
-                                icon: 'error',
-                                timer: 3000,
-                            })
-                        }
+                    } else {
+                        Swal.fire({
+                            title: 'COUPON ERROR!',
+                            text: 'Something wrong when cancel the coupon',
+                            icon: 'error',
+                            timer: 3000,
+                        })
                     }
-                })
+                }
+            })
         }
 
 
@@ -696,6 +793,87 @@
             couponButtons.forEach(function (button) {
                 button.disabled = false;
             });
+        }
+
+
+
+        function validateForm() {
+            const phoneRegex = /^\d{10}$/;
+            const pincodeRegex = /^\d{6}$/;
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const pincode = document.getElementById('pincode').value;
+            const addressType = document.getElementById('addressType').value;
+            const address = document.getElementById('address').value;
+            const state = document.getElementById('state').value;
+            const city = document.getElementById('city').value;
+            const landmark = document.getElementById('landmark').value;
+            const alternatePhone = document.getElementById('alternatePhone').value;
+
+            if (!name.trim()) {
+                document.getElementById('nameError').innerHTML = "Please enter your first name";
+                return false;
+            } else {
+                document.getElementById('nameError').innerHTML = "";
+            }
+
+            if (!phoneRegex.test(phone)) {
+                document.getElementById('phoneError').innerHTML = "Please enter a valid 10 digit mobile number";
+                return false;
+            } else {
+                document.getElementById('phoneError').innerHTML = "";
+            }
+
+            if (pincode && !pincodeRegex.test(pincode)) {
+                document.getElementById('pincodeError').innerHTML = "Please enter a valid 6 digit pincode";
+                return false;
+            } else {
+                document.getElementById('pincodeError').innerHTML = "";
+            }
+
+            if (!addressType) {
+                document.getElementById('addressTypeError').innerHTML = "Please select an address type";
+                return false;
+            } else {
+                document.getElementById('addressTypeError').innerHTML = "";
+            }
+
+            if (!address.trim()) {
+                document.getElementById('addressError').innerHTML = "Please enter your address";
+                return false;
+            } else {
+                document.getElementById('addressError').innerHTML = "";
+            }
+
+            if (!state.trim()) {
+                document.getElementById('stateError').innerHTML = "Please enter your state";
+                return false;
+            } else {
+                document.getElementById('stateError').innerHTML = "";
+            }
+
+            if (!city.trim()) {
+                document.getElementById('cityError').innerHTML = "Please enter your city/district/town";
+                return false;
+            } else {
+                document.getElementById('cityError').innerHTML = "";
+            }
+
+            if (!landmark.trim()) {
+                document.getElementById('landmarkError').innerHTML = "Please enter a landmark";
+                return false;
+            } else {
+                document.getElementById('landmarkError').innerHTML = "";
+            }
+
+            if (alternatePhone && !phoneRegex.test(alternatePhone)) {
+                document.getElementById('alternatePhoneError').innerHTML = "Please enter a valid 10 digit alternate phone number";
+                return false;
+            } else {
+                document.getElementById('alternatePhoneError').innerHTML = "";
+            }
+
+            return true; // Form submission allowed if all validations pass
         }
 
     </script>

@@ -61,6 +61,7 @@ router.post("/editAddress", isLogged, isBlocked, profileController.editAddress)
 router.get("/deleteAddress", isLogged, isBlocked, profileController.deleteAddress)
 router.post("/changepassword", isLogged, isBlocked, profileController.changePass)
 router.post('/verifyReferalCode', isLogged, isBlocked, profileController.verifyReferelCode)
+router.post('/addAddressCheout', isLogged, isBlocked, profileController.addAddressCheckout)
 
 
 
@@ -73,6 +74,7 @@ router.get("/cancelOrder", isLogged, isBlocked, orderController.cancelOrder)
 router.post('/verifyPayment', isLogged, isBlocked, orderController.verify)
 router.get("/return", isLogged, isBlocked, orderController.returnOrder)
 router.post("/cancelCoupon", isLogged, isBlocked, orderController.cancelCoupon)
+
 
 
 // wishlist

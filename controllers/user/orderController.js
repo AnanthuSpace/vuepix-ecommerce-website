@@ -52,18 +52,23 @@ const checkout = async (req, res) => {
 
         const grandTotal = req.session.grandTotal
         const subOffers = req.session.subOffers
-        console.log("Offer : ", subOffers );
+        console.log("Offer : ", subOffers);
 
         const today = new Date().toISOString()
 
-        const findCoupon = await Coupon.find({
+
+        const userCoupons = await Coupon.find({ userId: userId });
+
+        const findCoupons = await Coupon.find({
             isList: true,
             createdOn: { $lt: new Date(today) },
             expireOn: { $gt: new Date(today) },
             minimumPrice: { $lt: grandTotal },
-        })
+        });
+        const validCoupons = findCoupons.filter(coupon => !userCoupons.find(usedCoupon => usedCoupon._id.equals(coupon._id)));
 
-        console.log("Coupon data : ", findCoupon);
+        console.log("Coupon data : ", validCoupons);
+
 
         res.render("user/checkout",
             {
@@ -76,7 +81,7 @@ const checkout = async (req, res) => {
                 subOffers,
                 cartCount,
                 wishlistCount,
-                coupons: findCoupon
+                coupons: validCoupons
             })
 
     } catch (error) {
@@ -126,7 +131,7 @@ const placeOrder = async (req, res) => {
         const newOrder = new Order({
             product: orderedProducts,
             totalPrice: grand,
-            overAllOffer : subOffers,
+            overAllOffer: subOffers,
             address: desiredAddress,
             payment: payment,
             userId: userId,
@@ -139,7 +144,7 @@ const placeOrder = async (req, res) => {
         const newOrderFromRazorpay = new Order({
             product: orderedProducts,
             totalPrice: grand,
-            overAllOffer : subOffers,
+            overAllOffer: subOffers,
             address: desiredAddress,
             payment: payment,
             userId: userId,
@@ -341,69 +346,46 @@ const orderDetails = async (req, res) => {
 
 
 
+
+
 const cancelOrder = async (req, res) => {
     try {
-        const productId = new mongoose.Types.ObjectId(req.query.ProId);
-        console.log(productId);
-        const orderId = new mongoose.Types.ObjectId(req.query.orderId);
-        const quantity = req.query.quantity
-        console.log('query', req.query);
+        const orderId = req.query.orderId.trim();
+        const order = await Order.findById(orderId);
+        for (const product of order.product) {
 
-        console.log(productId);
+            const productId = product._id;
+            const unit = product.unit;
 
-
-
-        const findOrder = await Order.findOne({ _id: orderId })
-
-        await Order.findOneAndUpdate({ _id: orderId, 'product._id': productId }, { $set: { 'product.$.status': "Canceled" } })
-
-        await Product.findByIdAndUpdate(productId, { $inc: { unit: quantity } })
-        console.log(`Increasing quantity for product ${productId} by ${quantity}`);
-
-        const product = await Order.findOne(
-            { _id: orderId, 'product._id': productId },
-            { 'product.$': 1 }
-        );
-
-        const currentPrice = product.product[0].price;
-
-        if(findOrder.payment!=="cod"){
-            await User.updateOne(
-                {
-                    _id: req.session.user
-                }, {
-                $push: {
-                    history: {
-                        amount: currentPrice, status: "credit", date: Date.now()
-                    }
-                }
-            }
-            )
-
-            await User.updateOne(
-                {
-                    _id: req.session.user
-                }, {
-                $set: {
-                    wallet: currentPrice
-                }
-            }
-            )
+            await Product.findByIdAndUpdate(productId, { $inc: { unit: unit } });
+            console.log(`Increasing quantity for product ${productId} by ${unit}`);
         }
-       
-        await Order.findByIdAndUpdate(
-            orderId,
-            { $inc: { totalPrice: -currentPrice } }
-        );
 
+        if (order.payment !== "cod") {
+            const totalAmount = order.totalPrice;
+            const findUser = await User.findOne({ _id: order.userId });
+            findUser.wallet += totalAmount;
+
+            const refundHistory = {
+                amount: totalAmount,
+                status: "credit",
+                date: Date.now()
+            };
+
+            findUser.history.push(refundHistory);
+            await findUser.save();
+        }
+
+        await Order.updateOne({ _id: orderId },
+            { status: "Canceled" }
+        ).then((data) => console.log(data))
 
         res.redirect('/profile');
+
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
     }
 }
-
-
 
 
 
@@ -443,7 +425,7 @@ const returnOrder = async (req, res) => {
 
             const product = await Product.findById(productId);
 
-            console.log(product,"=>>>>>>>>>");
+            console.log(product, "=>>>>>>>>>");
 
             if (product) {
                 product.unit += unit;

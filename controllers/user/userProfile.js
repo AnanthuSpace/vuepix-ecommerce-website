@@ -10,16 +10,28 @@ const renderProfile = async (req, res) => {
         const userId = req.session.user
         const user = await User.findOne({ _id: userId })
         const userAddress = await Address.findOne({ userId: userId })
-        const orderDetails = await Order.find({ userId: userId }).sort({ createdOn: -1 });
+        // const orderDetails = await Order.find({ userId: userId }).sort({ createdOn: -1 });
         const findUser = await User.findOne({ _id: userId })
         const cartCount = findUser.cart.length;
         const wishlistCount = findUser.wishlist.length
+
+        const page = parseInt(req.query.page) || 1;
+        const perPage = 8;
+
+        const totalOrders = await Order.countDocuments({});
+        const totalPages = Math.ceil(totalOrders / perPage);
+
+        const orderData = await Order.find({ userId: userId }).sort({ createdOn: -1 })
+            .skip((page - 1) * perPage)
+            .limit(perPage)
 
         res.render("user/profile",
             {
                 user,
                 userAddress,
-                order: orderDetails,
+                order: orderData,
+                currentPage: page,
+                totalPages,
                 cartCount,
                 wishlistCount
             })
@@ -166,7 +178,7 @@ const editAddress = async (req, res) => {
 
         const addressId = req.query.id
         const findAddress = await Address.findOne({ "address._id": addressId });
-        
+
         await Address.updateOne(
             {
                 "address._id": addressId,
@@ -253,10 +265,10 @@ const changePass = async (req, res) => {
 
 
 
-const verifyReferelCode = async(req,res)=>{
+const verifyReferelCode = async (req, res) => {
     try {
-        const referalCode  = req.body.referalCode
-        const currentUser = await User.findOne({_id:req.session.user})
+        const referalCode = req.body.referalCode
+        const currentUser = await User.findOne({ _id: req.session.user })
         const Owner = await User.findOne({ referalCode: referalCode })
         // console.log(Owner);
 
@@ -325,7 +337,61 @@ const verifyReferelCode = async(req,res)=>{
             res.json({ message: "Referral code verified successfully!" })
             return
         }
-        
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+const addAddressCheckout = async (req, res) => {
+    try {
+        const user = req.session.user
+        const userData = await User.findOne({ _id: user })
+        // console.log(userData);
+        const {
+            addressType,
+            name,
+            city,
+            landMark,
+            state,
+            pincode,
+            phone,
+            altPhone
+        } = req.body
+        const userAddress = await Address.findOne({ userId: userData._id })
+        if (!userAddress) {
+            const newAddress = new Address({
+                userId: userData._id,
+                address: [
+                    {
+                        addressType,
+                        name,
+                        city,
+                        landMark,
+                        state,
+                        pincode,
+                        phone,
+                        altPhone,
+                    }
+                ]
+            })
+            await newAddress.save()
+        } else {
+            userAddress.address.push({
+                addressType,
+                name,
+                city,
+                landMark,
+                state,
+                pincode,
+                phone,
+                altPhone,
+            })
+            await userAddress.save()
+        }
+        res.redirect("/checkout")
     } catch (error) {
         console.log(error.message);
     }
@@ -341,5 +407,6 @@ module.exports = {
     editAddress,
     deleteAddress,
     changePass,
-    verifyReferelCode
+    verifyReferelCode,
+    addAddressCheckout
 }
