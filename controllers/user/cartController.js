@@ -147,10 +147,14 @@ const deleteCartItem = async (req, res) => {
     try {
         const id = req.query.id
         const userId = req.session.user
-        const user = await User.findById(userId)
-        const cartIndex = user.cart.findIndex(item => item.productId == id)
-        user.cart.splice(cartIndex, 1)
-        await user.save()
+        
+        await User.updateOne(
+            {_id:userId},
+            {$pull:{
+                cart:{ProductId:id}
+            }}
+        )
+
         console.log("item deleted from cart");
         res.redirect("/cart")
     } catch (error) {
