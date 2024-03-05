@@ -47,7 +47,27 @@ const createCoupon = async (req, res) => {
 }
 
 
+
+
+
+const deleteCoupon = async(req,res)=>{
+    try {
+        const couponId = req.body.couponId
+        await Coupon.deleteOne({_id:couponId});
+        console.log('Coupon deleted successfully')
+        res.json({status : true})
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+
+
+
 module.exports = {
     getCouponPageAdmin,
-    createCoupon
+    createCoupon,
+    deleteCoupon
 }

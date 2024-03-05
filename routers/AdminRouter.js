@@ -61,6 +61,8 @@ router.get("/changeStatus", isAdmin, orderController.changeOrderStatus)
 // Coupen Management
 router.get("/coupon", isAdmin, couponController.getCouponPageAdmin)
 router.post("/createCoupon", isAdmin, couponController.createCoupon)
+router.post("/deleteCoupon", isAdmin, couponController.deleteCoupon)
+
 
 
 // SalesReport Managment
