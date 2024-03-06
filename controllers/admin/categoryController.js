@@ -17,9 +17,6 @@ const renderCategory = async (req, res) => {
     } catch (error) {
         console.log(error.message);
     }
-    // await Category.find({})
-    //     .then(data => res.render("admin/category", { cat: data }))
-    //     .catch(error => console.log(error.message))
 }
 
 
@@ -27,7 +24,8 @@ const addCategory = async (req, res) => {
     try {
         const { name, description } = req.body;
         console.log(req.body.name);
-        const categoryExists = await Category.findOne({ name });
+        const categoryName = name.trim().toLowerCase();
+        const categoryExists = await Category.findOne({ name: { $regex: new RegExp('^' + categoryName + '$', 'i') }  });
 
         if (!categoryExists) {
             const newCategory = new Category({
@@ -88,8 +86,9 @@ const editCategory = async (req, res) => {
         const id = req.params.id;
         const { categoryName, description } = req.body;
         const findCategory = await Category.findById(id);
+        const updatedCategoryName = categoryName.trim().toLowerCase(); 
 
-        const categoryExists = await Category.findOne({ name:categoryName });
+        const categoryExists = await Category.findOne({ _id: { $ne: id }, name: { $regex: new RegExp('^' + updatedCategoryName + '$', 'i') } });
 
         if (!categoryExists) {
             if (findCategory) {

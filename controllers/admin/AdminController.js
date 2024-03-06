@@ -1,4 +1,8 @@
 const Admin  = require("../../models/adminSchema")
+const Category = require('../../models/categorySchema')
+const Order = require('../../models/orderShema')
+const Product = require("../../models/productSchema")
+const  { User } =  require("../../models/userSchema")
 const bcrypt = require("bcrypt");
 
 
@@ -56,13 +60,101 @@ const adminLogout = async (req, res) => {
 }
 
 
+// const renderAdminHome = async (req, res) => {
+//     try {
+//         res.render("admin/adminHome", { dashboard: true })
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }
+
+
+
 const renderAdminHome = async (req, res) => {
     try {
-        res.render("admin/adminHome", { dashboard: true })
+        const category = await Category.find({ isListed: true })
+        const order = await Order.find({ status: "Delivered" })
+        const product = await Product.find({})
+        const user = await User.find({})
+
+        const productCount = product.length
+        const orderCount = order.length
+        const categoryCount = category.length
+
+        let totalRevenue = 0;
+
+        for (let i in order) {
+            totalRevenue += order[i].totalPrice;
+        }
+
+        const today = new Date();
+        const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+        const monthlyOrders = await Order.find({
+            status: "Delivered",
+            createdOn: {
+                $gte: firstDayOfMonth,
+                $lt: lastDayOfMonth
+            }
+        })
+
+        let monthlyRevenue = 0
+
+        for (let i in monthlyOrders) {
+            monthlyRevenue += monthlyOrders[i].totalPrice;
+        }
+
+        const monthlySales = await Order.aggregate([
+            {
+                $match: {
+                    status: "Delivered"
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        $month: '$createdOn',
+                    },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: {
+                    '_id': 1
+                }
+            }
+        ])
+
+        const monthlySalesArray = Array.from({ length: 12 }, (_, index) => {
+            const monthData = monthlySales.find(item => item._id === index + 1)
+            return monthData ? monthData.count : 0
+        })
+
+        const latestOrders = await Order.find().sort({ createdOn: -1 }).limit(5);
+
+
+        const productPerMonth = Array(12).fill(0);
+
+        product.forEach(p => {
+            // Parse the createdOn string into a Date object
+            const createdOnDate = new Date(p.createdOn);
+
+            // Extract the month (zero-based)
+            const createdMonth = createdOnDate.getMonth();
+
+            // Increment the count for the corresponding month
+            productPerMonth[createdMonth]++;
+        });
+
+
+        res.render("admin/adminHome", { orderCount, productCount, categoryCount, totalRevenue, monthlyRevenue, monthlySalesArray, productPerMonth, latestOrders })
     } catch (error) {
         console.log(error.message);
     }
 }
+
+
 
 
 

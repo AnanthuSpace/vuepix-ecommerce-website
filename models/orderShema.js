@@ -31,7 +31,7 @@ const orderSchema = new mongoose.Schema({
     },
     overAllOffer: {
         type: Number,
-        // required: true
+        required: true
     },
     discount: {
         type: Number,
