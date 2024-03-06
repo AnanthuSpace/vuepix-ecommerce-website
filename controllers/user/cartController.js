@@ -12,8 +12,7 @@ const renderCart = async (req, res) => {
         const id = req.session.user
         const user = await User.findOne({ _id: id })
         console.log(user);
-        // const productId = user.cart.map(item => item.ProductId)
-        // console.log(productId);
+        
         const oid = new mongodb.ObjectId(id);
 
         let data = await User.aggregate([
@@ -50,25 +49,19 @@ const renderCart = async (req, res) => {
             }
         }
 
-        let Offers = 0
-
-        for (let i = 0; i < data.length; i++) {
-            if(data[i].productOffer!==0){
-
-                if (data[i].productDetails && data[i].productDetails.length > 0) {
-                    unit += data[i].unit
-                    Offers += data[i].productDetails[0].productOffer * data[i].unit
-                }
-
-            } else if(data[i].categoryOffer!==0){
-                if (data[i].productDetails && data[i].productDetails.length > 0) {
-                    unit += data[i].unit
-                    Offers += data[i].productDetails[0].categoryOffer * data[i].unit
-                }
+        let totalRegularPrice = 0
+        for(let i=0; i<data.length; i++){
+            if(data[i].productDetails && data[i].productDetails.length > 0){
+                unit +=data[i].unit
+                totalRegularPrice += data[i].productDetails[0].regularPrice * data[i].unit
             }
         }
-        req.session.subOffers = Offers
-
+        
+        console.log("Total PRizeeeeeeeeee ==================== ", totalRegularPrice,grandTotal);
+        const priceDifference = Math.abs(totalRegularPrice - grandTotal);
+        const percentageDifference = ((priceDifference / totalRegularPrice) * 100).toFixed(2)
+        
+        req.session.subOffers = percentageDifference
         req.session.grandTotal = grandTotal;
         const cartCount = data.length
         const wishlistCount = user.wishlist.length
@@ -77,7 +70,7 @@ const renderCart = async (req, res) => {
             unit,
             data,
             grandTotal,
-            Offers,
+            Offers:percentageDifference,
             cartCount,
             wishlistCount
         })

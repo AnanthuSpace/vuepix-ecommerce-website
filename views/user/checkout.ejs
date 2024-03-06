@@ -586,9 +586,9 @@
                     }
                 })
             }
-
         }
 
+        
 
         function verifyPayment(order, payment, id, orderId) {
             console.log(order)
@@ -760,7 +760,6 @@
                             timer: 2000,
                         })
                         totalAmount = response.total;
-                        alert(totalAmount)
                         document.getElementById("discountCell").innerHTML = `<h5>${response.discount}</h5>`;
                         document.getElementById("totalValue").innerHTML = `<span  id="total"  class="font-xl text-brand fw-900">${totalAmount}</span>`
 
