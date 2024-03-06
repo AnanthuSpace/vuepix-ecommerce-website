@@ -18,6 +18,13 @@
             cursor: pointer;
             border-radius: 4px;
         }
+        tr td{
+            border: none;
+        }
+        tr > th {
+            border: none
+        }
+
     </style>
 
     <main class="container">
@@ -152,9 +159,9 @@
                                         <th width="20%">Name</th>
                                         <th width="20%">Unit Price</th>
                                         <th width="10%">Quantity</th>
+                                        <th class="text-center" width="10%">Amount</th>
                                         <th width="10%">Offer</th>
                                         <th width="10%">Coupen Discount</th>
-                                        <th class="text-center" width="10%">Amount</th>
                                         <th class="text-center" width="30%" class="text-end">Total</th>
 
                                     </tr>
@@ -185,17 +192,12 @@
                                                         <%= orders.product[i].unit %>
                                                     </td>
                                                     <td class="text-center">
-                                                        <%= orders.product[i].offer.toLocaleString() %>%
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <%= orders.discount.toLocaleString() %>
-                                                    </td>
-
-                                                    <td class="text-center">
                                                         ₹<%= (parseInt(orders.product[i].price) *
                                                             parseInt(orders.product[i].unit)).toLocaleString() %>
 
                                                     </td>
+                                                    
+
 
                                                     <% } %>
 
@@ -208,6 +210,15 @@
 
                                                                         <% let discount=totalProductPrice -
                                                                             orders.totalPrice; %>
+
+                                                                            <td class="text-center">
+                                                                                <%= orders.overAllOffer.toLocaleString()
+                                                                                    %>%
+                                                                            </td>
+
+                                                                            <td class="text-center">
+                                                                                <%= orders.discount.toLocaleString() %>
+                                                                            </td>
 
                                                                             <td class="text-center">
                                                                                 ₹<%= orders.totalPrice.toLocaleString()

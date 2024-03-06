@@ -1,5 +1,13 @@
 <%- include("../partials/adminHeader") %>
 
+<style>
+   
+    td {
+        vertical-align: middle;
+    }
+    
+</style>
+
     <main class="container">
 
         <section class="content-main">
@@ -134,54 +142,78 @@
                             <table class="table">
                                 <thead>
                                     <tr class="text-center">
-                                        <th>Product</th>
-                                        <th>Name</th>
-                                        <th>Unit Price</th>
-                                        <th>Quantity</th>
-                                        <th>Offer</th>
-                                        <th>Coupon Discount</th>
-                                        <th class="text-center" width="20%">Total</th>
+                                        <th width="10%">Product</th>
+                                        <th width="20%">Name</th>
+                                        <th width="10%">Unit Price</th>
+                                        <th width="10%">Quantity</th>
+                                        <th class="text-center" width="10%">Amount</th>
+                                        <th width="10%">Offer</th>
+                                        <th width="10%">Coupen Discount</th>
+                                        <th class="text-center" width="30%" class="text-end">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% if (locals.orders) { %>
+                                    <%if(locals.orders){%>
                                         <% let orderId; %>
                                             <% for (let i=0; i < orders.product.length; i++) { %>
                                                 <tr>
-                                                    <td class="align-middle text-center">
-                                                        <!-- Added align-middle for vertical centering -->
-                                                        <img src="/uploads/products/<%= orders.product[i].images %>"
-                                                            style="height: 7rem; width: 7rem;" class="img-xs"
-                                                            alt="Item">
+                                                    <td class="text-center">
+                                                        <a class="itemside" href="#">
+                                                            <div class="left">
+                                                                <img src="/uploads/products/<%= orders.product[i].images %>"
+                                                                    style="height: 7rem; width: 7rem;" class="img-xs"
+                                                                    alt="Item">
+                                                            </div>
+                                                        </a>
                                                     </td>
-                                                    <td class="align-middle text-center">
-                                                        <!-- Added align-middle for vertical centering -->
-                                                        <%= orders.product[i].name %>
+                                                    <td class="text-center">
+                                                        <div class="info">
+                                                            <%= orders.product[i].name %>
+                                                        </div>
                                                     </td>
-                                                    <td class="align-middle text-center">
-                                                        <!-- Added align-middle for vertical centering -->
+                                                    <td class="text-center">
                                                         ₹<%= orders.product[i].price.toLocaleString() %>
                                                     </td>
-                                                    <td class="align-middle text-center">
-                                                        <!-- Added align-middle for vertical centering -->
+                                                    <td class="text-center">
                                                         <%= orders.product[i].unit %>
                                                     </td>
-                                                    <td class="align-middle text-center">
-                                                        <!-- Added align-middle for vertical centering -->
-                                                        <%= orders.product[i].offer %>%
-                                                    </td>
-                                                    <td class="align-middle text-center">
-                                                        <!-- Added align-middle for vertical centering -->
-                                                        <%= orders.discount.toLocaleString() %>
-                                                    </td>
-                                                    <td class="align-middle text-center">
-                                                        <!-- Added align-middle for vertical centering -->
+                                                    <td class="text-center">
                                                         ₹<%= (parseInt(orders.product[i].price) *
                                                             parseInt(orders.product[i].unit)).toLocaleString() %>
+
                                                     </td>
-                                                </tr>
-                                                <% } %>
+                                                    
+
+
                                                     <% } %>
+
+                                                        <% let totalProductPrice=0; %>
+                                                            <% for (let i=0; i < orders.product.length; i++) { %>
+                                                                <% totalProductPrice +=parseInt(orders.product[i].price)
+                                                                    * parseInt(orders.product[i].unit); %>
+                                                                    <% } %>
+
+
+                                                                        <% let discount=totalProductPrice -
+                                                                            orders.totalPrice; %>
+
+                                                                            <td class="text-center">
+                                                                                <%= orders.overAllOffer.toLocaleString()
+                                                                                    %>%
+                                                                            </td>
+
+                                                                            <td class="text-center">
+                                                                                <%= orders.discount.toLocaleString() %>
+                                                                            </td>
+
+                                                                            <td class="text-center">
+                                                                                ₹<%= orders.totalPrice.toLocaleString()
+                                                                                    %>
+                                                                            </td>
+                                                </tr>
+
+
+                                                <%}%> 
                                 </tbody>
                             </table>
 

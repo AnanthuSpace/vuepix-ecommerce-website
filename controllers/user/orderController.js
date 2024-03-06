@@ -329,14 +329,14 @@ const orderDetails = async (req, res) => {
         const findUser = await User.findOne({ _id: userId })
         const cartCount = findUser.cart.length;
         const wishlistCount = findUser.wishlist.length
-        console.log(findOrder, findUser);
+        console.log(findOrder.overAllOffer, findUser);
         res.render("user/orderDetails",
             {
                 orders: findOrder,
                 orderId,
                 user: findUser,
                 cartCount,
-                wishlistCount
+                wishlistCount,
             })
     } catch (error) {
         console.log(error.message);
