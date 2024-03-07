@@ -85,7 +85,6 @@ const addAddress = async (req, res) => {
     try {
         const user = req.session.user
         const userData = await User.findOne({ _id: user })
-        // console.log(userData);
         const {
             addressType,
             name,

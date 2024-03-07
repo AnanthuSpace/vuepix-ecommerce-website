@@ -1,8 +1,8 @@
-const Admin  = require("../../models/adminSchema")
+const Admin = require("../../models/adminSchema")
 const Category = require('../../models/categorySchema')
 const Order = require('../../models/orderShema')
 const Product = require("../../models/productSchema")
-const  { User } =  require("../../models/userSchema")
+const { User } = require("../../models/userSchema")
 const bcrypt = require("bcrypt");
 
 
@@ -126,6 +126,8 @@ const renderAdminHome = async (req, res) => {
             }
         ])
 
+        
+
         const monthlySalesArray = Array.from({ length: 12 }, (_, index) => {
             const monthData = monthlySales.find(item => item._id === index + 1)
             return monthData ? monthData.count : 0
@@ -137,18 +139,31 @@ const renderAdminHome = async (req, res) => {
         const productPerMonth = Array(12).fill(0);
 
         product.forEach(p => {
-            // Parse the createdOn string into a Date object
             const createdOnDate = new Date(p.createdOn);
-
-            // Extract the month (zero-based)
             const createdMonth = createdOnDate.getMonth();
-
-            // Increment the count for the corresponding month
             productPerMonth[createdMonth]++;
         });
 
+        const userPerMonth = Array(12).fill(0);
+        user.forEach(u => {
+            const createdOnDate = new Date(u.createdOn);
+            const createdMonth = createdOnDate.getMonth();
+            userPerMonth[createdMonth]++;
+        });
+        console.log("User Details",userPerMonth);
 
-        res.render("admin/adminHome", { orderCount, productCount, categoryCount, totalRevenue, monthlyRevenue, monthlySalesArray, productPerMonth, latestOrders })
+        res.render("admin/adminHome", {
+            orderCount,
+            productCount,
+            categoryCount,
+            totalRevenue,
+            monthlyRevenue,
+            monthlySalesArray,
+            productPerMonth,
+            latestOrders,
+            dashboard:true,
+            userPerMonth
+        })
     } catch (error) {
         console.log(error.message);
     }

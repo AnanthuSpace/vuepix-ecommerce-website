@@ -312,11 +312,8 @@ const verify = (req, res) => {
 
 
 const changeOrderStatusToConfirmed = async (orderId) => {
-    await Order.updateOne(
-        { _id: orderId },
-        { status: "Confirmed" }
-    )
-        .then(res => console.log(res))
+    await Order.updateOne({ _id: orderId },{ status: "Confirmed" })
+    .then(res => console.log(res))
 }
 
 

@@ -50,7 +50,7 @@ const addProduct = async (req, res) => {
 
             await newProduct.save()
             console.log("saved successfully");
-            res.redirect("/admin/addproduct")
+            res.redirect("/admin/productList")
         } else {
             res.json("failed");
         }

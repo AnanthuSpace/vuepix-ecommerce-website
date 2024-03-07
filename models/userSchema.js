@@ -49,6 +49,10 @@ const userSchema = mongoose.Schema({
     },
     history: {
         type: Array
+    },
+    createdOn: {
+        type: Date,
+        required: true,
     }
 })
 

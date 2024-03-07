@@ -230,7 +230,8 @@ const verifyOtp = async (req, res) => {
                 email,
                 phone,
                 password,
-                referalCode:referalCode
+                referalCode:referalCode,
+                createdOn:new Date()
             })
 
             await newUser.save();
