@@ -126,7 +126,29 @@ const renderAdminHome = async (req, res) => {
             }
         ])
 
-        
+        const topProducts = await Order.aggregate([
+            {
+              $group: {
+                _id: '$product.name',
+                totalPrice: {
+                  $sum: '$totalPrice'
+                }
+              }
+            },
+            {
+              $sort: {
+                totalPrice: -1
+              }
+            },
+            {
+              $limit: 5
+            }
+          ])
+          
+          console.log(topProducts);
+
+
+          
 
         const monthlySalesArray = Array.from({ length: 12 }, (_, index) => {
             const monthData = monthlySales.find(item => item._id === index + 1)
@@ -150,7 +172,6 @@ const renderAdminHome = async (req, res) => {
             const createdMonth = createdOnDate.getMonth();
             userPerMonth[createdMonth]++;
         });
-        console.log("User Details",userPerMonth);
 
         res.render("admin/adminHome", {
             orderCount,
@@ -162,7 +183,8 @@ const renderAdminHome = async (req, res) => {
             productPerMonth,
             latestOrders,
             dashboard:true,
-            userPerMonth
+            userPerMonth,
+            topProducts
         })
     } catch (error) {
         console.log(error.message);

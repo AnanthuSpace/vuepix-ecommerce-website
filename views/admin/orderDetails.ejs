@@ -1,12 +1,10 @@
 <%- include("../partials/adminHeader") %>
 
-<style>
-   
-    td {
-        vertical-align: middle;
-    }
-    
-</style>
+    <style>
+        td {
+            vertical-align: middle;
+        }
+    </style>
 
     <main class="container">
 
@@ -147,6 +145,7 @@
                                         <th width="10%">Unit Price</th>
                                         <th width="10%">Quantity</th>
                                         <th class="text-center" width="10%">Amount</th>
+                                        <th width="10%">Shipping</th>
                                         <th width="10%">Offer</th>
                                         <th width="10%">Coupen Discount</th>
                                         <th class="text-center" width="30%" class="text-end">Total</th>
@@ -182,7 +181,7 @@
                                                             parseInt(orders.product[i].unit)).toLocaleString() %>
 
                                                     </td>
-                                                    
+
 
 
                                                     <% } %>
@@ -196,6 +195,10 @@
 
                                                                         <% let discount=totalProductPrice -
                                                                             orders.totalPrice; %>
+
+                                                                            <td class="text-center">
+                                                                                ₹<%= orders.shipping.toLocaleString() %>
+                                                                            </td>
 
                                                                             <td class="text-center">
                                                                                 <%= orders.overAllOffer.toLocaleString()
@@ -213,7 +216,7 @@
                                                 </tr>
 
 
-                                                <%}%> 
+                                                <%}%>
                                 </tbody>
                             </table>
 

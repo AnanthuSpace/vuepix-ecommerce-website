@@ -12,6 +12,7 @@ const renderCart = async (req, res) => {
         const id = req.session.user
         const user = await User.findOne({ _id: id })
         console.log(user);
+        const shippingCharge = 40
         
         const oid = new mongodb.ObjectId(id);
 
@@ -60,6 +61,8 @@ const renderCart = async (req, res) => {
         console.log("Total PRizeeeeeeeeee ==================== ", totalRegularPrice,grandTotal);
         const priceDifference = Math.abs(totalRegularPrice - grandTotal);
         const percentageDifference = ((priceDifference / totalRegularPrice) * 100).toFixed(2)
+        grandTotal = grandTotal+shippingCharge
+        
         
         req.session.subOffers = percentageDifference
         req.session.grandTotal = grandTotal;
@@ -72,7 +75,8 @@ const renderCart = async (req, res) => {
             grandTotal,
             Offers:percentageDifference,
             cartCount,
-            wishlistCount
+            wishlistCount,
+            shippingCharge
         })
 
     } catch (err) {

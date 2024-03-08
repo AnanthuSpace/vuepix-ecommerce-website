@@ -68,8 +68,8 @@ const checkout = async (req, res) => {
         const validCoupons = findCoupons.filter(coupon => !userCoupons.find(usedCoupon => usedCoupon._id.equals(coupon._id)));
 
         console.log("Coupon data : ", validCoupons);
-
-
+        const shipping  = 40;
+        
         res.render("user/checkout",
             {
                 data: data,
@@ -81,7 +81,8 @@ const checkout = async (req, res) => {
                 subOffers,
                 cartCount,
                 wishlistCount,
-                coupons: validCoupons
+                coupons: validCoupons,
+                shipping
             })
 
     } catch (error) {
@@ -106,7 +107,7 @@ const placeOrder = async (req, res) => {
 
         const cartCount = findUser.cart.length;
         const wishlistCount = findUser.wishlist.length
-
+        const shipping = 40
 
 
 
@@ -137,6 +138,7 @@ const placeOrder = async (req, res) => {
             userId: userId,
             discount: couponDiscount,
             status: "Confirmed",
+            shipping: shipping,
             createdOn: Date.now()
         })
 
@@ -150,6 +152,7 @@ const placeOrder = async (req, res) => {
             userId: userId,
             discount: couponDiscount,
             status: "Pending",
+            shipping: shipping,
             createdOn: Date.now()
         });
 

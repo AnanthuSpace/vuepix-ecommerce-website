@@ -231,7 +231,7 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <th>Shipping</th>
-                                                                    <td colspan="2"><em>Free Shipping</em></td>
+                                                                    <td colspan="2"><em>₹ <%= shipping %></em></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th>Offers for All Products</th>
@@ -256,7 +256,7 @@
                                                                     <td colspan="2" class="product-subtotal">
                                                                         <span class="font-xl text-brand fw-900"
                                                                             id="totalValue">
-                                                                            <%= totalAmount %>
+                                                                            <%= totalAmount+40 %>
                                                                         </span>
                                                                     </td>
                                                                 </tr>
@@ -479,6 +479,7 @@
             const sum = document.getElementById("totalValue").textContent;
             const numericValue = parseInt(sum);
             console.log(numericValue);
+
             if (!payment) {
                 Swal.fire({
                     title: 'NO PAYMENT FOUND!',
@@ -490,6 +491,13 @@
                 Swal.fire({
                     title: 'NO ADDRESS FOUND!',
                     text: 'Please select your address.',
+                    icon: 'error',
+                    timer: 3000,
+                });
+            } else if (payment=="cod" && numericValue>2000) {
+                Swal.fire({
+                    title: 'Total amount exceeds 2000.',
+                    text: 'Please select another method',
                     icon: 'error',
                     timer: 3000,
                 });

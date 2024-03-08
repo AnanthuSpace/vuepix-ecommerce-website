@@ -39,6 +39,10 @@ const orderSchema = new mongoose.Schema({
     },
     date: {
         type: String,
+    },
+    shipping: {
+        type: Number,
+        required: true
     }
 })
 
