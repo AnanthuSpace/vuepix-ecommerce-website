@@ -121,6 +121,7 @@ const placeOrder = async (req, res) => {
             price: item.salesPrice,
             offer: item.productOffer + item.categoryOffer,
             name: item.name,
+            category: item.category,
             images: item.images[0],
             status: "Confirmed",
             unit: cartItemUnit.find(cartItem => cartItem.productId.toString() === item._id.toString()).unit,

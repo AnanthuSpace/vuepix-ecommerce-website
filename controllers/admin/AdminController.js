@@ -147,8 +147,26 @@ const renderAdminHome = async (req, res) => {
           
           console.log(topProducts);
 
-
+          const topCat = await Order.aggregate([
+            {
+              $group: {
+                _id: '$product.category',
+                totalPrice: {
+                  $sum: '$totalPrice'
+                }
+              }
+            },
+            {
+              $sort: {
+                totalPrice: -1
+              }
+            },
+            {
+              $limit: 5
+            }
+          ])
           
+          console.log("Category : ", topCat);
 
         const monthlySalesArray = Array.from({ length: 12 }, (_, index) => {
             const monthData = monthlySales.find(item => item._id === index + 1)
@@ -156,7 +174,6 @@ const renderAdminHome = async (req, res) => {
         })
 
         const latestOrders = await Order.find().sort({ createdOn: -1 }).limit(5);
-
 
         const productPerMonth = Array(12).fill(0);
 
