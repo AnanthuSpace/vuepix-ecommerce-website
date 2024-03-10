@@ -126,47 +126,47 @@ const renderAdminHome = async (req, res) => {
             }
         ])
 
-        const topProducts = await Order.aggregate([
-            {
-              $group: {
-                _id: '$product.name',
-                totalPrice: {
-                  $sum: '$totalPrice'
-                }
-              }
-            },
-            {
-              $sort: {
-                totalPrice: -1
-              }
-            },
-            {
-              $limit: 5
-            }
-          ])
+        // const topProducts = await Order.aggregate([
+        //     {
+        //       $group: {
+        //         _id: '$product.name',
+        //         totalPrice: {
+        //           $sum: '$totalPrice'
+        //         }
+        //       }
+        //     },
+        //     {
+        //       $sort: {
+        //         totalPrice: -1
+        //       }
+        //     },
+        //     {
+        //       $limit: 5
+        //     }
+        //   ])
           
-          console.log(topProducts);
+        //   console.log(topProducts);
 
-          const topCat = await Order.aggregate([
-            {
-              $group: {
-                _id: '$product.category',
-                totalPrice: {
-                  $sum: '$totalPrice'
-                }
-              }
-            },
-            {
-              $sort: {
-                totalPrice: -1
-              }
-            },
-            {
-              $limit: 5
-            }
-          ])
+        //   const topCat = await Order.aggregate([
+        //     {
+        //       $group: {
+        //         _id: '$product.category',
+        //         totalPrice: {
+        //           $sum: '$totalPrice'
+        //         }
+        //       }
+        //     },
+        //     {
+        //       $sort: {
+        //         totalPrice: -1
+        //       }
+        //     },
+        //     {
+        //       $limit: 5
+        //     }
+        //   ])
           
-          console.log("Category : ", topCat);
+        //   console.log("Category : ", topCat);
 
         const monthlySalesArray = Array.from({ length: 12 }, (_, index) => {
             const monthData = monthlySales.find(item => item._id === index + 1)
@@ -190,6 +190,13 @@ const renderAdminHome = async (req, res) => {
             userPerMonth[createdMonth]++;
         });
 
+
+        const topProducts = await calculateTopSellingProducts();
+        console.log("Top 5 Best Selling Products:", topProducts);
+        const topCat = await calculateTopSellingCategories();
+        console.log("Top 5 Best Selling Products:", topCat);
+
+
         res.render("admin/adminHome", {
             orderCount,
             productCount,
@@ -201,7 +208,8 @@ const renderAdminHome = async (req, res) => {
             latestOrders,
             dashboard:true,
             userPerMonth,
-            topProducts
+            topProducts,
+            topCat
         })
     } catch (error) {
         console.log(error.message);
@@ -209,7 +217,91 @@ const renderAdminHome = async (req, res) => {
 }
 
 
+const calculateTopSellingCategories = async () => {
+    try {
+        const topSellingCategories = await Order.aggregate([
+            {
+                $unwind: "$product"
+            },
+            {
+                $lookup: {
+                    from: "products",
+                    localField: "product._id",
+                    foreignField: "_id",
+                    as: "productDetails"
+                }
+            },
+            {
+                $unwind: "$productDetails"
+            },
+            {
+                $group: {
+                    _id: "$productDetails.category",
+                    totalQuantitySold: { $sum: "$product.unit" }
+                }
+            },
+            {
+                $sort: { totalQuantitySold: -1 }
+            },
+            {
+                $limit: 5
+            }
+        ]);
 
+        return topSellingCategories;
+    } catch (error) {
+        console.error("Error calculating top selling categories:", error);
+        return []; // Return an empty array in case of error
+    }
+};
+
+
+
+const calculateTopSellingProducts = async () => {
+    const orders = await Order.aggregate([
+        {
+            $match: { status: "Delivered" }
+        },
+        {
+            $unwind: "$product"
+        },
+        {
+            $group: {
+                _id: { productId: "$product._id", productName: "$product.name" },
+                totalQuantitySold: { $sum: { $toInt: "$product.unit" } }
+            }
+        },
+        {
+            $sort: { totalQuantitySold: -1 }
+        },
+        {
+            $limit: 5
+        },
+        {
+            $lookup: {
+                from: "products",
+                localField: "_id.productId",
+                foreignField: "_id",
+                as: "product"
+            }
+        },
+        {
+            $unwind: "$product"
+        },
+        {
+            $project: {
+                _id: "$product._id",
+                productName: "$product.name",
+                productImage: "$product.images",
+                salePrice: "$product.salesPrice",
+                regularPrice: "$product.regularPrice",
+                totalQuantitySold: 1
+            }
+        }
+    ]);
+
+    return orders;
+};
 
 
 
