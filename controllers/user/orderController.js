@@ -68,8 +68,8 @@ const checkout = async (req, res) => {
         const validCoupons = findCoupons.filter(coupon => !userCoupons.find(usedCoupon => usedCoupon._id.equals(coupon._id)));
 
         console.log("Coupon data : ", validCoupons);
-        const shipping  = 40;
-        
+        const shipping = 40;
+
         res.render("user/checkout",
             {
                 data: data,
@@ -315,8 +315,8 @@ const verify = (req, res) => {
 
 
 const changeOrderStatusToConfirmed = async (orderId) => {
-    await Order.updateOne({ _id: orderId },{ status: "Confirmed" })
-    .then(res => console.log(res))
+    await Order.updateOne({ _id: orderId }, { status: "Confirmed" })
+        .then(res => console.log(res))
 }
 
 
@@ -514,6 +514,45 @@ const cancelCoupon = async (req, res) => {
 
 
 
+const continuePayment = async (req, res) => {
+    try {
+        const { orderId } = req.body
+        const userId = req.session.user
+        const findUser = await User.findOne({ _id: userId })
+        const findOrder = await Order.findOne({ _id: orderId })
+        console.log("ContinuePayement >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", findOrder);
+
+
+        const cartCount = findUser.cart.length;
+        const wishlistCount = findUser.wishlist.length
+
+        const cartItemUnit = findUser.cart.map((item) => ({
+            productId: item.ProductId,
+            unit: item.unit
+        }))
+
+
+        const generatedOrder = await generateOrderRazorpay(orderId, findOrder.totalPrice);
+        console.log(generatedOrder, "order generated");
+
+        res.json(
+            {
+                payment: false,
+                method: "online",
+                razorpayOrder: generatedOrder,
+                order: findOrder,
+                orderId: orderId,
+                unit: cartItemUnit,
+                cartCount: cartCount,
+                wishlistCount:wishlistCount
+            })
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
 
 
 
@@ -525,5 +564,6 @@ module.exports = {
     applyCoupon,
     verify,
     returnOrder,
-    cancelCoupon
+    cancelCoupon,
+    continuePayment,
 }

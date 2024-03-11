@@ -65,24 +65,25 @@
                                     </div>
                                     <% }else if(orders.status==="Returned" ){ %>
                                         <h4 class="text-warning">Returned</h4>
-                                        <% } else { %>
-                                            <select id="actionDropdown"
-                                                class="form-select form-select-sm d-inline-block mb-lg-0 mb-15 mw-100"
-                                                onchange="handleDropdownChange(this)">
-                                                <option value="status">Status</option>
-                                                <option value="cancel">Cancel</option>
-                                            </select>
-                                            <% } %>
-                                                <% } else { %>
-                                                    <h4 class="text-danger">Cancelled</h4>
-                                                    <% } %>
+                                        <% }else if(orders.status==="Pending" ){ %>
+                                            <button class="btn custom-btn" id="continue-payment"
+                                                onclick="continuePayment('<%= orders._id %>', <%= orders.totalPrice %>)">Continue
+                                                Payment</button>
+
+                                            <% } else { %>
+                                                <select id="actionDropdown"
+                                                    class="form-select form-select-sm d-inline-block mb-lg-0 mb-15 mw-100"
+                                                    onchange="handleDropdownChange(this)">
+                                                    <option value="status">Status</option>
+                                                    <option value="cancel">Cancel</option>
+                                                </select>
+                                                <% } %>
+                                                    <% } else { %>
+                                                        <h4 class="text-danger">Cancelled</h4>
+                                                        <% } %>
                         </div>
-
-
                     </div>
                 </header>
-
-
             </div>
             </div>
             <div class="card-body">
@@ -132,7 +133,7 @@
 
                             </div>
                         </article>
-                    </div> <!-- col// -->
+                    </div>
                     <div class="col-md-4">
                         <article class="icontext align-items-start ml-130">
                             <span class="icon icon-sm rounded-circle bg-primary-light">
@@ -214,8 +215,7 @@
                                                                             orders.totalPrice; %>
 
                                                                             <td class="text-center">
-                                                                                ₹<%= orders.shipping.toLocaleString()
-                                                                                    %>
+                                                                                ₹<%= orders.shipping.toLocaleString() %>
                                                                             </td>
 
                                                                             <td class="text-center">
@@ -227,7 +227,7 @@
                                                                                 <%= orders.discount.toLocaleString() %>
                                                                             </td>
 
-                                                                            <td class="text-center">
+                                                                            <td class="text-center" id="totalValue">
                                                                                 ₹<%= orders.totalPrice.toLocaleString()
                                                                                     %>
                                                                             </td>
@@ -305,10 +305,152 @@
     </style>
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 
     <script>
+
+        // const sum = document.getElementById("totalValue").textContent;
+        // const numericValue = parseInt(sum);
+        // alert(numericValue)
+
+        // Continue payment when order failed
+
+        // async function continuePayment(orderId) {
+        //     alert("hi")
+        //     $.ajax({
+        //         url: '/continuePayment',
+        //         method: 'POST',
+        //         data: {
+        //             orderId
+        //         },
+        //         success: function (response) {
+        //             if (response.method === "online") {
+
+        //                 let orderAmount = orders.totalPrice * 100
+        //                 console.log("Responds : ", response.razorpayOrder.id, orderAmount);
+        //                 console.log("Responds full : ", response);
+        //                 var options = {
+        //                     "key": "rzp_test_PQuoSyT1cgKHjg",
+        //                     "amount": orderAmount,
+        //                     "currency": "INR",
+        //                     "name": "VuePix",
+        //                     "description": "Test Transaction",
+        //                     "image": "https://blog.flamingtext.com/blog/2024/02/02/flamingtext_com_1706871147_110639469.png",
+        //                     "order_id": response.razorpayOrder.id,
+
+        //                     "handler": function (status) {
+        //                         console.log(response.razorpayOrder, status);
+        //                         verifyPayment(response.razorpayOrder, status, response.razorpayOrder.id, response.orderId);
+        //                     },
+        //                     "prefill": {
+        //                         "name": "Customer Name",
+        //                         "email": "customer@example.com",
+        //                         "contact": "9000090000"
+        //                     },
+        //                     "theme": {
+        //                         "color": "#3399cc"
+        //                     }
+        //                 };
+
+        //                 // Initialize Razorpay
+        //                 var rzp1 = new Razorpay(options);
+        //                 rzp1.open();
+
+        //                 // Handle errors
+        //                 rzp1.on('payment.failed', function (response) {
+        //                     console.error('Payment failed:', response.error.code, response.error.description);
+        //                 });
+        //             }
+        //         }
+        //     })
+        // }
+
+        async function continuePayment(orderId, orderAmount) {
+            const numericValue = parseInt(orderAmount);
+            alert(numericValue)
+            $.ajax({
+                url: '/continuePayment',
+                method: 'POST',
+                data: { orderId },
+                success: function (response) {
+                    if (response.method === "online") {
+                        let orderAmount = Math.round(numericValue * 100);
+                        console.log("Responds : ", response.razorpayOrder.id, orderAmount);
+                        console.log("Responds full : ", response);
+
+                        var options = {
+                            "key": "rzp_test_PQuoSyT1cgKHjg",
+                            "amount": orderAmount,
+                            "currency": "INR",
+                            "name": "VuePix",
+                            "description": "Test Transaction",
+                            "image": "https://blog.flamingtext.com/blog/2024/02/02/flamingtext_com_1706871147_110639469.png",
+                            "order_id": response.razorpayOrder.id,
+                            "handler": function (status) {
+                                console.log("Response after rezorepay",response.razorpayOrder, status);
+                                // Handle payment response here
+                                verifyPayment(response.razorpayOrder, status, response.razorpayOrder.id, response.orderId);
+                            },
+                            "prefill": {
+                                "name": "Customer Name",
+                                "email": "customer@example.com",
+                                "contact": "9000090000"
+                            },
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+                        };
+
+                        // Initialize Razorpay
+                        var rzp1 = new Razorpay(options);
+                        rzp1.open();
+
+                        // Handle payment failure
+                        rzp1.on('payment.failed', function (response) {
+                            console.error('Payment failed:', response.error.code, response.error.description);
+                        });
+                    }
+                }
+            });
+        }
+
+
+
+
+        function verifyPayment(order, payment, id, orderId) {
+            alert("Hi");
+            console.log(order)
+            console.log("Payement : ", payment);
+            $.ajax({
+                url: '/verifyPayment',
+                method: 'post',
+                data: {
+                    order,
+                    payment,
+                    orderId
+                },
+                success: function (response) {
+                    if (response.status) {
+                        Swal.fire({
+                            title: "Order Success",
+                            text: "Order placed successfully",
+                            icon: "success",
+                            showCancelButton: true,
+                            confirmButtonText: "View Orders",
+                            cancelButtonText: "Continue Shopping",
+                            reverseButtons: true
+                        }).then(function (result) {
+                            if (result.value) {
+                                location.href = '/profile';
+                            } else if (result.dismiss === "cancel") {
+                                location.href = '/VuePix';
+                            }
+                        });
+                    }
+                }
+            });
+        }
 
 
 
@@ -338,6 +480,12 @@
             window.print()
         }
         document.getElementById("print-button").addEventListener('click', printInvoice);
+
+
+
+
+
+
 
     </script>
 

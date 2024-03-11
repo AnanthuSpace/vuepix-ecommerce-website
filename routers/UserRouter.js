@@ -74,6 +74,7 @@ router.get("/cancelOrder", isLogged, isBlocked, orderController.cancelOrder)
 router.post('/verifyPayment', isLogged, isBlocked, orderController.verify)
 router.get("/return", isLogged, isBlocked, orderController.returnOrder)
 router.post("/cancelCoupon", isLogged, isBlocked, orderController.cancelCoupon)
+router.post('/continuePayment', isLogged, isBlocked, orderController.continuePayment)
 
 
 
