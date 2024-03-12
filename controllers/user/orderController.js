@@ -295,23 +295,26 @@ const generateOrderRazorpay = (orderId, total) => {
 
 
 const verify = (req, res) => {
-    console.log(req.body, "end");
+    console.log(req.body.payment, "end");
+    const { orderId } = req.body
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body.payment
     let hmac = crypto.createHmac("sha256", process.env.KEY_SECRET);
     hmac.update(
-        `${req.body.payment.razorpay_order_id}|${req.body.payment.razorpay_payment_id}`
+        `${razorpay_order_id}|${razorpay_payment_id}`
     );
     hmac = hmac.digest("hex");
     console.log(hmac, "HMAC");
-    console.log(req.body.payment.razorpay_signature, "signature");
-    if (hmac === req.body.payment.razorpay_signature) {
+    console.log(razorpay_signature, "signature");
+    if (hmac === razorpay_signature) {
         console.log("true");
-        changeOrderStatusToConfirmed(req.body.orderId)
+        changeOrderStatusToConfirmed(orderId)
         res.json({ status: true });
     } else {
         console.log("false");
         res.json({ status: false });
     }
 };
+
 
 
 const changeOrderStatusToConfirmed = async (orderId) => {

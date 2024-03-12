@@ -126,47 +126,6 @@ const renderAdminHome = async (req, res) => {
             }
         ])
 
-        // const topProducts = await Order.aggregate([
-        //     {
-        //       $group: {
-        //         _id: '$product.name',
-        //         totalPrice: {
-        //           $sum: '$totalPrice'
-        //         }
-        //       }
-        //     },
-        //     {
-        //       $sort: {
-        //         totalPrice: -1
-        //       }
-        //     },
-        //     {
-        //       $limit: 5
-        //     }
-        //   ])
-          
-        //   console.log(topProducts);
-
-        //   const topCat = await Order.aggregate([
-        //     {
-        //       $group: {
-        //         _id: '$product.category',
-        //         totalPrice: {
-        //           $sum: '$totalPrice'
-        //         }
-        //       }
-        //     },
-        //     {
-        //       $sort: {
-        //         totalPrice: -1
-        //       }
-        //     },
-        //     {
-        //       $limit: 5
-        //     }
-        //   ])
-          
-        //   console.log("Category : ", topCat);
 
         const monthlySalesArray = Array.from({ length: 12 }, (_, index) => {
             const monthData = monthlySales.find(item => item._id === index + 1)
