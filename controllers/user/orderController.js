@@ -547,7 +547,7 @@ const continuePayment = async (req, res) => {
                 orderId: orderId,
                 unit: cartItemUnit,
                 cartCount: cartCount,
-                wishlistCount:wishlistCount
+                wishlistCount: wishlistCount
             })
 
     } catch (error) {

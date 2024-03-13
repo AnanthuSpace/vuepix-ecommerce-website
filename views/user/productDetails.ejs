@@ -49,7 +49,8 @@
                                             <ins><span class="old-price font-md ml-15">₹<%=
                                                         data.regularPrice.toLocaleString('en-IN') %>
                                                 </span></ins>
-                                            <span class="save-price  font-md color3 ml-15"><%-data.productOffer || data.categoryOffer %>%</span>
+                                            <span class="save-price  font-md color3 ml-15"><%-data.productOffer ||
+                                                    data.categoryOffer %>%</span>
                                         </div>
                                     </div>
                                     <div class="bt-1 border-color-1 mt-15 mb-15"></div>
@@ -113,14 +114,14 @@
                                                 class="button button-add-to-cart">Add to cart</button>
 
                                             <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                onclick="addToWishlist('<%= data._id %>')"><i class="fi-rs-heart"></i></a>
+                                                onclick="addToWishlist('<%= data._id %>')"><i
+                                                    class="fi-rs-heart"></i></a>
 
-                                            <!-- <a aria-label="Compare" class="action-btn hover-up"
-                                                href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> -->
+
                                         </div>
                                     </div>
                                     <ul class="product-meta font-xs color-grey mt-50">
-                                        <li class="mb-5">ID:  <%= Math.random().toString(36).substring(2, 15) %>
+                                        <li class="mb-5">ID: <%= Math.random().toString(36).substring(2, 15) %>
                                         </li>
                                         <li class="mb-5">Tags: Eyewear, <%= data.category %>
                                         </li>
@@ -191,7 +192,7 @@
 
                         <!-- Relative products  -->
 
-                        
+
 
 
 

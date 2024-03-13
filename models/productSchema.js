@@ -38,17 +38,17 @@ let productSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    createdOn : {
-        type : String,
-        required : true,
+    createdOn: {
+        type: String,
+        required: true,
     },
-    productOffer : {
-        type : Number,
-        default : 0
+    productOffer: {
+        type: Number,
+        default: 0
     },
-    categoryOffer : {
-        type : Number,
-        default : 0
+    categoryOffer: {
+        type: Number,
+        default: 0
     }
 });
 

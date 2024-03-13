@@ -494,7 +494,7 @@
                     icon: 'error',
                     timer: 3000,
                 });
-            } else if (payment=="cod" && numericValue>2000) {
+            } else if (payment == "cod" && numericValue > 2000) {
                 Swal.fire({
                     title: 'Total amount exceeds 2000.',
                     text: 'Please select another method',
@@ -596,7 +596,7 @@
             }
         }
 
-        
+
 
         function verifyPayment(order, payment, id, orderId) {
             console.log(order)

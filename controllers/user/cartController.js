@@ -13,7 +13,7 @@ const renderCart = async (req, res) => {
         const user = await User.findOne({ _id: id })
         console.log(user);
         const shippingCharge = 40
-        
+
         const oid = new mongodb.ObjectId(id);
 
         let data = await User.aggregate([
@@ -51,19 +51,19 @@ const renderCart = async (req, res) => {
         }
 
         let totalRegularPrice = 0
-        for(let i=0; i<data.length; i++){
-            if(data[i].productDetails && data[i].productDetails.length > 0){
-                unit +=data[i].unit
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].productDetails && data[i].productDetails.length > 0) {
+                unit += data[i].unit
                 totalRegularPrice += data[i].productDetails[0].regularPrice * data[i].unit
             }
         }
-        
-        console.log("Total PRizeeeeeeeeee ==================== ", totalRegularPrice,grandTotal);
+
+        console.log("Total PRizeeeeeeeeee ==================== ", totalRegularPrice, grandTotal);
         const priceDifference = Math.abs(totalRegularPrice - grandTotal);
         const percentageDifference = ((priceDifference / totalRegularPrice) * 100).toFixed(2)
-        grandTotal = grandTotal+shippingCharge
-        
-        
+        grandTotal = grandTotal + shippingCharge
+
+
         req.session.subOffers = percentageDifference
         req.session.grandTotal = grandTotal;
         const cartCount = data.length
@@ -73,7 +73,7 @@ const renderCart = async (req, res) => {
             unit,
             data,
             grandTotal,
-            Offers:percentageDifference,
+            Offers: percentageDifference,
             cartCount,
             wishlistCount,
             shippingCharge
@@ -144,12 +144,14 @@ const deleteCartItem = async (req, res) => {
     try {
         const id = req.query.id
         const userId = req.session.user
-        
+
         await User.updateOne(
-            {_id:userId},
-            {$pull:{
-                cart:{ProductId:id}
-            }}
+            { _id: userId },
+            {
+                $pull: {
+                    cart: { ProductId: id }
+                }
+            }
         )
 
         console.log("item deleted from cart");

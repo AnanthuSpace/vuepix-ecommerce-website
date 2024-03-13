@@ -6,7 +6,7 @@ const Category = require("../../models/categorySchema")
 const renderAddProduct = async (req, res) => {
     try {
         const cat = await Category.find({})
-        res.render("admin/addProduct", { cat: cat , productActive:true})
+        res.render("admin/addProduct", { cat: cat, productActive: true })
     } catch (error) {
         console.log(error.message);
     }
@@ -74,7 +74,7 @@ const productList = async (req, res) => {
         let totalPages = Math.ceil(pro.length / 3)
         const currentProduct = pro.slice(startIndex, endIndex)
 
-        res.render("admin/productList", { data: currentProduct, totalPages, currentPage, productActive:true })
+        res.render("admin/productList", { data: currentProduct, totalPages, currentPage, productActive: true })
     } catch (error) {
         console.log(error.message);
     }
@@ -90,7 +90,7 @@ const showEdit = async (req, res) => {
         const id = req.query.id
         const findProduct = await Product.findOne({ _id: id })
         const category = await Category.find({ isListed: true })
-        res.render("admin/editProduct", { product: findProduct, cat: category , productActive:true})
+        res.render("admin/editProduct", { product: findProduct, cat: category, productActive: true })
     } catch (error) {
         console.log(error.message);
     }
@@ -126,7 +126,7 @@ const editProduct = async (req, res) => {
                 category: products.category,
                 createdOn: new Date(),
                 images: productImage,
-                categoryOffer : 0
+                categoryOffer: 0
 
             }, { new: true })
             console.log("product updated");
@@ -186,12 +186,12 @@ const addProductOffer = async (req, res) => {
         const findProduct = await Product.findOne({ _id: productId })
         // console.log(findProduct);
 
-        if(findProduct.categoryOffer==0){
-        findProduct.salesPrice = findProduct.salesPrice - Math.floor(findProduct.regularPrice * (percentage / 100))
-        findProduct.productOffer = parseInt(percentage)
-        await findProduct.save()
-        }else{
-            res.json({status: false})
+        if (findProduct.categoryOffer == 0) {
+            findProduct.salesPrice = findProduct.salesPrice - Math.floor(findProduct.regularPrice * (percentage / 100))
+            findProduct.productOffer = parseInt(percentage)
+            await findProduct.save()
+        } else {
+            res.json({ status: false })
         }
         res.json({ status: true })
 
@@ -205,14 +205,14 @@ const addProductOffer = async (req, res) => {
 const removeProductOffer = async (req, res) => {
     try {
         // console.log(req.body);
-        const {productId} = req.body
-        const findProduct = await Product.findOne({_id : productId})
+        const { productId } = req.body
+        const findProduct = await Product.findOne({ _id: productId })
         // console.log(findProduct);
         const percentage = findProduct.productOffer
         findProduct.salesPrice = findProduct.salesPrice + Math.floor(findProduct.regularPrice * (percentage / 100))
         findProduct.productOffer = 0
         await findProduct.save()
-        res.json({status : true})
+        res.json({ status: true })
     } catch (error) {
         console.log(error.message);
     }

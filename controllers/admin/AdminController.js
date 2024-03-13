@@ -165,7 +165,7 @@ const renderAdminHome = async (req, res) => {
             monthlySalesArray,
             productPerMonth,
             latestOrders,
-            dashboard:true,
+            dashboard: true,
             userPerMonth,
             topProducts,
             topCat

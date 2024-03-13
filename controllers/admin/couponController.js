@@ -8,7 +8,7 @@ const Coupon = require("../../models/couponSchema")
 const getCouponPageAdmin = async (req, res) => {
     try {
         const findCoupons = await Coupon.find({})
-        res.render("admin/coupon", { coupons: findCoupons, couponActive:true })
+        res.render("admin/coupon", { coupons: findCoupons, couponActive: true })
     } catch (error) {
         console.log(error.message);
     }
@@ -50,12 +50,12 @@ const createCoupon = async (req, res) => {
 
 
 
-const deleteCoupon = async(req,res)=>{
+const deleteCoupon = async (req, res) => {
     try {
         const couponId = req.body.couponId
-        await Coupon.deleteOne({_id:couponId});
+        await Coupon.deleteOne({ _id: couponId });
         console.log('Coupon deleted successfully')
-        res.json({status : true})
+        res.json({ status: true })
     } catch (error) {
         console.log(error.message);
     }

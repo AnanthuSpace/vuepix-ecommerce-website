@@ -2,39 +2,37 @@
 
 
 
-<head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 
-</head>
+    </head>
 
-<style>
-    .pagination {
-      display: flex;
-      justify-content: center;
-    }
-    
-    .btn {
-      /* Add your button styling here */
-      margin: 0 5px;
-      padding: 5px 10px;
-      /* background-color: #f0f0f0; */
-      border: 1px solid #ccc;
-      text-decoration: none;
-      color: #333;
-    }
-    
-    .active {
-      /* Add styles for the active page */
-     
-      color: #fff;
-    }
-    
-    .btn:hover {
-      /* Add styles for button hover state */
-      background-color: #ddd;
-    }
-    
-    
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn {
+            /* Add your button styling here */
+            margin: 0 5px;
+            padding: 5px 10px;
+            /* background-color: #f0f0f0; */
+            border: 1px solid #ccc;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .active {
+            /* Add styles for the active page */
+
+            color: #fff;
+        }
+
+        .btn:hover {
+            /* Add styles for button hover state */
+            background-color: #ddd;
+        }
     </style>
 
     <section class="content-main">
@@ -58,10 +56,10 @@
                                         <%= message %>
                                     </div>
                                     <% } %>
-                                <label for="product_name" class="form-label">Name</label>
-                                <input name="name" pattern="^[^\s]+$" type="text" placeholder="Type here"
-                                    class="form-control" id="name" required="true" maxlength="40" />
-                                <p id="name-err-msg" class="text-danger"></p>
+                                        <label for="product_name" class="form-label">Name</label>
+                                        <input name="name" pattern="^[^\s]+$" type="text" placeholder="Type here"
+                                            class="form-control" id="name" required="true" maxlength="40" />
+                                        <p id="name-err-msg" class="text-danger"></p>
                             </div>
 
                             <div class="mb-4">
@@ -95,7 +93,7 @@
                                 <tbody>
                                     <% for(let i=0; i < cat.length; i++) { %>
                                         <tr>
-                                
+
                                             <td class="text-start">
                                                 <%= cat[i].name %>
                                             </td>
@@ -160,22 +158,26 @@
 
                             <% if (totalPages) { %>
                                 <div class="pagination">
-                                  <% if (currentPage > 1) { %>
-                                    <button class="btn btn-sm"><a href="/admin/category?page=<%= currentPage - 1 %>">Previous</a></button>
-                                  <% } %>
-                              
-                                  <% for (let i = 1; i <= totalPages; i++) { %> 
-                                    <button class="btn btn-sm <%= i === currentPage ? 'active' : '' %>">
-                                      <a href="/admin/category?page=<%= i %>"><%= i %></a>
-                                    </button>
-                                  <% } %>
-                              
-                                  <% if (currentPage < totalPages) { %>
-                                    <button class="btn btn-sm"><a href="/admin/category?page=<%= currentPage + 1 %>">Next</a></button>
-                                  <% } %>
+                                    <% if (currentPage> 1) { %>
+                                        <button class="btn btn-sm"><a
+                                                href="/admin/category?page=<%= currentPage - 1 %>">Previous</a></button>
+                                        <% } %>
+
+                                            <% for (let i=1; i <=totalPages; i++) { %>
+                                                <button class="btn btn-sm <%= i === currentPage ? 'active' : '' %>">
+                                                    <a href="/admin/category?page=<%= i %>">
+                                                        <%= i %>
+                                                    </a>
+                                                </button>
+                                                <% } %>
+
+                                                    <% if (currentPage < totalPages) { %>
+                                                        <button class="btn btn-sm"><a
+                                                                href="/admin/category?page=<%= currentPage + 1 %>">Next</a></button>
+                                                        <% } %>
                                 </div>
-                              <% } %>
-                              
+                                <% } %>
+
                         </div>
                     </div> <!-- .col// -->
                 </div> <!-- .row // -->
@@ -259,26 +261,26 @@
                                 categoryId: categoryId
                             },
                             success: (response) => {
-                            console.log(response);
-                            if (response.status === true) {
-                                // Swal.fire('Removed!', 'The offer has been removed.', 'success');
-                                location.reload()
-                            } else if (response.status === false) {
-                                Swal.fire('failed');
-                            } else {
-                                alert("failed")
+                                console.log(response);
+                                if (response.status === true) {
+                                    // Swal.fire('Removed!', 'The offer has been removed.', 'success');
+                                    location.reload()
+                                } else if (response.status === false) {
+                                    Swal.fire('failed');
+                                } else {
+                                    alert("failed")
+                                }
                             }
-                        }
                         });
 
-                        
+
                     }
                 });
             } catch (error) {
                 console.error(error);
             }
         }
-        
+
     </script>
 
     <%- include("../partials/adminFooter") %>

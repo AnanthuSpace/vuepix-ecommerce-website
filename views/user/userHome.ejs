@@ -152,8 +152,9 @@
                                             <!-- <a aria-label="Quick view" class="action-btn hover-up"
                                                 data-bs-toggle="modal" data-bs-target="#quickViewModal">
                                                 <i class="fi-rs-search"></i></a> -->
-                                            <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                href="" onclick="addToWishlist('<%= products[i]._id %>')"><i class="fi-rs-heart"></i></a>
+                                            <a aria-label="Add To Wishlist" class="action-btn hover-up" href=""
+                                                onclick="addToWishlist('<%= products[i]._id %>')"><i
+                                                    class="fi-rs-heart"></i></a>
                                         </div>
                                         <div class="product-badges product-badges-position product-badges-mrg">
                                             <span class="hot">New</span>
@@ -171,12 +172,13 @@
                                             <span>₹<%-products[i].salesPrice.toLocaleString('en-IN')%> </span>
                                             <span
                                                 class="old-price">₹<%-products[i].regularPrice.toLocaleString('en-IN')%></span>&nbsp;
-                                                 
-                                                <span
-                                                class="save-price  font-md color3 ml-15"><%-products[i].productOffer || products[i].categoryOffer %>%</span>
+
+                                            <span class="save-price  font-md color3 ml-15"><%-products[i].productOffer
+                                                    || products[i].categoryOffer %>%</span>
                                         </div>
                                         <div class="product-action-1 show">
-                                            <a aria-label="Add To Cart" class="action-btn hover-up" onclick="addToCart('<%=products[i].id%>', 1, '<%=products[i].unit%>')"><i
+                                            <a aria-label="Add To Cart" class="action-btn hover-up"
+                                                onclick="addToCart('<%=products[i].id%>', 1, '<%=products[i].unit%>')"><i
                                                     class="fi-rs-shopping-bag-add"></i></a>
                                         </div>
                                     </div>

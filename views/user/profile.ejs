@@ -250,30 +250,32 @@
                                                     <tbody>
 
                                                         <% if (user.history) { %>
-                                                            <% for (let i = user.history.length - 1; i >= 0; i--) { %>
+                                                            <% for (let i=user.history.length - 1; i>= 0; i--) { %>
                                                                 <tr>
                                                                     <td>
-                                                                        <% const dateObject = (user.history[i].date instanceof Date) ? user.history[i].date : new Date(user.history[i].date); %>
-                                                                        <%= dateObject.toLocaleDateString() %>
+                                                                        <% const dateObject=(user.history[i].date
+                                                                            instanceof Date) ? user.history[i].date :
+                                                                            new Date(user.history[i].date); %>
+                                                                            <%= dateObject.toLocaleDateString() %>
                                                                     </td>
                                                                     <td>
                                                                         <%= user.history[i].status %>
                                                                     </td>
                                                                     <td>
-                                                                        <% if (user.history[i].status === "debit") { %>
+                                                                        <% if (user.history[i].status==="debit" ) { %>
                                                                             -<%= user.history[i].amount %>
-                                                                        <% } else { %>
-                                                                            <%= user.history[i].amount %>
-                                                                        <% } %>
+                                                                                <% } else { %>
+                                                                                    <%= user.history[i].amount %>
+                                                                                        <% } %>
                                                                     </td>
                                                                 </tr>
-                                                            <% } %>
-                                                        <% } else { %>
-                                                            <tr>
-                                                                <td colspan="3">No Transaction History</td>
-                                                            </tr>
-                                                        <% } %>
-                                                        
+                                                                <% } %>
+                                                                    <% } else { %>
+                                                                        <tr>
+                                                                            <td colspan="3">No Transaction History</td>
+                                                                        </tr>
+                                                                        <% } %>
+
 
                                                     </tbody>
                                                 </table>

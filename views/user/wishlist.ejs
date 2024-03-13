@@ -58,10 +58,13 @@
                                                 </span>
                                             </td>
                                             <td class="text-right" data-title="Cart">
-                                                <button class="btn btn-success" onclick="addToCart('<%=data[i].productId%>', 1, '<%=data[i].units%>')">Add to
+                                                <button class="btn btn-success"
+                                                    onclick="addToCart('<%=data[i].productId%>', 1, '<%=data[i].units%>')">Add
+                                                    to
                                                     Cart</button>
                                             </td>
-                                            <td class="action" data-title="Remove"><a href="/deleteWishlist?id=<%= data[i].productId %>"><i
+                                            <td class="action" data-title="Remove"><a
+                                                    href="/deleteWishlist?id=<%= data[i].productId %>"><i
                                                         class="fi-rs-trash"></i></a></td>
                                         </tr>
 
@@ -80,13 +83,13 @@
 
     <script>
         function addToCart(prodId, unit, stock) {
-            
+
             var quantity = 1;
             $.ajax({
                 url: `/cart`,
                 method: "post",
                 data: {
-                    id:prodId,
+                    id: prodId,
                     unit: unit
                 },
                 success: (res) => {
@@ -127,4 +130,4 @@
 
 
 
-<%- include("../partials/userFooter") %>
+    <%- include("../partials/userFooter") %>

@@ -73,52 +73,60 @@
                                         </a>
                                     </div>
                                     <% } %>
-                            <div class="header-action-icon-2">
-                                <% if(locals.cartCount) {%>
-                                    <div class="header-action-icon-2">
-                                        <a class="mini-cart-icon" href="cart">
-                                            <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
-                                            <span class="pro-count blue"><%= cartCount %></span>
-                                        </a>
-                                    </div>
-        
-        
-                                    <% }else{ %>
-        
                                         <div class="header-action-icon-2">
-                                            <a class="mini-cart-icon" href="cart">
-                                                <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
-                                            </a>
-                                        </div>
-        
-                                        <% } %>
-                                <% if (locals.user) { %>
-                                    <!-- Displayed when the user is logged in -->
-                                    <li class="dropdown nav-item">
-                                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                                            id="dropdownAccount" aria-expanded="false">
-                                            <!-- Uncomment the following line if you want to use an icon -->
-                                            <!-- <i class="fas fa-/user-circle"></i> -->
-                                            <img class="svgInject" alt="Evara" src="/assets/imgs/theme/user-profile.png"
-                                                style="height: 25px; width: 25px; margin-top: 2px;">
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                                            <a class="dropdown-item" href="/profile"><i
-                                                    class="material-icons md-perm_identity"></i> Profile</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item text-danger" href="/logout"><i
-                                                    class="material-icons md-exit_to_app"></i> Logout</a>
-                                        </div>
-                                    </li>
-                                    <% } else { %>
-                                        <!-- Displayed when the user is not logged in -->
-                                        <div class="single-mobile-header-info ml-25 pr-5">
-                                            <a href="/login">Sign Up</a>
-                                        </div>
-                                        <% } %>
+                                            <% if(locals.cartCount) {%>
+                                                <div class="header-action-icon-2">
+                                                    <a class="mini-cart-icon" href="cart">
+                                                        <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
+                                                        <span class="pro-count blue">
+                                                            <%= cartCount %>
+                                                        </span>
+                                                    </a>
+                                                </div>
 
 
-                            </div>
+                                                <% }else{ %>
+
+                                                    <div class="header-action-icon-2">
+                                                        <a class="mini-cart-icon" href="cart">
+                                                            <img alt="Evara"
+                                                                src="assets/imgs/theme/icons/icon-cart.svg">
+                                                        </a>
+                                                    </div>
+
+                                                    <% } %>
+                                                        <% if (locals.user) { %>
+                                                            <!-- Displayed when the user is logged in -->
+                                                            <li class="dropdown nav-item">
+                                                                <a class="dropdown-toggle" data-bs-toggle="dropdown"
+                                                                    href="#" id="dropdownAccount" aria-expanded="false">
+                                                                    <!-- Uncomment the following line if you want to use an icon -->
+                                                                    <!-- <i class="fas fa-/user-circle"></i> -->
+                                                                    <img class="svgInject" alt="Evara"
+                                                                        src="/assets/imgs/theme/user-profile.png"
+                                                                        style="height: 25px; width: 25px; margin-top: 2px;">
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-end"
+                                                                    aria-labelledby="dropdownAccount">
+                                                                    <a class="dropdown-item" href="/profile"><i
+                                                                            class="material-icons md-perm_identity"></i>
+                                                                        Profile</a>
+                                                                    <div class="dropdown-divider"></div>
+                                                                    <a class="dropdown-item text-danger"
+                                                                        href="/logout"><i
+                                                                            class="material-icons md-exit_to_app"></i>
+                                                                        Logout</a>
+                                                                </div>
+                                                            </li>
+                                                            <% } else { %>
+                                                                <!-- Displayed when the user is not logged in -->
+                                                                <div class="single-mobile-header-info ml-25 pr-5">
+                                                                    <a href="/login">Sign Up</a>
+                                                                </div>
+                                                                <% } %>
+
+
+                                        </div>
                         </div>
                     </div>
                 </div>
@@ -252,12 +260,13 @@
                                             <span>₹<%= product[i].salesPrice.toLocaleString('en-IN') %></span>
                                             <span class="old-price">₹<%= product[i].regularPrice.toLocaleString('en-IN')
                                                     %></span>
-                                                    <span
-                                                    class="save-price  font-md color3 ml-15"><%-product[i].productOffer || product[i].categoryOffer %>%</span>
+                                            <span class="save-price  font-md color3 ml-15"><%-product[i].productOffer ||
+                                                    product[i].categoryOffer %>%</span>
                                         </div>
                                         <div class="product-action-1 show">
                                             <a aria-label="Add To Cart" class="action-btn hover-up"
-                                            onclick="addToCart('<%=product[i].id%>', 1, '<%=product[i].unit%>')"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                onclick="addToCart('<%=product[i].id%>', 1, '<%=product[i].unit%>')"><i
+                                                    class="fi-rs-shopping-bag-add"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -300,8 +309,8 @@
                         <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
                         <ul class="categories">
                             <li><a href="/shop">
-                                All
-                            </a></li>
+                                    All
+                                </a></li>
                             <% for (let i=0; i < category.length; i++) { %>
                                 <li><a href="/filter?category=<%= category[i]._id %>">
                                         <%= category[i].name %>
@@ -329,7 +338,7 @@
     <script>
 
         function addToWishlist(productId) {
-            
+
             $.ajax({
                 url: "/addToWishlist",
                 method: "post",
@@ -374,7 +383,7 @@
 
 
         function handleSortChange(selectedOption) {
-           
+
             let option = selectedOption;
             $.ajax({
                 url: "/sortProducts",
@@ -398,7 +407,7 @@
                                 "<div class='product-cart-wrap mb-30'>" +
                                 "<div class='product-img-action-wrap'>" +
                                 "<div class='product-img product-img-zoom'>" +
-                                    "<a href='/productDetails?id=" + product._id + "'>" + 
+                                "<a href='/productDetails?id=" + product._id + "'>" +
                                 "<img class='default-img' src='/uploads/products/" + product.images[0] + "' alt=''>" +
                                 "</a>" +
                                 "</div>" +
@@ -415,7 +424,7 @@
                                 "<div class='product-category'>" +
                                 // "<a href='shop-grid-right.html'>" + product.brand + "</a>" +
                                 // "</div>" +
-                                "<h2><a href='shop-product-right.html'>" + product.name + "</a></h2>" + 
+                                "<h2><a href='shop-product-right.html'>" + product.name + "</a></h2>" +
                                 "<div class='product-price'>" +
                                 "<span>₹" + product.salesPrice.toLocaleString('en-IN') + "</span>" +
                                 "<span class='old-price'>₹" + product.regularPrice.toLocaleString('en-IN') + "</span>" +
@@ -437,7 +446,7 @@
                         console.error("Error in sorting products:", response);
                     }
                 }
-            }); 
+            });
         }
 
 

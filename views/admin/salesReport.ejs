@@ -171,7 +171,7 @@
                     <% if (currentPage> 1) { %>
                         <button class="btn btn-sm"><a href="?page=<%= currentPage - 1 %>">Previous</a></button>
                         <% } %>
-    
+
                             <% for (let i=1; i <=totalPages; i++) { %>
                                 <button class="btn btn-sm <%= i === currentPage ? 'active' : '' %>">
                                     <a href="?page=<%= i %>">
@@ -179,14 +179,15 @@
                                     </a>
                                 </button>
                                 <% } %>
-    
+
                                     <% if (currentPage < totalPages) { %>
-                                        <button class="btn btn-sm"><a href="?page=<%= currentPage + 1 %>">Next</a></button>
+                                        <button class="btn btn-sm"><a
+                                                href="?page=<%= currentPage + 1 %>">Next</a></button>
                                         <% } %>
                 </div>
                 <% } %>
 
-       
+
 
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

@@ -139,7 +139,7 @@ const salesWeekly = async (req, res) => {
         )
 
         const startOfTheDay = startOfTheWeek;
-        const endOfTheDay = endOfTheWeek;
+        const endOfTheDay = endOfTheWeek;
 
         const orders = await Order.aggregate([
             {
@@ -194,7 +194,7 @@ const salesMonthly = async (req, res) => {
         console.log(startOfTheMonth);
         console.log(endOfTheMonth);
         const startOfTheDay = startOfTheMonth;
-        const endOfTheDay =endOfTheMonth;
+        const endOfTheDay = endOfTheMonth;
         const orders = await Order.aggregate([
             {
                 $match: {
@@ -403,11 +403,11 @@ const dateWiseFilter = async (req, res) => {
             },
             {
                 $sort: {
-                    createdOn: -1 
+                    createdOn: -1
                 }
             }
         ]);
-        
+
         console.log(orders);
 
         let itemsPerPage = 5

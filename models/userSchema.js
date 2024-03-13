@@ -1,5 +1,7 @@
 const mongoose = require("mongoose")
 
+
+
 const userSchema = mongoose.Schema({
     username: {
         type: String,
@@ -22,12 +24,53 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    cart:{
-        type:Array,
-    },
-    wishlist: {
-        type: Array
-    },
+
+    cart: [
+        {
+            ProductId: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true
+            },
+            unit: {
+                type: Number,
+                require: true
+            },
+            price: {
+                type: Number,
+                require: true
+            }
+        }
+    ],
+
+    wishlist: [
+        {
+            productId: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true
+            },
+            image: {
+                type: Array,
+                require: true
+            },
+            productName: {
+                type: String,
+                require: true,
+            },
+            category: {
+                type: String,
+                require: true
+            },
+            salePrice: {
+                type: Number,
+                require: true
+            },
+            units: {
+                type: Number,
+                require: true
+            }
+        }
+    ],
+
     referalCode: {
         type: String,
         required: true,
@@ -43,8 +86,8 @@ const userSchema = mongoose.Schema({
             required: true,
         }
     ],
-    wallet:{
-        type:Number,
+    wallet: {
+        type: Number,
         default: 0
     },
     history: {

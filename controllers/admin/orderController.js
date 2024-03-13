@@ -3,7 +3,7 @@ const Product = require("../../models/productSchema")
 const mongoose = require("mongoose")
 
 
-const orderListing = async (req,res)=>{
+const orderListing = async (req, res) => {
     try {
         const orders = await Order.find({}).sort({ createdOn: -1 });
 
@@ -17,7 +17,7 @@ const orderListing = async (req,res)=>{
 
 
 
-        res.render("admin/order", { orders: currentOrder, totalPages, currentPage, orderActive:true })
+        res.render("admin/order", { orders: currentOrder, totalPages, currentPage, orderActive: true })
     } catch (error) {
         console.log(error.message);
     }
@@ -32,7 +32,7 @@ const getOrderDetails = async (req, res) => {
         console.log(findOrder);
 
 
-        res.render("admin/orderDetails", { orders: findOrder, orderId , orderActive:true})
+        res.render("admin/orderDetails", { orders: findOrder, orderId, orderActive: true })
     } catch (error) {
         console.log(error.message);
     }
@@ -45,14 +45,14 @@ const getOrderDetails = async (req, res) => {
 const changeOrderStatus = async (req, res) => {
     try {
         console.log(req.query);
-        
-        const orderId = req.query.orderId.trim(); 
+
+        const orderId = req.query.orderId.trim();
         console.log(orderId);
 
         const order = await Order.findById(orderId)
 
         for (const product of order.product) {
-            
+
             const productId = product._id;
             const quantity = product.unit;
 
@@ -65,7 +65,7 @@ const changeOrderStatus = async (req, res) => {
         await Order.updateOne({ _id: orderId },
             { status: req.query.status }
         ).then((data) => console.log(data))
-        
+
         res.redirect('/admin/orders');
 
     } catch (error) {

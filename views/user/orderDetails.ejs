@@ -332,7 +332,7 @@
                             "image": "https://blog.flamingtext.com/blog/2024/02/02/flamingtext_com_1706871147_110639469.png",
                             "order_id": response.razorpayOrder.id,
                             "handler": function (status) {
-                                console.log("Response after rezorepay",response.razorpayOrder, status);
+                                console.log("Response after rezorepay", response.razorpayOrder, status);
                                 // Handle payment response here
                                 verifyPayment(response.razorpayOrder, status, response.razorpayOrder.id, response.orderId);
                             },
