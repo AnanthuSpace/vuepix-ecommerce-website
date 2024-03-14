@@ -25,51 +25,63 @@ const userSchema = mongoose.Schema({
         default: false
     },
 
-    cart: [
-        {
-            ProductId: {
-                type: mongoose.Schema.Types.ObjectId,
-                required: true
-            },
-            unit: {
-                type: Number,
-                require: true
-            },
-            price: {
-                type: Number,
-                require: true
-            }
-        }
-    ],
+    cart: 
+    // [
+    //     {
+    //         ProductId: {
+    //             type: mongoose.Schema.Types.ObjectId,
+    //             required: true
+    //         },
+    //         unit: {
+    //             type: Number,
+    //             require: true
+    //         },
+    //         price: {
+    //             type: Number,
+    //             require: true
+    //         }
+    //     }
+    // ]
+    {
+        type: Array,
+        required: true
+    }
+    ,
 
-    wishlist: [
-        {
-            productId: {
-                type: mongoose.Schema.Types.ObjectId,
-                required: true
-            },
-            image: {
-                type: Array,
-                require: true
-            },
-            productName: {
-                type: String,
-                require: true,
-            },
-            category: {
-                type: String,
-                require: true
-            },
-            salePrice: {
-                type: Number,
-                require: true
-            },
-            units: {
-                type: Number,
-                require: true
-            }
-        }
-    ],
+    wishlist: 
+    // [
+    //     {
+    //         productId: {
+    //             type: mongoose.Schema.Types.ObjectId,
+    //             required: true
+    //         },
+    //         image: {
+    //             type: Array,
+    //             require: true
+    //         },
+    //         productName: {
+    //             type: String,
+    //             require: true,
+    //         },
+    //         category: {
+    //             type: String,
+    //             require: true
+    //         },
+    //         salePrice: {
+    //             type: Number,
+    //             require: true
+    //         },
+    //         units: {
+    //             type: Number,
+    //             require: true
+    //         }
+    //     }
+    // ]
+    {
+        type: Array,
+        required: true
+    }
+    ,
 
     referalCode: {
         type: String,
