@@ -62,15 +62,21 @@
                         <span class="text">Order Management</span>
                     </a>
                 </li>
-                <li class="menu-item <%= locals.couponActive ? 'active': 'inactive '%>"">
+                <li class="menu-item <%= locals.couponActive ? 'active': 'inactive '%>">
                     <a class=" menu-link" href="coupon"> <i class="icon material-icons md-class"></i>
                     <span class="text">Coupon Management</span> </a>
                 </li>
 
-                <li class="menu-item <%= locals.salesActive ? 'active': 'inactive '%>"">
+                <li class="menu-item <%= locals.bannerActive ? 'active': 'inactive '%>">
+                    <a class="menu-link" href="/admin/banner"> <i class="icon material-icons md-photo_size_select_actual"></i>
+                        <span class="text">Banner Management</span> </a>
+                </li>
+
+                <li class="menu-item <%= locals.salesActive ? 'active': 'inactive '%>">
                     <a class=" menu-link" href="/admin/salesReport"> <i class="icon material-icons md-description"></i>
                     <span class="text">Sales Report</span> </a>
                 </li>
+
 
 
         </nav>

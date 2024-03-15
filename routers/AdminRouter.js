@@ -7,6 +7,7 @@ const productController = require("../controllers/admin/productController")
 const categoryController = require("../controllers/admin/categoryController")
 const orderController = require("../controllers/admin/orderController")
 const couponController = require("../controllers/admin/couponController")
+const bannerController = require("../controllers/admin/bannerController")
 const salesReportController = require("../controllers/admin/salesReport")
 
 
@@ -75,6 +76,9 @@ router.get("/dateWiseFilter", isAdmin, salesReportController.dateWiseFilter)
 router.post("/generatePdf", isAdmin, salesReportController.generatePdf)
 router.post("/downloadExcel", isAdmin, salesReportController.downloadExcel)
 
+
+// Banner Management
+router.get("/banner", isAdmin, bannerController.getBanner)
 
 
 
