@@ -3,8 +3,8 @@
 
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css">
-
 </head>
+
 
     <style>
         .error-message {
@@ -13,95 +13,8 @@
             font-size: 14px;
             /* Adjust font size as needed */
         }
-        .card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 0 solid transparent;
-    border-radius: .25rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
-}
-.me-2 {
-    margin-right: .5rem!important;
-}
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-:root {
-	--blue: #0071FF;
-	--light-blue: #B6DBF6;
-	--dark-blue: #005DD1;
-	--grey: #f2f2f2;
-}
-
-body {
-	background: var(--light-blue);
-}
-.img-area .icon {
-	font-size: 100px;
-}
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-	font-family: 'Poppins', sans-serif;
-}
-
-
-/*
-.img-area h3 {
-	font-size: 20px;
-	font-weight: 500;
-	margin-bottom: 6px;
-}
-.img-area {
-	position: relative;
-	width: 100%;
-	height: 240px;
-	background: var(--grey);
-	margin-bottom: 30px;
-	border-radius: 15px;
-	overflow: hidden;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-}
-.img-area p {
-	color: #999;
-}
-.img-area p span {
-	font-weight: 600;
-}
-.img-area img {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	object-position: center;
-	z-index: 100;
-}
- */
- .select-image {
-	display: block;
-	width: 100%;
-	padding: 16px 0;
-	border-radius: 15px;
-	background: var(--blue);
-	color: #fff;
-	font-weight: 500;
-	font-size: 16px;
-	border: none;
-	cursor: pointer;
-	transition: all .3s ease;
-}
     </style>
+
 
 
 
@@ -110,45 +23,45 @@ body {
         <div class="row">
             <div class="col-9">
                 <div class="content-header">
-                    <h2 class="content-title">Add New Banner</h2>
+                    <h2 class="content-title">Edit Banner</h2>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="card mb-4">
                     <div class="card-body">
 
-                        <form method="post" action="/admin/addBanner" enctype="multipart/form-data"
+                        <form method="post" action="/admin/editBanner?id=<%= data._id %>" enctype="multipart/form-data"
                             onsubmit="return validateForm()">
                             <div class="mb-4">
                                 <label for="product_name" class="form-label">Banner Title</label>
-                                <input type="text" placeholder="Type here" name="title" class="form-control border"
-                                    id="product_name">
+                                <input type="text" placeholder="Type here" name="title" value="<%= data.title %>"
+                                    class="form-control border" id="product_name">
                                 <div id="productName-error" class="error-message"></div>
                             </div>
 
                             <div class="mb-4">
                                 <label class="form-label">Description</label>
-                                <textarea placeholder="Type here" name="description" class="form-control border"
+                                <textarea placeholder="Type here" name="description" class="form-control border" value="<%= data.description %>
                                     rows="4"></textarea>
                                 <div id="description" class="error-message"></div>
                             </div>
 
                             <div class="mb-4">
                                 <label for="startingDate" class="form-label">Start Date</label>
-                                <input type="date" name="startDate" class="form-control" required id="startingDate" />
+                                <input type="date" name="startDate" class="form-control" value="<%= data.startDate %> required id="startingDate" />
                                 <div id="error-start-date" class="error-message"></div>
                             </div>
 
                             <div class="mb-4">
                                 <label for="expiringDate" class="form-label">End Date</label>
-                                <input type="date" name="endDate" class="form-control" id="expiringDate" required />
+                                <input type="date" name="endDate" class="form-control" value="<%= data.endDate %>" id="expiringDate" required />
                                 <div id="error-end-date" class="error-message"></div>
                             </div>
 
                             <div class="col-lg-4">
                                 <div class="mb-4">
                                     <label class="form-label">Link</label>
-                                    <input placeholder="" name="link" type="text" class="form-control border">
+                                    <input placeholder="" name="link" type="text" value="<%= data.link %>" class="form-control border">
                                     <div id="link-error" class="error-message"></div>
 
                                 </div>
@@ -156,28 +69,49 @@ body {
 
 
 
-                           
+                            <div class="card mb-2">
                                 <div class="card-header">
                                     <h4>Choose Banner Image</h4>
                                 </div>
-                                <div class="border row">
-                                    <div id="addedImagesContainer" class="thumbnails-container"></div>
+                               
+
+
+                                <div id="addedImagesContainer" class="col-md-6">
+                                    <% if (data && data.image) { %>
+                                        <div class="col-md-12 mb-4">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <img class="rounded" style="width: 50px; height: 60px;"
+                                                        src="/uploads/products/<%= data.image %>"
+                                                        alt="image" data-filename="<%= data.image %>">
+                                                    <% if (data._id) { %>
+                                                        <span class="delete-icon"
+                                                            onclick="deleteImage('<%= data._id %>', '<%= data.image %>')">❌</span>
+                                                    <% } %>
+                                                </div>
+                                               
+                                            </div>
+                                            
+                                        </div>
+                                    <% } %>
                                 </div>
+                                
+                                
+
+
+
                                 <div class="card-body">
                                     
                                       
-                                        <img src="assets/imgs/theme/upload.svg" alt="" id="imgView1">
-                                        <input class="form-control" type="file" name="images" id="input1"
-                                            accept="image/png, image/jpeg, image/jpg"
-                                            onchange="viewImage1(event),viewImage(event, 1)">
-                                    </div>
-                                    <div class="image-cropper" style="display:none; width: 300px; height: 200px;">
-                                        <img src="" id="croppedImg1" alt="">
-                                        <button type="button" id="saveButton1" class="btn-sm btn-primary">Save</button>
-                                    </div>
-                              
-                            </div>
-
+                                    <img src="assets/imgs/theme/upload.svg" alt="" id="imgView1">
+                                    <input class="form-control" type="file" name="images" id="input1"
+                                        accept="image/png, image/jpeg, image/jpg"
+                                        onchange="viewImage1(event),viewImage(event, 1)">
+                                </div>
+                                <div class="image-cropper" style="display:none; width: 300px; height: 200px;">
+                                    <img src="" id="croppedImg1" alt="">
+                                    <button type="button" id="saveButton1" class="btn-sm btn-primary">Save</button>
+                                </div>
                             <div>
                                 <button class="btn btn-md rounded font-sm hover-up ml-200" type="button"
                                     onclick="validateAndSubmit()">Publish</button>
@@ -205,11 +139,9 @@ body {
 
 <script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
 
+
+
     <script>
-
-
-
-
         // Array to store selected images
         const selectedImages = [];
 
@@ -285,6 +217,7 @@ body {
         }
 
         function validateForm() {
+         
 
             resetErrorMessages();
 
@@ -311,13 +244,14 @@ body {
             const todayDateObj = new Date();
             todayDateObj.setHours(0, 0, 0, 0);
 
-
+           
 
             if (sDateObj > eDateObj) {
                 document.getElementById('error-end-date').innerHTML = 'End date should be after the start date';
                 isValid = false;
             }
 
+            
 
 
             if (productName === "") {
@@ -358,12 +292,49 @@ body {
         }
 
 
+        function deleteImage(productId, filename) {
+    deleteSingleImage(productId, filename);
+}
+
+function deleteSingleImage(productId, filename) {
+    fetch("/admin/deleteImage", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productId, filename }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Handle success or error
+        if (data.success) {
+            removeImage(filename);
+        } else {
+            console.error("Error deleting image:", data.error);
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
+}
+
+// Remove the deleted image
+function removeImage(filename) {
+    const imageElement = document.querySelector(`[data-filename="${filename}"]`);
+
+    if (imageElement) {
+        const parentDiv = imageElement.closest('.col-md-12');
+        parentDiv.remove();
+    }
+}
 
 
-
-
-
-        function viewImage1(event) {
+function viewImage1(event) {
             document.getElementById('imgView1').src = URL.createObjectURL(event.target.files[0])
         }
 
@@ -414,7 +385,6 @@ body {
             };
             reader.readAsDataURL(input.files[0]);
         }
-
 
 
     </script>
