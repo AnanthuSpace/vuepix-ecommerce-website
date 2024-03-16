@@ -1,15 +1,21 @@
 const mailer = require("nodemailer")
 const { User } = require("../../models/userSchema")
 const Product = require("../../models/productSchema")
+const Banner = require("../../models/bannerSchema")
 const bcrypt = require("bcrypt")
 const { v4: uuidv4 } = require("uuid");
 
 
 const renderGuest = async (req, res) => {
     try {
+        const today = new Date().toISOString();
         const products = await Product.find({ isBlocked: false })
         console.log(products);
-        res.render("user/userHome", { products: products })
+        const findBanner = await Banner.find({
+            startDate: { $lt: new Date(today) },
+            endDate: { $gt: new Date(today) }
+        });
+        res.render("user/userHome", { products: products, banner: findBanner })
     } catch (error) {
         console.log(error.message);
     }
@@ -71,10 +77,15 @@ const generateOTP = () => {
 const renderHome = async (req, res) => {
     try {
         const user = req.session.user
+        const today = new Date().toISOString();
         const products = await Product.find({ isBlocked: false })
         const findUser = await User.findOne({ _id: user })
         const cartCount = findUser.cart.length;
         const wishlistCount = findUser.wishlist.length
+        const findBanner = await Banner.find({
+            startDate: { $lt: new Date(today) },
+            endDate: { $gt: new Date(today) }
+        });
         if (!user) {
             res.redirect("/")
         }
@@ -84,7 +95,8 @@ const renderHome = async (req, res) => {
                     user: user,
                     products: products,
                     cartCount,
-                    wishlistCount
+                    wishlistCount,
+                    banner: findBanner
                 })
         }
     } catch (error) {

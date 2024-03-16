@@ -1,7 +1,35 @@
 <%- include("../partials/userHeader") %>
 
 
-    <section class="home-slider position-relative pt-50">
+    <section class="home-slider position-relative pt-70 pb-50">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <% for (let i=0; i < banner.length; i++) { %>
+                    <div class="swiper-slide">
+                        <div class="single-hero-slider single-animation-wrap">
+                            <div class="container">
+                                <div class="row align-items-center slider-animated-1">
+                                    <div class="col-lg-12">
+                                        <div class="single-slider-img single-slider-img-1">
+                                            <!-- Place your banner image here -->
+                                            <img class="animated slider-1-<%= i + 1 %>"
+                                                src="/uploads/products/<%= banner[i].image %>" alt=""
+                                                style="width: 100%; height: auto;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </section>
+
+    <!-- <section class="home-slider position-relative pt-50">
         <div class="hero-slider-1 dot-style-1 dot-style-1-position-1">
             <div class="single-hero-slider single-animation-wrap">
                 <div class="container">
@@ -68,7 +96,7 @@
             </div>
         </div>
         <div class="slider-arrow hero-slider-1-arrow"></div>
-    </section>
+    </section> -->
     <!-- <section class="featured section-padding position-relative">
             <div class="container">
                 <div class="row">
@@ -198,7 +226,22 @@
     </section>
 
 
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+        });
+    </script>
 
 
 
