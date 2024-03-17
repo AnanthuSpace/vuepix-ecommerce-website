@@ -264,11 +264,77 @@ const calculateTopSellingProducts = async () => {
 
 
 
+const getChartData = async (req, res) => {
+    try {
+        let products = [];
+        let users = [];
+        const allOrders = await Order.find({});
+        const allProductsCount = await Product.find({isListed:true}).count();
+        
+        const allUsersCount = await User.find({isBlocked:false}).count();
+      
+       products.push(allProductsCount);
+       users.push(allUsersCount)
+
+       
+        const ordersByDate = {};
+        allOrders.forEach(entry => {
+            const createdDate = new Date(entry.createdon.replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$2-$1')).toISOString().split('T')[0];
+            if (!ordersByDate[createdDate]) {
+                ordersByDate[createdDate] = 0;
+            }
+            ordersByDate[createdDate]++;
+        });
+
+        // Debugging
+        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+        // Convert keys to day of the week
+        const ordersByDayOfWeek = {};
+        for (const dateStr in ordersByDate) {
+            const date = new Date(dateStr);
+            const dayOfWeek = daysOfWeek[date.getDay()];
+            ordersByDayOfWeek[dayOfWeek] = ordersByDate[dateStr];
+        }
+
+        // Output the counts
+      
+
+        // Function to fill missing days with 0 orders
+        function fillMissingDays(data) {
+            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const filledData = {};
+            daysOfWeek.forEach(day => {
+                filledData[day] = data[day] || 0;
+            });
+            return filledData;
+        }
+
+        // Fill missing days with 0 orders
+        const filledOrdersData = fillMissingDays(ordersByDayOfWeek);
+        console.log("filledOrdersData",filledOrdersData);
+        // const countsArray = Object.values(filledOrdersData);
+
+        // console.log("countsArray : ",countsArray);
+        // console.log("products : ",products);
+        // console.log("users : ",users);
+     
+        res.status(200).json({ order: filledOrdersData, product:products , user:users });
+
+    } catch (error) {
+        console.log("getChartData page error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+
+
 
 
 module.exports = {
     renderAdminLogin,
     adminHome,
     renderAdminHome,
-    adminLogout
+    adminLogout,
+    getChartData
 }

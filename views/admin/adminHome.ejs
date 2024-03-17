@@ -76,10 +76,20 @@
         <div class="row">
             <div class="col-xl-11 col-lg-12">
                 <div class="card mb-4">
-
+                    <h5 class="card-title" style="text-align: center; padding-top: 10px;">Monthly Revenue Statistics
+                    </h5>
                     <canvas id="myChart" height="120px"></canvas>
 
                 </div>
+
+                <div class="card mb-4">
+                    <article class="card-body">
+                        <h5 class="card-title" style="text-align: center; padding-top: 10px;">Monthly Revenue Statistics
+                        </h5>
+                        <canvas id="mychart2" height="135px"></canvas>
+                    </article>
+                </div>
+
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="card mb-4">
@@ -217,7 +227,7 @@
                                                             topProducts[i].productName %></a></h4>
                                                 <div class="product-price">
                                                     <span>₹<%= topProducts[i].salePrice.toLocaleString('en-IN') %>
-                                                            </span>
+                                                    </span>
                                                     <!-- <span class="old-price">₹<%= topProducts[i].regularPrice.toLocaleString('en-IN') %></span> -->
                                                 </div>
                                                 <div class="category-sales">
@@ -336,6 +346,62 @@
             });
             // alert('After initializing Chart');
         });
+
+
+        window.onload = function () {
+            $.ajax({
+                url: "/admin/chart",
+                method: "POST",
+                success: function (response) {
+                    console.log("response : ", response.product);
+
+
+                    const xValues = Object.keys(response.order);
+
+                    new Chart("mychart", {
+                        type: "line",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                label: 'Orders',
+                                tension: 0.3,
+                                fill: true,
+                                backgroundColor: 'rgba(44, 120, 220, 0.2)',
+                                borderColor: 'rgba(44, 120, 220)',
+                                data: Object.values(response.order)
+                            }, {
+                                label: 'Products',
+                                tension: 0.3,
+                                fill: true,
+                                backgroundColor: 'rgba(4, 209, 130, 0.2)',
+                                borderColor: 'rgb(4, 209, 130)',
+                                data: [0, 0, 0, 0, 0, response.product, 0]
+                            }, {
+                                label: 'Users',
+                                tension: 0.3,
+                                fill: true,
+                                backgroundColor: 'rgba(380, 200, 230, 0.2)',
+                                borderColor: 'rgb(380, 200, 230)',
+                                data: [0, 0, 0, 0, 0, 0, response.user]
+                            }]
+                        },
+                        options: {
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        usePointStyle: true,
+                                    },
+                                }
+                            }
+                        }
+                    });
+
+                }
+
+
+
+            });
+        }
 
     </script>
 
