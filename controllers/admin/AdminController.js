@@ -156,6 +156,30 @@ const renderAdminHome = async (req, res) => {
         console.log("Top 5 Best Selling Products:", topCat);
 
 
+
+        
+
+        const firstDayOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+        const lastDayOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 6);
+
+        const weeklyOrders = await Order.find({
+            status: "Delivered",
+            createdOn: {
+                $gte: firstDayOfWeek,
+                $lte: lastDayOfWeek
+            }
+        });
+
+        let weeklyRevenue = 0;
+
+        for (let i in weeklyOrders) {
+            weeklyRevenue += weeklyOrders[i].totalPrice;
+        }
+
+
+
+
+
         res.render("admin/adminHome", {
             orderCount,
             productCount,
@@ -168,7 +192,9 @@ const renderAdminHome = async (req, res) => {
             dashboard: true,
             userPerMonth,
             topProducts,
-            topCat
+            topCat,
+            weeklyRevenue,
+            weeklyOrders
         })
     } catch (error) {
         console.log(error.message);
@@ -264,68 +290,127 @@ const calculateTopSellingProducts = async () => {
 
 
 
-const getChartData = async (req, res) => {
-    try {
-        let products = [];
-        let users = [];
-        const allOrders = await Order.find({});
-        const allProductsCount = await Product.find({isListed:true}).count();
+// const getChartData = async (req, res) => {
+//     try {
+//         let products = [];
+//         let users = [];
+//         const allOrders = await Order.find({});
+//         const allProductsCount = await Product.find({isListed:true}).count();
         
-        const allUsersCount = await User.find({isBlocked:false}).count();
+//         const allUsersCount = await User.find({isBlocked:false}).count();
       
-       products.push(allProductsCount);
-       users.push(allUsersCount)
+//        products.push(allProductsCount);
+//        users.push(allUsersCount)
 
        
-        const ordersByDate = {};
-        allOrders.forEach(entry => {
-            const createdDate = new Date(entry.createdon.replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$2-$1')).toISOString().split('T')[0];
-            if (!ordersByDate[createdDate]) {
-                ordersByDate[createdDate] = 0;
-            }
-            ordersByDate[createdDate]++;
-        });
+//         const ordersByDate = {};
+//         allOrders.forEach(entry => {
+//             const createdDate = new Date(entry.createdOn.replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$2-$1')).toISOString().split('T')[0];
+//             if (!ordersByDate[createdDate]) {
+//                 ordersByDate[createdDate] = 0;
+//             }
+//             ordersByDate[createdDate]++;
+//         });
 
-        // Debugging
-        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+//         // Debugging
+//         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-        // Convert keys to day of the week
-        const ordersByDayOfWeek = {};
-        for (const dateStr in ordersByDate) {
-            const date = new Date(dateStr);
-            const dayOfWeek = daysOfWeek[date.getDay()];
-            ordersByDayOfWeek[dayOfWeek] = ordersByDate[dateStr];
-        }
+//         // Convert keys to day of the week
+//         const ordersByDayOfWeek = {};
+//         for (const dateStr in ordersByDate) {
+//             const date = new Date(dateStr);
+//             const dayOfWeek = daysOfWeek[date.getDay()];
+//             ordersByDayOfWeek[dayOfWeek] = ordersByDate[dateStr];
+//         }
 
-        // Output the counts
+//         // Output the counts
       
 
-        // Function to fill missing days with 0 orders
-        function fillMissingDays(data) {
-            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const filledData = {};
-            daysOfWeek.forEach(day => {
-                filledData[day] = data[day] || 0;
-            });
-            return filledData;
-        }
+//         // Function to fill missing days with 0 orders
+//         function fillMissingDays(data) {
+//             const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+//             const filledData = {};
+//             daysOfWeek.forEach(day => {
+//                 filledData[day] = data[day] || 0;
+//             });
+//             return filledData;
+//         }
 
-        // Fill missing days with 0 orders
-        const filledOrdersData = fillMissingDays(ordersByDayOfWeek);
-        console.log("filledOrdersData",filledOrdersData);
-        // const countsArray = Object.values(filledOrdersData);
+//         // Fill missing days with 0 orders
+//         const filledOrdersData = fillMissingDays(ordersByDayOfWeek);
+//         console.log("filledOrdersData",filledOrdersData);
+//         const countsArray = Object.values(filledOrdersData);
 
-        // console.log("countsArray : ",countsArray);
-        // console.log("products : ",products);
-        // console.log("users : ",users);
+//         console.log("countsArray : ",countsArray);
+//         console.log("products : ",products);
+//         console.log("users : ",users);
      
-        res.status(200).json({ order: filledOrdersData, product:products , user:users });
+//         res.status(200).json({ order: filledOrdersData, product:products , user:users });
 
-    } catch (error) {
-        console.log("getChartData page error:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-}
+//     } catch (error) {
+//         console.log("getChartData page error:", error);
+//         res.status(500).json({ error: "Internal server error" });
+//     }
+// }
+
+// const getChartData = async (req, res) => {
+//     try {
+//         let products = [];
+//         let users = [];
+//         const allOrders = await Order.find({});
+//         const allProductsCount = await Product.find({isListed:true}).count();
+        
+//         const allUsersCount = await User.find({isBlocked:false}).count();
+      
+//         products.push(allProductsCount);
+//         users.push(allUsersCount);
+
+//         const ordersByDate = {};
+//         allOrders.forEach(entry => {
+//             // Check if entry.createdOn is a valid string
+//             if (typeof entry.createdOn === 'string') {
+//                 const createdDate = new Date(entry.createdOn.replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$2-$1')).toISOString().split('T')[0];
+//                 if (!ordersByDate[createdDate]) {
+//                     ordersByDate[createdDate] = 0;
+//                 }
+//                 ordersByDate[createdDate]++;
+//             }
+//         });
+
+//         // Debugging
+//         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+//         // Convert keys to day of the week
+//         const ordersByDayOfWeek = {};
+//         for (const dateStr in ordersByDate) {
+//             const date = new Date(dateStr);
+//             const dayOfWeek = daysOfWeek[date.getDay()];
+//             ordersByDayOfWeek[dayOfWeek] = ordersByDate[dateStr];
+//         }
+
+//         // Function to fill missing days with 0 orders
+//         function fillMissingDays(data) {
+//             const filledData = {};
+//             daysOfWeek.forEach(day => {
+//                 filledData[day] = data[day] || 0;
+//             });
+//             return filledData;
+//         }
+
+//         // Fill missing days with 0 orders
+//         const filledOrdersData = fillMissingDays(ordersByDayOfWeek);
+
+//         const countsArray = Object.values(filledOrdersData);
+//         console.log(filledOrdersData, countsArray);
+
+//         res.status(200).json({ order: filledOrdersData, product: products, user: users });
+
+//     } catch (error) {
+//         console.log("getChartData page error:", error);
+//         res.status(500).json({ error: "Internal server error" });
+//     }
+// }
+
 
 
 
@@ -336,5 +421,5 @@ module.exports = {
     adminHome,
     renderAdminHome,
     adminLogout,
-    getChartData
+    // getChartData
 }

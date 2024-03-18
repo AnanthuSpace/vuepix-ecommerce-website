@@ -45,7 +45,7 @@ const getSalesReportPage = async (req, res) => {
 
         let filterBy = req.query.day
         if (filterBy) {
-            res.redirect(`/admin/${req.query.day}`)
+            res.redirect(`/admin/${filterBy}`)
         } else {
             res.redirect(`/admin/salesMonthly`)
         }
@@ -261,7 +261,7 @@ const salesYearly = async (req, res) => {
         let endIndex = startIndex + itemsPerPage
         let totalPages = Math.ceil(orders.length / 3)
         const currentOrder = orders.slice(startIndex, endIndex)
-        const { salesCount, totalAmount, totalDiscount } = await calculateOverallSalesSummary(startOfTheDay, endOfTheDay);
+        const { salesCount, totalAmount, totalDiscount } = await calculateOverallSalesSummary(startofYear, endofYear);
 
         res.render("admin/salesReport", {
             data: currentOrder,

@@ -45,6 +45,8 @@
                                             <h4 class="text-success">Delivered</h4>
                                         </div>
                                     </div>
+                                    <% } else if (orders.status==="Pending" ) { %>
+                                        <h4 class="text-warning">Pending</h4>
                                     <% } else if (orders.status==="Returned" ) { %>
                                         <h4 class="text-warning">Returned</h4>
                                         <% } else { %>

@@ -84,7 +84,7 @@
 
                 <div class="card mb-4">
                     <article class="card-body">
-                        <h5 class="card-title" style="text-align: center; padding-top: 10px;">Monthly Revenue Statistics
+                        <h5 class="card-title" style="text-align: center; padding-top: 10px;">Weekly Revenue Statistics
                         </h5>
                         <canvas id="mychart2" height="135px"></canvas>
                     </article>
@@ -344,64 +344,136 @@
 
 
             });
-            // alert('After initializing Chart');
+            
         });
 
 
-        window.onload = function () {
-            $.ajax({
-                url: "/admin/chart",
-                method: "POST",
-                success: function (response) {
-                    console.log("response : ", response.product);
-
-
-                    const xValues = Object.keys(response.order);
-
-                    new Chart("mychart", {
-                        type: "line",
-                        data: {
-                            labels: xValues,
-                            datasets: [{
-                                label: 'Orders',
-                                tension: 0.3,
-                                fill: true,
-                                backgroundColor: 'rgba(44, 120, 220, 0.2)',
-                                borderColor: 'rgba(44, 120, 220)',
-                                data: Object.values(response.order)
-                            }, {
-                                label: 'Products',
-                                tension: 0.3,
-                                fill: true,
-                                backgroundColor: 'rgba(4, 209, 130, 0.2)',
-                                borderColor: 'rgb(4, 209, 130)',
-                                data: [0, 0, 0, 0, 0, response.product, 0]
-                            }, {
-                                label: 'Users',
-                                tension: 0.3,
-                                fill: true,
-                                backgroundColor: 'rgba(380, 200, 230, 0.2)',
-                                borderColor: 'rgb(380, 200, 230)',
-                                data: [0, 0, 0, 0, 0, 0, response.user]
-                            }]
-                        },
-                        options: {
-                            plugins: {
-                                legend: {
-                                    labels: {
-                                        usePointStyle: true,
-                                    },
-                                }
-                            }
-                        }
-                    });
-
-                }
 
 
 
-            });
-        }
+
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     var weeklyOrders = <%= JSON.stringify(weeklyOrders) %>;
+        //     var weeklyRevenue = <%= JSON.stringify(weeklyRevenue) %>;
+        
+        //     var ctx = document.getElementById('mychart2').getContext('2d');
+
+        //     var existingChart = Chart.getChart(ctx);
+        //     if (existingChart) {
+        //         existingChart.destroy();
+        //     }
+        //     // alert('Before initializing Chart');
+        //     new Chart(ctx, {
+        //         type: 'line',
+        //         data: {
+        //             labels: [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',],
+        //             datasets: [{
+        //                 label: 'weeklyRevenue',
+        //                 tension: 0.3,
+        //                 fill: true,
+        //                 backgroundColor: 'rgba(44, 120, 220, 0.2)',
+        //                 borderColor: 'rgba(44, 120, 220)',
+        //                 data: weeklyRevenue
+        //             },
+        //             {
+
+        //                 label: 'weeklyOrders',
+        //                 tension: 0.3,
+        //                 fill: true,
+        //                 backgroundColor: 'rgba(4, 209, 130, 0.2)',
+        //                 borderColor: 'rgb(4, 209, 130)',
+        //                 data: weeklyOrders,
+        //             },
+        //             // {
+        //             //     label: 'Users',
+        //             //     data: userData,
+        //             //     backgroundColor: '#e28743',
+        //             //     borderColor: '#873e23',
+        //             //     borderWidth: 2,
+        //             //     pointRadius: 4,
+        //             //     pointBackgroundColor: '#21130d',
+        //             //     pointBorderColor: '#fff',
+        //             //     pointHoverRadius: 6,
+        //             //     pointHoverBackgroundColor: '#fff',
+        //             //     pointHoverBorderColor: 'rgba(75, 192, 192, 1)',
+        //             //     fill: {
+        //             //         target: 'origin',
+        //             //         above: 'rgba(75, 192, 192, 0.2)',
+        //             //         below: 'rgba(75, 192, 192, 0)'
+        //             //     },
+        //             //     tension: 0.4
+        //             // }
+        //             ]
+        //         },
+        //         options: {
+        //             plugins: {
+        //                 legend: {
+        //                     labels: {
+        //                         usePointStyle: true,
+        //                     },
+        //                 }
+        //             }
+        //         }
+
+
+        //     });
+            
+        // });
+
+        // window.onload = function () {
+        //     $.ajax({
+        //         url: "/admin/chart",
+        //         method: "POST",
+        //         success: function (response) {
+        //             console.log("response : ", response.product);
+
+
+        //             const xValues = Object.keys(response.order);
+
+        //             new Chart("mychart", {
+        //                 type: "line",
+        //                 data: {
+        //                     labels: xValues,
+        //                     datasets: [{
+        //                         label: 'Orders',
+        //                         tension: 0.3,
+        //                         fill: true,
+        //                         backgroundColor: 'rgba(44, 120, 220, 0.2)',
+        //                         borderColor: 'rgba(44, 120, 220)',
+        //                         data: Object.values(response.order)
+        //                     }, {
+        //                         label: 'Products',
+        //                         tension: 0.3,
+        //                         fill: true,
+        //                         backgroundColor: 'rgba(4, 209, 130, 0.2)',
+        //                         borderColor: 'rgb(4, 209, 130)',
+        //                         data: [0, 0, 0, 0, 0, response.product, 0]
+        //                     }, {
+        //                         label: 'Users',
+        //                         tension: 0.3,
+        //                         fill: true,
+        //                         backgroundColor: 'rgba(380, 200, 230, 0.2)',
+        //                         borderColor: 'rgb(380, 200, 230)',
+        //                         data: [0, 0, 0, 0, 0, 0, response.user]
+        //                     }]
+        //                 },
+        //                 options: {
+        //                     plugins: {
+        //                         legend: {
+        //                             labels: {
+        //                                 usePointStyle: true,
+        //                             },
+        //                         }
+        //                     }
+        //                 }
+        //             });
+
+        //         }
+
+
+
+        //     });
+        // }
 
     </script>
 
