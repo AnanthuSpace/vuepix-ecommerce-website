@@ -282,9 +282,9 @@
 
 
             if (selectedValue == "Shipped") {
-                window.location.href = `https://www.vuepix.shop/admin/changeStatus?orderId=${orderId.value}&status=${selectedValue}`;
+                window.location.href = `http://vuepix.shop/admin/changeStatus?orderId=${orderId}&status=${selectedValue}`;
             } else if (selectedValue == "Delivered") {
-                window.location.href = `https://www.vuepix.shop/admin/changeStatus?orderId=${orderId.value}&status=${selectedValue}`;
+                window.location.href = `http://vuepix.shop/admin/changeStatus?orderId=${orderId}&status=${selectedValue}`;
             } else if (selectedValue == "Canceled") {
                 Swal.fire({
                     title: 'Confirm cancellation',
@@ -296,7 +296,7 @@
                     confirmButtonText: 'Yes, cancel it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = `https://www.vuepix.shop/admin/changeStatus?orderId=${orderId.value}&status=${selectedValue}`;
+                        window.location.href = `http://vuepix.shop/admin/changeStatus?orderId=${orderId}&status=${selectedValue}`;
                     } else {
                         location.reload();
                     }
