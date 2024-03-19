@@ -1,7 +1,32 @@
 <%- include("../partials/userHeader") %>
 
 
-    <section class="home-slider position-relative pt-70 pb-50">
+    <head>
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+    </head>
+
+    <style>
+        .home-slider {
+            overflow: hidden;
+        }
+
+        .swiper-container {
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .swiper-wrapper {
+            display: flex;
+        }
+
+        .swiper-slide {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+
+    <section class="home-slider position-relative pt-50">
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <% for (let i=0; i < banner.length; i++) { %>
@@ -12,7 +37,7 @@
                                     <div class="col-lg-12">
                                         <div class="single-slider-img single-slider-img-1">
                                             <!-- Place your banner image here -->
-                                            <img class="animated slider-1-<%= i + 1 %>"
+                                            <img class="animated slider-1-1"
                                                 src="/uploads/products/<%= banner[i].image %>" alt=""
                                                 style="width: 100%; height: auto;">
                                         </div>
