@@ -264,7 +264,7 @@
                     console.log(response);
                     if (response.status == true) {
                         // alert("success here")
-                        window.location.href = "http://localhost:3000/home";
+                        location.href = "/home";
                     } else if (response.status == false) {
                         errorMessageElement.innerHTML = 'Entered OTP is incorrect';
                         errorMessageElement.style.display = 'block';
@@ -297,7 +297,7 @@
                             icon: 'success',
                             timer: 2000,
                             showConfirmButton: false
-                        }).then(() => { window.location.href = '/VuePix' });
+                        }).then(() => { location.href = '/VuePix' });
                     } else if (response.status == false) {
                         Swal.fire({
                             title: 'You need to Login first',
@@ -305,7 +305,7 @@
                             icon: 'warning',
                             timer: 2000,
                             showConfirmButton: false
-                        }).then(() => { window.location.href = '/login' });
+                        }).then(() => { location.href = '/login' });
                     }
                 }
             })
@@ -341,7 +341,7 @@
                             text: 'Product ADDED TO CART.',
                             icon: 'success',
                             timer: 5000
-                        }).then(() => { window.location.href = '/VuePix' });
+                        }).then(() => { location.href = '/VuePix' });
                     } else if (response.added == false) {
                         Swal.fire({
                             title: 'STOCK!',

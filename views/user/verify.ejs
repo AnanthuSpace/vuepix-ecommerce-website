@@ -65,7 +65,7 @@
                     console.log(response);
                     if (response.status == true) {
                         // alert("success here")
-                        window.location.href = "http://localhost:3000/login";
+                        location.href = "/login";
                     } else if (response.status == false) {
                         errorMessageElement.innerHTML = 'Entered OTP is incorrect';
                         errorMessageElement.style.display = 'block';

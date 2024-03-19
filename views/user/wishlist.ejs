@@ -101,7 +101,7 @@
                             icon: 'success',
                             timer: 2000,
                             showConfirmButton: false
-                        }).then(() => { window.location.href = '/wishlist' });
+                        }).then(() => { location.href = '/wishlist' });
                     } else if (res.added === false) {
                         Swal.fire({
                             title: 'Stock!!',
@@ -116,7 +116,7 @@
                             icon: 'warning',
                             timer: 2000,
                             showConfirmButton: false
-                        }).then(() => { window.location.href = '/login' });
+                        }).then(() => { location.href = '/login' });
                     }
                 },
                 error: (err) => {
