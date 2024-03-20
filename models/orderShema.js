@@ -22,10 +22,6 @@ const orderSchema = new mongoose.Schema({
                 type: String,
                 required: true
             },
-            category: {
-                type: String,
-                require: true,
-            },
             images: {
                 type: String,
                 required: true

@@ -37,8 +37,25 @@ const addCategory = async (req, res) => {
             console.log("Category done:", newCategory);
             res.redirect("/admin/category");
         } else {
-            res.redirect("/admin/category");
+
+            const cat = await Category.find({})
+
+            let itemsPerPage = 4
+            let currentPage = parseInt(req.query.page) || 1
+            let startIndex = (currentPage - 1) * itemsPerPage
+            let endIndex = startIndex + itemsPerPage
+            let totalPages = Math.ceil(cat.length / 4)
+            const currentCategory = cat.slice(startIndex, endIndex)
             console.log("Category Already exists");
+
+            res.render("admin/category", {
+                cat: currentCategory,
+                totalPages,
+                currentPage,
+                categoryActive: true,
+                errorMsg: `Category ${categoryName} is already exists`
+            })
+
         }
     } catch (error) {
         console.log(error.message);
@@ -107,7 +124,24 @@ const editCategory = async (req, res) => {
             }
         } else {
             console.log("Existed Category");
-            res.redirect("/admin/category");
+            const cat = await Category.find({})
+
+            let itemsPerPage = 4
+            let currentPage = parseInt(req.query.page) || 1
+            let startIndex = (currentPage - 1) * itemsPerPage
+            let endIndex = startIndex + itemsPerPage
+            let totalPages = Math.ceil(cat.length / 4)
+            const currentCategory = cat.slice(startIndex, endIndex)
+            console.log("Category Already exists");
+
+            res.render("admin/category", {
+                cat: currentCategory,
+                totalPages,
+                currentPage,
+                categoryActive: true,
+                errorMsg: `Category ${categoryName} is already exists`
+            })
+
         }
 
     } catch (error) {

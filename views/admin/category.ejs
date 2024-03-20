@@ -47,140 +47,148 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3">
-                        <form action="/admin/addcategory" method="post">
-                            <div class="mb-4">
-                                <% if (locals.message) { %>
-                                    <div class="alert alert-danger text-center" id="err">
-                                        <%= message %>
-                                    </div>
-                                    <% } %>
-                                        <label for="product_name" class="form-label">Name</label>
-                                        <input name="name" pattern="^[^\s]+$" type="text" placeholder="Type here"
-                                            class="form-control" id="name" required="true" maxlength="40" />
-                                        <p id="name-err-msg" class="text-danger"></p>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label">Description</label>
-                                <textarea name="description" placeholder="Type here" class="form-control"
-                                    required="true" id="description"></textarea>
-                                <p id="err-msg" class="text-danger"></p>
-                            </div>
-
-                            <div class="d-grid">
-                                <button onclick="validate()" class="btn btn-primary" type="submit">Create
-                                    category</button>
-                            </div>
-
-                        </form>
+                <% if (locals.errorMsg) { %>
+                    <div class="alert alert-danger text-center" id="errorMsg">
+                        <%= errorMsg %>
                     </div>
-                    <div class="col-md-9">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Category</th>
-                                        <th>Description</th>
-                                        <th>Offer Price</th>
-                                        <th>Offer</th>
-                                        <th>Status</th>
-                                        <th>List/Unlist</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% for(let i=0; i < cat.length; i++) { %>
-                                        <tr>
+                    <% } %>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <form action="/admin/addcategory" method="post">
+                                    <div class="mb-4">
+                                        <% if (locals.message) { %>
+                                            <div class="alert alert-danger text-center" id="err">
+                                                <%= message %>
+                                            </div>
+                                            <% } %>
+                                                <label for="product_name" class="form-label">Name</label>
+                                                <input name="name" pattern="^[^\s]+$" type="text"
+                                                    placeholder="Type here" class="form-control" id="name"
+                                                    required="true" maxlength="40" />
+                                                <p id="name-err-msg" class="text-danger"></p>
+                                    </div>
 
-                                            <td class="text-start">
-                                                <%= cat[i].name %>
-                                            </td>
-                                            <td class="text-start">
-                                                <%= cat[i].description %>
-                                            </td>
+                                    <div class="mb-4">
+                                        <label class="form-label">Description</label>
+                                        <textarea name="description" placeholder="Type here" class="form-control"
+                                            required="true" id="description"></textarea>
+                                        <p id="err-msg" class="text-danger"></p>
+                                    </div>
 
-                                            <td>
-                                                <% if (locals.cat[i].categoryOffer) { %>
-                                                    <%= cat[i].categoryOffer %>%
-                                                        <% }else{ %>
-                                                            0%
-                                                            <% } %>
-                                            </td>
-                                            <td class="text-start">
-                                                <% if (locals.cat[i].categoryOffer===0) { %>
-                                                    <button class="btn btn-info" onclick="addOffer('<%= cat[i]._id %>')"
-                                                        style="width: 100px;">
-                                                        <a href="#" class="text-white">Add Offer</a>
-                                                    </button>
-                                                    <% }else{ %>
-                                                        <button class="btn btn-info"
-                                                            onclick="removeOffer('<%= cat[i]._id %>')"
-                                                            style="width: 100px;">
-                                                            <a href="#" class="text-white">Remove</a>
+                                    <div class="d-grid">
+                                        <button onclick="validate()" class="btn btn-primary" type="submit">Create
+                                            category</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Category</th>
+                                                <th>Description</th>
+                                                <th>Offer Price</th>
+                                                <th>Offer</th>
+                                                <th>Status</th>
+                                                <th>List/Unlist</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(let i=0; i < cat.length; i++) { %>
+                                                <tr>
+
+                                                    <td class="text-start">
+                                                        <%= cat[i].name %>
+                                                    </td>
+                                                    <td class="text-start">
+                                                        <%= cat[i].description %>
+                                                    </td>
+
+                                                    <td>
+                                                        <% if (locals.cat[i].categoryOffer) { %>
+                                                            <%= cat[i].categoryOffer %>%
+                                                                <% }else{ %>
+                                                                    0%
+                                                                    <% } %>
+                                                    </td>
+                                                    <td class="text-start">
+                                                        <% if (locals.cat[i].categoryOffer===0) { %>
+                                                            <button class="btn btn-info"
+                                                                onclick="addOffer('<%= cat[i]._id %>')"
+                                                                style="width: 100px;">
+                                                                <a href="#" class="text-white">Add Offer</a>
+                                                            </button>
+                                                            <% }else{ %>
+                                                                <button class="btn btn-info"
+                                                                    onclick="removeOffer('<%= cat[i]._id %>')"
+                                                                    style="width: 100px;">
+                                                                    <a href="#" class="text-white">Remove</a>
+                                                                </button>
+                                                                <% } %>
+                                                    </td>
+
+                                                    <td class="text-start">
+                                                        <% if (cat[i].isListed===true) { %>
+                                                            <span class="badge rounded-pill alert-success"
+                                                                style="width: 60px;">Listed</span>
+                                                            <% } else { %>
+                                                                <span class="badge rounded-pill alert-danger"
+                                                                    style="width: 60px;">Unlisted</span>
+                                                                <% } %>
+                                                    </td>
+                                                    <td class="text-start">
+                                                        <% if (cat[i].isListed===true) { %>
+                                                            <button class="btn btn-danger" style="width: 70px;">
+                                                                <a href="/admin/listcategory?id=<%= cat[i]._id %>"
+                                                                    class="text-white">Unlist</a>
+                                                            </button>
+                                                            <% } else { %>
+                                                                <button class="btn btn-success" style="width: 70px;">
+                                                                    <a href="/admin/unListcategory?id=<%= cat[i]._id %>"
+                                                                        class="text-white">List</a>
+                                                                </button>
+                                                                <% } %>
+                                                    </td>
+                                                    <td class="text-start">
+                                                        <button class="btn btn-info">
+                                                            <a href="/admin/editCategory?id=<%= cat[i]._id %>"
+                                                                class="text-white">Edit</a>
                                                         </button>
-                                                        <% } %>
-                                            </td>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                        </tbody>
+                                    </table>
 
-                                            <td class="text-start">
-                                                <% if (cat[i].isListed===true) { %>
-                                                    <span class="badge rounded-pill alert-success"
-                                                        style="width: 60px;">Listed</span>
-                                                    <% } else { %>
-                                                        <span class="badge rounded-pill alert-danger"
-                                                            style="width: 60px;">Unlisted</span>
-                                                        <% } %>
-                                            </td>
-                                            <td class="text-start">
-                                                <% if (cat[i].isListed===true) { %>
-                                                    <button class="btn btn-danger" style="width: 70px;">
-                                                        <a href="/admin/listcategory?id=<%= cat[i]._id %>"
-                                                            class="text-white">Unlist</a>
-                                                    </button>
-                                                    <% } else { %>
-                                                        <button class="btn btn-success" style="width: 70px;">
-                                                            <a href="/admin/unListcategory?id=<%= cat[i]._id %>"
-                                                                class="text-white">List</a>
-                                                        </button>
-                                                        <% } %>
-                                            </td>
-                                            <td class="text-start">
-                                                <button class="btn btn-info">
-                                                    <a href="/admin/editCategory?id=<%= cat[i]._id %>"
-                                                        class="text-white">Edit</a>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <% } %>
-                                </tbody>
-                            </table>
-
-                            <% if (totalPages) { %>
-                                <div class="pagination">
-                                    <% if (currentPage> 1) { %>
-                                        <button class="btn btn-sm"><a
-                                                href="/admin/category?page=<%= currentPage - 1 %>">Previous</a></button>
-                                        <% } %>
-
-                                            <% for (let i=1; i <=totalPages; i++) { %>
-                                                <button class="btn btn-sm <%= i === currentPage ? 'active' : '' %>">
-                                                    <a href="/admin/category?page=<%= i %>">
-                                                        <%= i %>
-                                                    </a>
-                                                </button>
+                                    <% if (totalPages) { %>
+                                        <div class="pagination">
+                                            <% if (currentPage> 1) { %>
+                                                <button class="btn btn-sm"><a
+                                                        href="/admin/category?page=<%= currentPage - 1 %>">Previous</a></button>
                                                 <% } %>
 
-                                                    <% if (currentPage < totalPages) { %>
-                                                        <button class="btn btn-sm"><a
-                                                                href="/admin/category?page=<%= currentPage + 1 %>">Next</a></button>
+                                                    <% for (let i=1; i <=totalPages; i++) { %>
+                                                        <button
+                                                            class="btn btn-sm <%= i === currentPage ? 'active' : '' %>">
+                                                            <a href="/admin/category?page=<%= i %>">
+                                                                <%= i %>
+                                                            </a>
+                                                        </button>
                                                         <% } %>
-                                </div>
-                                <% } %>
 
-                        </div>
-                    </div> <!-- .col// -->
-                </div> <!-- .row // -->
+                                                            <% if (currentPage < totalPages) { %>
+                                                                <button class="btn btn-sm"><a
+                                                                        href="/admin/category?page=<%= currentPage + 1 %>">Next</a></button>
+                                                                <% } %>
+                                        </div>
+                                        <% } %>
+
+                                </div>
+                            </div> <!-- .col// -->
+                        </div> <!-- .row // -->
             </div> <!-- card body .// -->
         </div> <!-- card .// -->
     </section> <!-- content-main end// -->
@@ -279,6 +287,15 @@
             } catch (error) {
                 console.error(error);
             }
+        }
+
+
+
+        const message = document.getElementById("errorMsg");
+        if (message) {
+            setTimeout(() => {
+                message.style.display = "none";
+            }, 3000);
         }
 
     </script>
